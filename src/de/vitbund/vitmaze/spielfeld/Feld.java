@@ -7,6 +7,17 @@ public class Feld {
 	private Feld west = null;
 	private boolean ziel = false;
 	
+	
+	public Feld() {
+		
+	}
+	public Feld(Feld north, Feld south, Feld west, Feld east) {
+		this.north = north;
+		this.south=south;
+		this.west = west;
+		this.east = east;
+	}
+	
 	public Feld getNorth() {
 		return north;
 	}

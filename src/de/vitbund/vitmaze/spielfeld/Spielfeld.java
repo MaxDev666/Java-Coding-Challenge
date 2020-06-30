@@ -34,4 +34,8 @@ public class Spielfeld {
 		felder.add(newFeld);
 	}
 	
+	
+	
+	//public Route findeWegZu(Feld zielFeld)
+	
 }
