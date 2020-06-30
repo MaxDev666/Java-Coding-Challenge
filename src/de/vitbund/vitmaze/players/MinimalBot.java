@@ -16,7 +16,7 @@ public class MinimalBot {
 	Spielfeld spielfeld;
 	Feld aktuellesFeld;
 	Scanner input;
-	int blickrichtung; // 1 Norden, 2 Osten, 3 Süden, 4 Westen
+	byte blickrichtung; // 1 Norden, 2 Osten, 3 Süden, 4 Westen
 	int playerId;
 	int startX;
 	int startY;
@@ -76,33 +76,70 @@ public class MinimalBot {
 				this.aktuellesFeld.setNorth(neuesFeld);
 				neuesFeld.setSouth(this.aktuellesFeld);
 				this.spielfeld.addFeld(neuesFeld);
+				spielfeld.addUnbekanntesFeld(neuesFeld);
 			}
 			if (this.eastCellStatus.equals("FLOOR")) {
 				Feld neuesFeld = new Feld();
 				this.aktuellesFeld.setEast(neuesFeld);
 				neuesFeld.setWest(this.aktuellesFeld);
 				this.spielfeld.addFeld(neuesFeld);
+				spielfeld.addUnbekanntesFeld(neuesFeld);
 			}
 			if (this.southCellStatus.equals("FLOOR")) {
 				Feld neuesFeld = new Feld();
 				this.aktuellesFeld.setSouth(neuesFeld);
 				neuesFeld.setNorth(this.aktuellesFeld);
 				this.spielfeld.addFeld(neuesFeld);
+				spielfeld.addUnbekanntesFeld(neuesFeld);
 			}
 			if (this.westCellStatus.equals("FLOOR")) {
 				Feld neuesFeld = new Feld();
 				this.aktuellesFeld.setWest(neuesFeld);
 				neuesFeld.setEast(this.aktuellesFeld);
 				this.spielfeld.addFeld(neuesFeld);
+				spielfeld.addUnbekanntesFeld(neuesFeld);
 			}
 			
 			// hier intelligente Möglichkeiten ausdenken zur Wegfindung
-			
-			if ((this.blickrichtung == 4 && this.westCellStatus.equals("FLOOR")) || this.blickrichtung == 4 && this.westCellStatus.equals("FINISH " +this.playerId + " 0")) {
-				System.out.println("go west");	
-				this.aktuellesFeld = this.aktuellesFeld.getWest();
+			boolean hatSichbewegt=false;
+			while (hatSichbewegt==false) {
+				if (this.blickrichtung == 4 &&   !this.westCellStatus.equals("WALL")) {
+					this.aktuellesFeld = this.aktuellesFeld.getWest();
+					System.out.println("go west");	
+					hatSichbewegt=true;
+				} else 	if (this.blickrichtung == 3 &&  !this.southCellStatus.equals("WALL")) {
+					System.out.println("go south");	
+					this.aktuellesFeld = this.aktuellesFeld.getSouth();
+					hatSichbewegt=true;
+				} else 	if (this.blickrichtung == 2 &&  !this.eastCellStatus.equals("WALL")) {
+					System.out.println("go east");	
+					this.aktuellesFeld = this.aktuellesFeld.getEast();
+					hatSichbewegt=true;
+				} else 	if (this.blickrichtung == 1 &&  !this.northCellStatus.equals("WALL")) {
+					System.out.println("go north");	
+					this.aktuellesFeld = this.aktuellesFeld.getNorth();
+					hatSichbewegt=true;
+				} else {
+				aendereBlickrichtung();}
 			}
 			
+			
+		}
+		
+	}
+	
+	public void aendereBlickrichtung() {
+		if (this.blickrichtung == 4) {
+			this.blickrichtung = 2;
+		}
+		else if (this.blickrichtung == 3) {
+			this.blickrichtung = 1;
+		}
+		else if (this.blickrichtung == 2) {
+			this.blickrichtung = 3;
+		}		
+		else if (this.blickrichtung == 1) {
+			this.blickrichtung = 4;
 		}
 		
 	}
