@@ -2,6 +2,8 @@ package de.vitbund.vitmaze.players;
 
 import java.util.Scanner;
 
+import de.vitbund.vitmaze.spielfeld.Spielfeld;
+
 /**
  * Klasse eines minimalen Bots für das VITMaze
  * @author Patrick.Stalljohann
@@ -17,13 +19,14 @@ public class MinimalBot {
 	public static void main(String[] args) {
 		// Scanner zum Auslesen der Standardeingabe, welche Initialisierungs- und Rundendaten liefert
 		Scanner input = new Scanner(System.in);
-
+		
+		Spielfeld spielfeld = new Spielfeld();
 
 		// INIT - Auslesen der Initialdaten
 		// 1. Zeile: Maze Infos
-		int sizeX = input.nextInt(); // X-Groesse des Spielfeldes (Breite)
-		int sizeY = input.nextInt(); // Y-Groesse des Spielfeldes (Hoehe)
-		int level = input.nextInt(); // Level des Matches
+		spielfeld.setSizeX(input.nextInt()); // X-Groesse des Spielfeldes (Breite)
+		spielfeld.setSizeY(input.nextInt()); // Y-Groesse des Spielfeldes (Hoehe)
+		spielfeld.setLevel(input.nextInt()); // Level des Matches
 		input.nextLine(); // Beenden der ersten Zeile
 		// 2. Zeile: Player Infos
 		int playerId = input.nextInt(); // id dieses Players / Bots
