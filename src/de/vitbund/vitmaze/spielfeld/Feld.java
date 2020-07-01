@@ -100,10 +100,10 @@ public class Feld {
 		if (this.getNorth()!=null && this.getNorth()!=feld && !this.getNorth().isIstInBearbeitung()) {nachbarn.add(this.getNorth());}
 		return nachbarn;
 	}
-	public boolean isIstInBearbeitung() {
+	public boolean istInBearbeitung() {
 		return istInBearbeitung;
 	}
-	public void setIstInBearbeitung(boolean istInBearbeitung) {
+	public void setInBearbeitung(boolean istInBearbeitung) {
 		this.istInBearbeitung = istInBearbeitung;
 	}
 	

@@ -48,68 +48,85 @@ public class Spielfeld {
 		unbekannteFelder.add(newFeld);
 	}
 	
-	/* Bitte noch ignorieren
-	
-	public List<String> findeWeg(Feld aktuellesFeld, Feld zielFeld) {
-		for (Feld t : felder) {
-			t.setVorgaenger(null);
-			t.setLinks(null);
-			t.setRechts(null);
-			t.setMitte(null);
-		}
-		
-		aktuellesFeld.setVorgaenger(aktuellesFeld);
-		List<Feld> enden = new ArrayList<Feld>();
-		
-		Stack<Feld> nochpruefen = new Stack<Feld>();
-		
-		nochpruefen.add(aktuellesFeld);
-		
-		while (!nochpruefen.empty()) {
-			
-			aktuellesFeld = new Feld();
-			aktuellesFeld = nochpruefen.pop();
-			
-			for (Feld bla : aktuellesFeld.getNachbarnOhne(aktuellesFeld.getVorgaenger())) {
-				
-				if (bla == zielFeld) {
-					enden.add(aktuellesFeld);
-					break;
-				}
-				
-				bla.setVorgaenger(aktuellesFeld);
-				bla.setIstInBearbeitung(true);
-				
 
-				nochpruefen.add(bla);
+	/**
+	 *  Diese Funktion berechnet den Weg eines beliebigen Feldes zum Zielfeld.
+	 *  Das Zielarray gibt den Weg von Feld zu Feld an
+	 *  A1 --> A2 --> B2 --> Ziel
+	 *  Beim Laufen muss hinterher drauf geachtet werden zu schauen wo liegt das Feld A2 von A1 gesehen
+	 *  
+	 * @param aktuellesFeld ist das Feld auf dem die Spielfigur steht
+	 * @param zielFeld ist das FEld wo die Spielfigur hin will
+	 * @return Array mit Feldern in der Reihenfolge vom Spieler zum Ziel
+	 */
+	public List<Feld> route(Feld aktuellesFeld, Feld zielFeld) {
+		// alle Vorgänger und den Bearbeitet Status für jedes Feld auf null setzen
+		for (Feld feld : this.felder) {
+			feld.setVorgaenger(null);
+			feld.setInBearbeitung(false);
+		}
+		
+		// Array mit noch zu bearbeitenden Feldern erstellen
+		List<Feld> nochZuBearbeiten = new ArrayList<Feld>();
+		
+		// HilfsFelder setzen     ## eventuell unnötig oO
+		
+		Feld temp = new Feld();
+		Feld ende = new Feld();
+		
+		// Hilfsfeld auf aktuelles Feld zeigen lassen
+		
+		temp = aktuellesFeld;
+		
+		// temp Vorgänger auf sich selbst setzen, als AbschlussKriterium in Endschleife
+		
+		temp.setVorgaenger(temp);
+		
+		// temp in NochBearbeiten Array einfuegen
+		
+		nochZuBearbeiten.add(temp);
+		
+		// NochBearbeiten Array abarbeiten
+		
+		while (!nochZuBearbeiten.isEmpty()) {
+			
+			// temp wird auf bearbeitet gesetzt
+			
+			temp.setInBearbeitung(true);
+			
+			// Nachfolger von temp kommen in NochZuBearbeiten und temp wird als deren Vorgänger gesetzt
+			
+			for (Feld nachfolger : temp.getNachbarnOhne(temp.getVorgaenger())) {
+				nochZuBearbeiten.add(nachfolger);
+				nachfolger.setVorgaenger(temp);
+			}
+			
+			// temp wird aus zu bearbeiten entfernt
+			
+			nochZuBearbeiten.remove(temp);
+			
+			// wenn temp = dem Zielfeld dann kann hier abgebrochen werden
+			if (temp == zielFeld) {
+				ende = temp;
+				break;
 			}
 			
 		}
-		Feld sieger = new Feld();
-		int tiefe = 100000;
-		for (Feld bla : enden) {
-			if (bla.tiefe()<tiefe) {
-			 sieger = bla;	
-			}
+		
+		// temp auf ende setzen		## vermutrlich unnötig
+		
+		temp = ende;
+		
+		// Ergebnis Liste erstellen
+		
+		List<Feld> route = new ArrayList<Feld>();
+		
+		while (temp.getVorgaenger()!=null && temp.getVorgaenger()!=temp) {
+			route.add(0,temp);
+			temp = temp.getVorgaenger();
 		}
 		
-		return gibWeg(sieger);
-	}
-	
-	public List<String> gibWeg(Feld feld){
-		List<String> weg = new ArrayList<String>();
+		return route;
 		
-		while (feld.getVorgaenger()!=feld) {
-			if (feld.getVorgaenger().getEast()==feld) {weg.add("go east");}
-			if (feld.getVorgaenger().getWest()==feld) {weg.add("go west");}
-			if (feld.getVorgaenger().getNorth()==feld) {weg.add("go north");}
-			if (feld.getVorgaenger().getSouth()==feld) {weg.add("go south");}
-			feld = feld.getVorgaenger();
-		}
-		return weg;
 	}
-	
-	 */
-	
-	
 }
