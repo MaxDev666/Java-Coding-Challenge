@@ -13,4 +13,8 @@ public class Eingabe {
 			return scanner.nextInt();
 		}
 		
+		public static  boolean isnaechsterEintragvorhanden() {
+			return scanner.hasNext();
+		}
+		
 }
