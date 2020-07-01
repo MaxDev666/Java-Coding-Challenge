@@ -1,10 +1,7 @@
 package de.vitbund.vitmaze.spielfeld;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
-import java.util.Stack;
 
 public class Spielfeld {
 
