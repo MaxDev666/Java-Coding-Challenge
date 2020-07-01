@@ -11,30 +11,8 @@ public class Feld {
 	private boolean ziel = false;
 	
 	private Feld vorgaenger; // für die wegsuche
-	private Feld links;
-	private Feld rechts;
-	private Feld mitte;
 	private boolean istInBearbeitung;
 	
-	
-	public Feld getLinks() {
-		return links;
-	}
-	public void setLinks(Feld links) {
-		this.links = links;
-	}
-	public Feld getRechts() {
-		return rechts;
-	}
-	public void setRechts(Feld rechts) {
-		this.rechts = rechts;
-	}
-	public Feld getMitte() {
-		return mitte;
-	}
-	public void setMitte(Feld mitte) {
-		this.mitte = mitte;
-	}
 	
 	public Feld() {
 		
@@ -116,5 +94,7 @@ public class Feld {
 		}
 		return i;
 	}
+	
+	// TODO Funktion erstellen die zurück gibt wo ein Nachbarfeld eines Feldes liegt (Norden, Osten, Süden, Westen)
 	
 }

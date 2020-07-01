@@ -21,6 +21,10 @@ public class Spiel {
 	char richtungFeldErstellen;
 	
 	
+	// TODO aktuelle Route erstellen
+	// Liste<Feld> aktuelleRoute
+	
+	
 	public void init() {
 		// Spielfeld anlegen und Startdaten setzen
 		spielfeld = new Spielfeld();
@@ -57,6 +61,7 @@ public class Spiel {
 			this.erkunden();
 		}
 	}
+	
 	
 	public void erkunden() {
 
