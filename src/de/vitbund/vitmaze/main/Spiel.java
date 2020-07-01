@@ -66,6 +66,8 @@ public class Spiel {
 		} else {
 				
 			// Umgebung anlegen wenn vorhanden
+			
+			//TODO muss hier nich nohh abgefragt werden ob das Feld was erstellt werden soll schon existiert
 			if (this.northCellStatus.equals("FLOOR")) {
 				this.richtungFeldErstellen='n';
 			}
