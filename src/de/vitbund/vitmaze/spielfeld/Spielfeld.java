@@ -72,24 +72,22 @@ public class Spielfeld {
 		// HilfsFelder setzen     ## eventuell unnötig oO
 		
 		Feld temp = new Feld();
-		Feld ende = new Feld();
-		
-		// Hilfsfeld auf aktuelles Feld zeigen lassen
-		
-		temp = aktuellesFeld;
 		
 		// temp Vorgänger auf sich selbst setzen, als AbschlussKriterium in Endschleife
 		
-		temp.setVorgaenger(temp);
+		aktuellesFeld.setVorgaenger(aktuellesFeld);
 		
-		// temp in NochBearbeiten Array einfuegen
+		// aktuellesFeld in NochBearbeiten Array einfuegen
 		
-		nochZuBearbeiten.add(temp);
+		nochZuBearbeiten.add(aktuellesFeld);
 		
 		// NochBearbeiten Array abarbeiten
 		
 		while (!nochZuBearbeiten.isEmpty()) {
 			
+			// temp auf das erste Element der Liste setzen
+			temp = nochZuBearbeiten.get(0);
+						
 			// temp wird auf bearbeitet gesetzt
 			
 			temp.setInBearbeitung(true);
@@ -107,15 +105,10 @@ public class Spielfeld {
 			
 			// wenn temp = dem Zielfeld dann kann hier abgebrochen werden
 			if (temp == zielFeld) {
-				ende = temp;
 				break;
 			}
 			
 		}
-		
-		// temp auf ende setzen		## vermutrlich unnötig
-		
-		temp = ende;
 		
 		// Ergebnis Liste erstellen
 		
