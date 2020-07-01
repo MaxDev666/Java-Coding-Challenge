@@ -56,7 +56,7 @@ public class Spielfeld {
 	 *  Beim Laufen muss hinterher drauf geachtet werden zu schauen wo liegt das Feld A2 von A1 gesehen
 	 *  
 	 * @param aktuellesFeld ist das Feld auf dem die Spielfigur steht
-	 * @param zielFeld ist das FEld wo die Spielfigur hin will
+	 * @param zielFeld ist das Feld wo die Spielfigur hin will
 	 * @return Array mit Feldern in der Reihenfolge vom Spieler zum Ziel
 	 */
 	public List<Feld> route(Feld aktuellesFeld, Feld zielFeld) {

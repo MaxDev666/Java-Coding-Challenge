@@ -2,13 +2,15 @@ package de.vitbund.vitmaze.players;
 
 import de.vitbund.vitmaze.spielfeld.Feld;
 
-public class Bot_Level12 {
+public class Standardbot {
 
 	private int playerId;
 	private int startX;
 	private int startY;
+	Feld aktuellesFeld;
 	
-	public Bot_Level12() {
+	public Standardbot(Feld feld) {
+		this.aktuellesFeld=feld;
 	}
 	
 	public int getPlayerId() {
@@ -34,17 +36,24 @@ public class Bot_Level12 {
 	public void setStartY(int startY) {
 		this.startY = startY;
 	}
-
 	
-	
-	public Bot_Level12(int playerID, int startX, int startY) {
-		this.playerId=playerId; 
-		this.startX=startX;
-		this.startY=startY;
+	public void goWest() {
+		this.aktuellesFeld = this.aktuellesFeld.getWest();
+		System.out.println("go west");	
 	}
 	
-	public void goEast(Feld feld) {
-		this.feld = this.feld.getEast();
+	public void goNorth() {
+		this.aktuellesFeld = this.aktuellesFeld.getNorth();
+		System.out.println("go north");	
+	}
+	
+	public void goEast() {
+		this.aktuellesFeld = this.aktuellesFeld.getEast();
 		System.out.println("go east");
+	}
+	
+	public void goSouth() {
+		this.aktuellesFeld = this.aktuellesFeld.getSouth();
+		System.out.println("go south");	
 	}
 }

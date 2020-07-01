@@ -13,8 +13,12 @@ public class Eingabe {
 			return scanner.nextInt();
 		}
 		
-		public static  boolean isnaechsterEintragvorhanden() {
+		public static boolean isnaechsterEintragvorhanden() {
 			return scanner.hasNext();
+		}
+		
+		public static void closeScanner() {
+			scanner.close();
 		}
 		
 }

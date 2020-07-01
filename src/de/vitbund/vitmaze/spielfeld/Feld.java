@@ -94,10 +94,10 @@ public class Feld {
 	
 	public List<Feld> getNachbarnOhne(Feld feld) {
 		List<Feld> nachbarn = new LinkedList<Feld>();
-		if (this.getEast()!=null && this.getEast()!=feld && !this.getEast().isIstInBearbeitung()) {nachbarn.add(this.getEast());}
-		if (this.getSouth()!=null && this.getSouth()!= feld && !this.getSouth().isIstInBearbeitung()) {nachbarn.add(this.getSouth());}
-		if (this.getWest()!=null && this.getWest()!= feld && !this.getWest().isIstInBearbeitung()) {nachbarn.add(this.getWest());}
-		if (this.getNorth()!=null && this.getNorth()!=feld && !this.getNorth().isIstInBearbeitung()) {nachbarn.add(this.getNorth());}
+		if (this.getEast()!=null && this.getEast()!=feld && !this.getEast().istInBearbeitung()) {nachbarn.add(this.getEast());}
+		if (this.getSouth()!=null && this.getSouth()!= feld && !this.getSouth().istInBearbeitung()) {nachbarn.add(this.getSouth());}
+		if (this.getWest()!=null && this.getWest()!= feld && !this.getWest().istInBearbeitung()) {nachbarn.add(this.getWest());}
+		if (this.getNorth()!=null && this.getNorth()!=feld && !this.getNorth().istInBearbeitung()) {nachbarn.add(this.getNorth());}
 		return nachbarn;
 	}
 	public boolean istInBearbeitung() {
