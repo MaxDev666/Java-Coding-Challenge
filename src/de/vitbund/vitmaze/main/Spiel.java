@@ -21,7 +21,7 @@ public class Spiel {
 	String westCellStatus;
 	boolean hatZiel;
 	char richtungFeldErstellen;
-	
+	List<Feld> ziele;
 	
 	// TODO aktuelle Route erstellen
 	// Liste<Feld> aktuelleRoute
@@ -59,9 +59,30 @@ public class Spiel {
 		this.eastCellStatus = Eingabe.leseZeile();
 		this.southCellStatus = Eingabe.leseZeile();
 		this.westCellStatus = Eingabe.leseZeile();
-		if (!hatZiel) {
-			this.erkunden();
+		
+		
+		/*  meine Überlegung für die Game Logik
+		 * 
+		 * hier wird nur die Route festgelegt, erst nach der IF Abfrage wird gelaufen
+		if (!hatZiel){
+			// erkunde		
+		} else {
+			if (hatRoute) {
+				// laufe Route ab
+			} else {
+				// suche Route
+				// hier in interessanteFelder suchen welchen Antrag man als nächstes braucht
+				// dann auf aktuelles Ziel setzen
+				// aktuelleRoute auf nächstes Ziel setzen und hatZiel auf ja setzen
+			}
 		}
+		
+		MOVE
+		
+		 */
+		
+		
+		
 	}
 	
 	
@@ -91,6 +112,9 @@ public class Spiel {
 			// hier intelligente Möglichkeiten ausdenken zur Wegfindung
 			
 			//Idee von Maxi zur Umsetzung der Aktion, die man aus dem Feld bekommt
+			
+			//## Anmerkung ich würde hier aktuelleRoute verwenden und die nur einmal festlegen, dann passt das wie in der Methode oben genau rein, und der Bit läuft immer bis zum nächsten unbekannten Feld, AUSSER der Bot bemerkt auf dem Weg z.B. ein verschobenes Formular
+			// dann sparen wir un hier die Wegfindung und in erkunden würden wir nur das nächste Feld aus unbekannteFelder in die aktuelleRoute packen und hatZiel auf true setzen
 			
 			/*
 			List<Feld> route;

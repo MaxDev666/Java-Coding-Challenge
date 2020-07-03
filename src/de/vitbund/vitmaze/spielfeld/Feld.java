@@ -8,7 +8,10 @@ public class Feld {
 	private Feld east = null;
 	private Feld south = null;
 	private Feld west = null;
-	private boolean ziel = false;
+	
+	// Gibt an ob in dem Feld ein Ziel liegt
+	// 0 = kein Ziel, 1 - 3 -> Sachbearbeiter, 4 -5 -> Antrag für den jeweiligen Sachbearbeiter
+	private byte ziel = 0;
 	
 	private Feld vorgaenger; // für die wegsuche
 	private boolean istInBearbeitung;
@@ -48,10 +51,10 @@ public class Feld {
 	public void setWest(Feld west) {
 		this.west = west;
 	}
-	public boolean isZiel() {
+	public byte isZiel() {
 		return ziel;
 	}
-	public void setZiel(boolean ziel) {
+	public void setZiel(byte ziel) {
 		this.ziel = ziel;
 	}
 	public Feld getVorgaenger() {
