@@ -12,7 +12,11 @@ public class Spiel {
 	Spielfeld spielfeld;
 	Feld aktuellesFeld;
 	Standardbot bot;
+	
+	// dürfte obsolet werden
 	byte blickrichtung; // 1 Norden, 2 Osten, 3 Süden, 4 Westen
+	
+	
 	String lastActionsResult;
 	String currentCellStatus;
 	String northCellStatus;
@@ -141,6 +145,10 @@ public class Spiel {
 			}
 			*/
 			
+			
+			// Felder die in der nächsten If Abfrage gesichtet wurden müssen aus der unbekannteFelder Liste gelöscht werden
+			// Entweder hier oder in Standartbot
+			// der nächste Block müsste auch verschwinden, wenn die Wegfindungsroutine läuft
 			boolean hatSichbewegt=false;
 			while (hatSichbewegt==false) {
 				if (this.blickrichtung == 1 &&   !this.northCellStatus.equals("WALL")) {
