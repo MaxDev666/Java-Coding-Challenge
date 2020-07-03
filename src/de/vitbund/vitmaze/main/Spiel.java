@@ -65,7 +65,7 @@ public class Spiel {
 		 * 
 		 * hier wird nur die Route festgelegt, erst nach der IF Abfrage wird gelaufen
 		if (!hatZiel){
-			// erkunde		
+			// erkunde (was bedeutet das nächste unbekannt Feld wird als aktuelleRoute festgelegt)
 		} else {
 			if (hatRoute) {
 				// laufe Route ab
@@ -77,6 +77,8 @@ public class Spiel {
 			}
 		}
 		
+		
+		// hier noch abfragen ob wir am Ziel sind und irgendwas aufnehmen müssen oder ob wir was auf dem Weg gefunden haben
 		MOVE
 		
 		 */
