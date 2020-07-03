@@ -116,7 +116,7 @@ public class Spiel {
 			//Idee von Maxi zur Umsetzung der Aktion, die man aus dem Feld bekommt
 			
 			//## Anmerkung ich würde hier aktuelleRoute verwenden und die nur einmal festlegen, dann passt das wie in der Methode oben genau rein, und der Bit läuft immer bis zum nächsten unbekannten Feld, AUSSER der Bot bemerkt auf dem Weg z.B. ein verschobenes Formular
-			// dann sparen wir un hier die Wegfindung und in erkunden würden wir nur das nächste Feld aus unbekannteFelder in die aktuelleRoute packen und hatZiel auf true setzen
+			// dann sparen wir uns hier die Wegfindung und in erkunden würden wir nur das nächste Feld aus unbekannteFelder in die aktuelleRoute packen und hatZiel auf true setzen
 			
 			/*
 			List<Feld> route;
