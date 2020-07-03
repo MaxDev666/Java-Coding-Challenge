@@ -169,6 +169,7 @@ public class Spiel {
 		}
 	}
 	
+	// Wenn Wegfindung läuft uninteressant
 	public void aendereBlickrichtung() {
 		if (this.blickrichtung == 4) {
 			this.blickrichtung = 2;
