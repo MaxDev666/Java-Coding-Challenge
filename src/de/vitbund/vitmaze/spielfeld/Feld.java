@@ -95,6 +95,18 @@ public class Feld {
 		return i;
 	}
 	
-	// TODO Funktion erstellen die zurück gibt wo ein Nachbarfeld eines Feldes liegt (Norden, Osten, Süden, Westen)
-	
+	// Funktion, die die Richtung des nachbarFelds zum aktuellen Feld zurückgibt
+	public String getRichtung(Feld nachbarFeld) {
+		if (this.getNorth()==nachbarFeld) {
+			return "north";
+		}else if (this.getEast()==nachbarFeld) {
+			return "east";
+		}else if (this.getSouth()==nachbarFeld) {
+			return "south";
+		}else if (this.getWest()==nachbarFeld) {
+			return "west";
+		}else {
+			return "Feld kein Nachbar";
+		}
+	}
 }

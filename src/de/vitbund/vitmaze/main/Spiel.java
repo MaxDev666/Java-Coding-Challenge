@@ -1,5 +1,7 @@
 package de.vitbund.vitmaze.main;
 
+import java.util.List;
+
 import de.vitbund.vitmaze.eingabe.Eingabe;
 import de.vitbund.vitmaze.players.Standardbot;
 import de.vitbund.vitmaze.spielfeld.Feld;
@@ -87,6 +89,32 @@ public class Spiel {
 			}
 			
 			// hier intelligente Möglichkeiten ausdenken zur Wegfindung
+			
+			//Idee von Maxi zur Umsetzung der Aktion, die man aus dem Feld bekommt
+			
+			/*
+			List<Feld> route;
+			route = spielfeld.route(aktuellesFeld, zielFeld);
+			for (int i = 0; i < route.size(); i++) {
+				switch (route.get(i).getRichtung(route.get(i+1))) {
+				case "north":
+					bot.goNorth();
+					break;
+				case "east":
+					bot.goEast();
+					break;
+				case "south":
+					bot.goSouth();
+					break;
+				case "west":
+					bot.goWest();
+					break;
+				default:
+					System.err.println("Das Feld ist kein Nachbar");
+				}
+			}
+			*/
+			
 			boolean hatSichbewegt=false;
 			while (hatSichbewegt==false) {
 				if (this.blickrichtung == 1 &&   !this.northCellStatus.equals("WALL")) {
