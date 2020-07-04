@@ -27,8 +27,6 @@ public class Spiel {
 	char richtungFeldErstellen;
 	List<Feld> ziele;
 	
-	// TODO aktuelle Route erstellen
-	// Liste<Feld> aktuelleRoute
 	
 	
 	public void init() {
@@ -64,16 +62,17 @@ public class Spiel {
 		this.southCellStatus = Eingabe.leseZeile();
 		this.westCellStatus = Eingabe.leseZeile();
 		
-		
-		/*  meine Überlegung für die Game Logik
-		 * 
-		 * hier wird nur die Route festgelegt, erst nach der IF Abfrage wird gelaufen
+		System.err.println("A01");
 		if (!hatZiel){
-			// erkunde (was bedeutet das nächste unbekannt Feld wird als aktuelleRoute festgelegt)
+			
+			this.erkunden();
 		} else {
-			if (hatRoute) {
-				// laufe Route ab
+			System.err.println("B01");
+			if (bot.hatRoute()) {
+				System.err.println("C01");
+				bot.move();
 			} else {
+				System.err.println("C02");
 				// suche Route
 				// hier in interessanteFelder suchen welchen Antrag man als nächstes braucht
 				// dann auf aktuelles Ziel setzen
@@ -83,9 +82,10 @@ public class Spiel {
 		
 		
 		// hier noch abfragen ob wir am Ziel sind und irgendwas aufnehmen müssen oder ob wir was auf dem Weg gefunden haben
-		MOVE
 		
-		 */
+		
+		// MOVE
+
 		
 		
 		
@@ -99,20 +99,43 @@ public class Spiel {
 			System.out.println("finish");
 		} else {
 				
-			// Umgebung anlegen wenn vorhanden
-			
-			//TODO muss hier nich nohh abgefragt werden ob das Feld was erstellt werden soll schon existiert
-			if (this.northCellStatus.equals("FLOOR")) {
+			// Umgebung anlegen wenn noch nicht vorhanden
+
+			if (this.northCellStatus.equals("FLOOR") && this.aktuellesFeld.getNorth()==null) {
 				this.richtungFeldErstellen='n';
+				Feld neuesFeld = new Feld();
+				aktuellesFeld.setNorth(neuesFeld);
+				spielfeld.addUnbekanntesFeld(neuesFeld);
 			}
-			if (this.eastCellStatus.equals("FLOOR")) {
+			if (this.eastCellStatus.equals("FLOOR")  && this.aktuellesFeld.getEast()==null) {
 				this.richtungFeldErstellen='e';
+				Feld neuesFeld = new Feld();
+				aktuellesFeld.setEast(neuesFeld);
+				spielfeld.addUnbekanntesFeld(neuesFeld);
 			}
-			if (this.southCellStatus.equals("FLOOR")) {
+			if (this.southCellStatus.equals("FLOOR") && this.aktuellesFeld.getSouth()==null) {
 				this.richtungFeldErstellen='s';
+				Feld neuesFeld = new Feld();
+				aktuellesFeld.setSouth(neuesFeld);
+				spielfeld.addUnbekanntesFeld(neuesFeld);
 			}
-			if (this.westCellStatus.equals("FLOOR")) {
+			if (this.westCellStatus.equals("FLOOR") && this.aktuellesFeld.getWest()==null) {
 				this.richtungFeldErstellen='w';
+				Feld neuesFeld = new Feld();
+				aktuellesFeld.setWest(neuesFeld);
+				spielfeld.addUnbekanntesFeld(neuesFeld);
+			}
+			
+			System.err.println("Bot hat Route: " + bot.hatRoute());
+			if (bot.hatRoute()==false) {
+				System.err.println("hier passiert nichts!!!!!");
+				bot.setAktuelleRoute(spielfeld.route(aktuellesFeld, spielfeld.getUnbekannteFelder().get(0)));
+			}
+			bot.move();
+			System.err.println(aktuellesFeld + " zu " + spielfeld.getUnbekannteFelder().get(0));
+			System.err.println(aktuellesFeld.getRichtung(spielfeld.getUnbekannteFelder().get(0)));
+			if (aktuellesFeld == spielfeld.getUnbekannteFelder().get(0)) {
+				bot.getAktuelleRoute().remove(spielfeld.getUnbekannteFelder().get(0));
 			}
 			
 			// hier intelligente Möglichkeiten ausdenken zur Wegfindung
@@ -149,7 +172,7 @@ public class Spiel {
 			// Felder die in der nächsten If Abfrage gesichtet wurden müssen aus der unbekannteFelder Liste gelöscht werden
 			// Entweder hier oder in Standartbot
 			// der nächste Block müsste auch verschwinden, wenn die Wegfindungsroutine läuft
-			boolean hatSichbewegt=false;
+			/*boolean hatSichbewegt=false;
 			while (hatSichbewegt==false) {
 				if (this.blickrichtung == 1 &&   !this.northCellStatus.equals("WALL")) {
 					bot.goNorth();
@@ -165,7 +188,8 @@ public class Spiel {
 					hatSichbewegt=true;
 				} else {
 				aendereBlickrichtung();}
-			}
+			*/
+			
 		}
 	}
 	

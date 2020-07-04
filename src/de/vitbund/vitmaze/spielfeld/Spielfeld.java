@@ -16,6 +16,12 @@ public class Spielfeld {
 	// noch zu erkundende Felder merken
 	private List<Feld> unbekannteFelder = new ArrayList<Feld>();
 	
+	public List<Feld> getUnbekannteFelder() {
+		return unbekannteFelder;
+	}
+	public void setUnbekannteFelder(List<Feld> unbekannteFelder) {
+		this.unbekannteFelder = unbekannteFelder;
+	}
 	public int getSizeX() {
 		return sizeX;
 	}
