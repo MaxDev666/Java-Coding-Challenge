@@ -12,9 +12,6 @@ public class Spiel {
 	Spielfeld spielfeld;
 	Standardbot bot;
 	
-	// dürfte obsolet werden
-	byte blickrichtung; // 1 Norden, 2 Osten, 3 Süden, 4 Westen
-	
 	
 	String lastActionsResult;
 	String currentCellStatus;
@@ -50,7 +47,6 @@ public class Spiel {
 		bot.setStartY(Eingabe.leseZahl()); // Y-Koordinate der Startposition dieses Players
 		Eingabe.leseZeile();
 		
-		blickrichtung = 1;
 		hatZiel=false;
 
 	}
@@ -119,9 +115,11 @@ public class Spiel {
 				}
 			}
 			
+			bot.getUpdate();
+			
 			System.err.println("Bot hat Route: " + bot.hatRoute());
 			if (bot.hatRoute()==false) {
-				System.err.println(spielfeld.getUnbekannteFelder().get(0));
+				System.err.println(" MUSS NEUE ROUTE WÄHLEN ");
 				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
 				System.err.println("Bot hat Route: " + bot.hatRoute());
 			}
@@ -163,46 +161,10 @@ public class Spiel {
 			*/
 			
 			
-			// Felder die in der nächsten If Abfrage gesichtet wurden müssen aus der unbekannteFelder Liste gelöscht werden
-			// Entweder hier oder in Standartbot
-			// der nächste Block müsste auch verschwinden, wenn die Wegfindungsroutine läuft
-			/*boolean hatSichbewegt=false;
-			while (hatSichbewegt==false) {
-				if (this.blickrichtung == 1 &&   !this.northCellStatus.equals("WALL")) {
-					bot.goNorth();
-					hatSichbewegt=true;
-				} else 	if (this.blickrichtung == 2 &&  !this.eastCellStatus.equals("WALL")) {
-					bot.goEast();
-					hatSichbewegt=true;
-				} else 	if (this.blickrichtung == 3 &&  !this.southCellStatus.equals("WALL")) {
-					bot.goSouth();
-					hatSichbewegt=true;
-				} else 	if (this.blickrichtung == 4 &&  !this.westCellStatus.equals("WALL")) {
-					bot.goWest();
-					hatSichbewegt=true;
-				} else {
-				aendereBlickrichtung();}
-			*/
 			
 		}
 	}
-	
-	// Wenn Wegfindung läuft uninteressant
-	public void aendereBlickrichtung() {
-		if (this.blickrichtung == 4) {
-			this.blickrichtung = 2;
-		}
-		else if (this.blickrichtung == 3) {
-			this.blickrichtung = 1;
-		}
-		else if (this.blickrichtung == 2) {
-			this.blickrichtung = 3;
-		}		
-		else if (this.blickrichtung == 1) {
-			this.blickrichtung = 4;
-		}
-		
-	}
+
 	
 	public void erstellFeld() {
 		Feld neuesFeld = new Feld();
@@ -226,7 +188,10 @@ public class Spiel {
 		}
 		
 		this.spielfeld.addFeld(neuesFeld);
-		spielfeld.addUnbekanntesFeld(neuesFeld);
+		if (!spielfeld.getBekannteFelder().contains(neuesFeld)) {
+			spielfeld.addUnbekanntesFeld(neuesFeld);		
+		}
+
 	}
 	
 }

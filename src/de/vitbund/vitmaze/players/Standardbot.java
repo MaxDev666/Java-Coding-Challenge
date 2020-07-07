@@ -105,10 +105,12 @@ public class Standardbot {
 		}
 		if (spielfeld.getUnbekannteFelder().contains(this.getAktuellesFeld())) {
 			spielfeld.getUnbekannteFelder().remove(this.getAktuellesFeld());
+			spielfeld.getBekannteFelder().add(this.getAktuellesFeld());
 		}
 		if (this.getAktuellesFeld() == zuFeld) {
 			this.getAktuelleRoute().remove(this.getAktuellesFeld());
 		}
+		
 		
 	}
 	

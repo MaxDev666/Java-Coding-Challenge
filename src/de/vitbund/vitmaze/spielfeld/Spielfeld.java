@@ -15,7 +15,16 @@ public class Spielfeld {
 	
 	// noch zu erkundende Felder merken
 	private List<Feld> unbekannteFelder = new ArrayList<Feld>();
+
+	// bekannte Felder merken
+	private List<Feld> bekannteFelder = new ArrayList<Feld>();
 	
+	public List<Feld> getBekannteFelder() {
+		return bekannteFelder;
+	}
+	public void setBekannteFelder(List<Feld> bekannteFelder) {
+		this.bekannteFelder = bekannteFelder;
+	}
 	public List<Feld> getUnbekannteFelder() {
 		return unbekannteFelder;
 	}
@@ -51,7 +60,7 @@ public class Spielfeld {
 	}
 	
 	public void addUnbekanntesFeld(Feld newFeld) {
-		unbekannteFelder.add(newFeld);
+		unbekannteFelder.add(0,newFeld);
 	}
 	
 
