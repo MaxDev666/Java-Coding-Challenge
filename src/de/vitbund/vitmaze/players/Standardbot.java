@@ -5,13 +5,24 @@ import java.util.Scanner;
 
 import de.vitbund.vitmaze.main.Spiel;
 import de.vitbund.vitmaze.spielfeld.Feld;
+import de.vitbund.vitmaze.spielfeld.Spielfeld;
 
 public class Standardbot {
 
 	private int playerId;
 	private int startX;
+	Spielfeld spielfeld;
 	private int startY;
-	Feld aktuellesFeld;
+	private Feld aktuellesFeld;
+	public void setAktuellesFeld(Feld aktuellesFeld) {
+		this.aktuellesFeld = aktuellesFeld;
+	}
+
+	public Feld getAktuellesFeld() {
+		return aktuellesFeld;
+	}
+
+
 	private List<Feld> aktuelleRoute;
 	
 		
@@ -24,8 +35,8 @@ public class Standardbot {
 	}
 	
 	public boolean hatRoute() {
-		if (aktuelleRoute != null) {
-			if (aktuelleRoute.isEmpty()!=true) {
+		if (this.getAktuelleRoute() != null) {
+			if (this.getAktuelleRoute().isEmpty()==false) {
 				return true;
 			}
 		}
@@ -40,8 +51,8 @@ public class Standardbot {
 		this.aktuelleRoute = aktuelleRoute;
 	}
 
-	public Standardbot(Feld feld) {
-		this.aktuellesFeld=feld;
+	public Standardbot(Spielfeld spielfeld) {
+		this.spielfeld = spielfeld;
 	}
 	
 	public int getPlayerId() {
@@ -69,26 +80,55 @@ public class Standardbot {
 	}
 	
 	public void move() {
-		for (Feld zuFeld : aktuelleRoute) {
-		switch (aktuellesFeld.getRichtung(zuFeld)){
+		System.err.println("bin in Move Routine");
+		Feld zuFeld = new Feld( );
+		zuFeld = this.getAktuelleRoute().get(0);
+		System.err.println("ZuFeld: " + zuFeld);
+		System.err.println("VonFeld: " + this.getAktuellesFeld());
+		switch (this.getAktuellesFeld().getRichtung(zuFeld)){
 			case "north":
+				this.getAktuelleRoute().remove(this.getAktuellesFeld());
 				this.goNorth();
+				break;
 			case "south":
+				this.getAktuelleRoute().remove(this.getAktuellesFeld());
 				this.goSouth();
+				break;
 			case "east":
+				this.getAktuelleRoute().remove(this.getAktuellesFeld());
 				this.goEast();
+				break;
 			case "west":
-				System.err.println("ich will ja gehen");
+				this.getAktuelleRoute().remove(this.getAktuellesFeld());
 				this.goWest();
+				break;
 		}
-		break;
+		if (spielfeld.getUnbekannteFelder().contains(this.getAktuellesFeld())) {
+			spielfeld.getUnbekannteFelder().remove(this.getAktuellesFeld());
 		}
-		aktuelleRoute.remove(this.aktuellesFeld);
+		if (this.getAktuellesFeld() == zuFeld) {
+			this.getAktuelleRoute().remove(this.getAktuellesFeld());
+		}
+		
 	}
 	
 	public void goWest() {
-		this.aktuellesFeld = this.aktuellesFeld.getWest();
+		this.setAktuellesFeld(this.getAktuellesFeld().getWest());
 		System.out.println("go west");	
+	}
+	
+	public void getUpdate() {
+		System.err.println("###################################################################");
+		System.err.println("Ich stehe am Anfang des Zuges auf dem Feld: " + this.aktuellesFeld);
+		System.err.println("Im Norden ist: " + this.aktuellesFeld.getNorth());
+		System.err.println("Im Osten ist: " + this.aktuellesFeld.getEast());
+		System.err.println("Im Süden ist : " + this.aktuellesFeld.getSouth());
+		System.err.println("Im Westen ist: " + this.aktuellesFeld.getWest());
+		if (this.hatRoute()) {
+		System.err.println("Ich will zum Feld: " + aktuelleRoute.get(0));
+		} else { System.err.println("Ich habe noch keine Route");}
+		System.err.println("###################################################################");
+		
 	}
 	
 	public void goNorth() {

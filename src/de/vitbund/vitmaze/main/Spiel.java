@@ -10,7 +10,6 @@ import de.vitbund.vitmaze.spielfeld.Spielfeld;
 public class Spiel {
 
 	Spielfeld spielfeld;
-	Feld aktuellesFeld;
 	Standardbot bot;
 	
 	// dürfte obsolet werden
@@ -37,12 +36,15 @@ public class Spiel {
 		spielfeld.setLevel(Eingabe.leseZahl()); // Level des Matches
 		Eingabe.leseZeile();
 
+		// Bote erstellen
+		bot = new Standardbot(spielfeld);
+		
 		// Startfeld anlegen und zum Spielfeld hinzufügen
-		aktuellesFeld = new Feld();
-		spielfeld.addFeld(aktuellesFeld);
+		bot.setAktuellesFeld(new Feld());
+		spielfeld.addFeld(bot.getAktuellesFeld());
 		
 		// Bot anlegen und Startdaten setzen
-		bot = new Standardbot(aktuellesFeld);
+		
 		bot.setPlayerId(Eingabe.leseZahl());// id dieses Players / Bots
 		bot.setStartX(Eingabe.leseZahl());// X-Koordinate der Startposition dieses Player
 		bot.setStartY(Eingabe.leseZahl()); // Y-Koordinate der Startposition dieses Players
@@ -50,6 +52,7 @@ public class Spiel {
 		
 		blickrichtung = 1;
 		hatZiel=false;
+
 	}
 	
 	public void getStati() {
@@ -61,31 +64,17 @@ public class Spiel {
 		this.eastCellStatus = Eingabe.leseZeile();
 		this.southCellStatus = Eingabe.leseZeile();
 		this.westCellStatus = Eingabe.leseZeile();
+		bot.getUpdate();
 		
-		System.err.println("A01");
-		if (!hatZiel){
-			
-			this.erkunden();
-		} else {
-			System.err.println("B01");
-			if (bot.hatRoute()) {
-				System.err.println("C01");
-				bot.move();
-			} else {
-				System.err.println("C02");
-				// suche Route
-				// hier in interessanteFelder suchen welchen Antrag man als nächstes braucht
-				// dann auf aktuelles Ziel setzen
-				// aktuelleRoute auf nächstes Ziel setzen und hatZiel auf ja setzen
-			}
-		}
-		
-		
+		this.erkunden();
+
+		System.err.println("Jetze soll ich mich bewegen von: " + bot.getAktuellesFeld() + " nach " + bot.getAktuelleRoute().get(0));
+		bot.move();
+
 		// hier noch abfragen ob wir am Ziel sind und irgendwas aufnehmen müssen oder ob wir was auf dem Weg gefunden haben
 		
-		
-		// MOVE
 
+		bot.getUpdate();
 		
 		
 		
@@ -100,43 +89,48 @@ public class Spiel {
 		} else {
 				
 			// Umgebung anlegen wenn noch nicht vorhanden
-
-			if (this.northCellStatus.equals("FLOOR") && this.aktuellesFeld.getNorth()==null) {
-				this.richtungFeldErstellen='n';
-				Feld neuesFeld = new Feld();
-				aktuellesFeld.setNorth(neuesFeld);
-				spielfeld.addUnbekanntesFeld(neuesFeld);
+			System.err.println("Ich schaue mir meine Umgebung an");
+			if ( bot.getAktuellesFeld().getNorth()==null) {
+				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+					this.richtungFeldErstellen='n';
+					this.erstellFeld();
+					System.err.println("Neues Feld im Norden enddeckt" + bot.getAktuellesFeld().getNorth());
+				}
 			}
-			if (this.eastCellStatus.equals("FLOOR")  && this.aktuellesFeld.getEast()==null) {
-				this.richtungFeldErstellen='e';
-				Feld neuesFeld = new Feld();
-				aktuellesFeld.setEast(neuesFeld);
-				spielfeld.addUnbekanntesFeld(neuesFeld);
+			if (bot.getAktuellesFeld().getEast()==null) {
+				if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+					this.richtungFeldErstellen='e';
+					this.erstellFeld();
+					System.err.println("Neues Feld im Osten enddeckt " + bot.getAktuellesFeld().getEast());
+				}
 			}
-			if (this.southCellStatus.equals("FLOOR") && this.aktuellesFeld.getSouth()==null) {
-				this.richtungFeldErstellen='s';
-				Feld neuesFeld = new Feld();
-				aktuellesFeld.setSouth(neuesFeld);
-				spielfeld.addUnbekanntesFeld(neuesFeld);
+			if (bot.getAktuellesFeld().getSouth()==null) {
+				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+					this.richtungFeldErstellen='s';
+					this.erstellFeld();
+					System.err.println("Neues Feld im Süden enddeckt"  + bot.getAktuellesFeld().getSouth());
+				}
 			}
-			if (this.westCellStatus.equals("FLOOR") && this.aktuellesFeld.getWest()==null) {
-				this.richtungFeldErstellen='w';
-				Feld neuesFeld = new Feld();
-				aktuellesFeld.setWest(neuesFeld);
-				spielfeld.addUnbekanntesFeld(neuesFeld);
+			if (bot.getAktuellesFeld().getWest()==null) {
+				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+					this.richtungFeldErstellen='w';
+					this.erstellFeld();
+					System.err.println("Neues Feld im Westen enddeckt" + bot.getAktuellesFeld().getWest());
+				}
 			}
 			
 			System.err.println("Bot hat Route: " + bot.hatRoute());
 			if (bot.hatRoute()==false) {
-				System.err.println("hier passiert nichts!!!!!");
-				bot.setAktuelleRoute(spielfeld.route(aktuellesFeld, spielfeld.getUnbekannteFelder().get(0)));
+				System.err.println(spielfeld.getUnbekannteFelder().get(0));
+				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
+				System.err.println("Bot hat Route: " + bot.hatRoute());
 			}
-			bot.move();
-			System.err.println(aktuellesFeld + " zu " + spielfeld.getUnbekannteFelder().get(0));
-			System.err.println(aktuellesFeld.getRichtung(spielfeld.getUnbekannteFelder().get(0)));
-			if (aktuellesFeld == spielfeld.getUnbekannteFelder().get(0)) {
-				bot.getAktuelleRoute().remove(spielfeld.getUnbekannteFelder().get(0));
+			for (Feld temp : bot.getAktuelleRoute()) {
+				System.err.printf(temp + " -> ");
 			}
+			System.err.println();
+
+
 			
 			// hier intelligente Möglichkeiten ausdenken zur Wegfindung
 			
@@ -214,22 +208,23 @@ public class Spiel {
 		Feld neuesFeld = new Feld();
 		switch (richtungFeldErstellen) {
 		case 'n':
-			this.aktuellesFeld.setNorth(neuesFeld);
-			neuesFeld.setSouth(this.aktuellesFeld);
+			bot.getAktuellesFeld().setNorth(neuesFeld);
+			neuesFeld.setSouth(bot.getAktuellesFeld());
 			break;
 		case 'e':
-			this.aktuellesFeld.setEast(neuesFeld);
-			neuesFeld.setWest(this.aktuellesFeld);
+			bot.getAktuellesFeld().setEast(neuesFeld);
+			neuesFeld.setWest(bot.getAktuellesFeld());
 			break;
 		case 's':
-			this.aktuellesFeld.setSouth(neuesFeld);
-			neuesFeld.setNorth(this.aktuellesFeld);
+			bot.getAktuellesFeld().setSouth(neuesFeld);
+			neuesFeld.setNorth(bot.getAktuellesFeld());
 			break;
 		case 'w':
-			this.aktuellesFeld.setWest(neuesFeld);
-			neuesFeld.setEast(this.aktuellesFeld);
+			bot.getAktuellesFeld().setWest(neuesFeld);
+			neuesFeld.setEast(bot.getAktuellesFeld());
 			break;
 		}
+		
 		this.spielfeld.addFeld(neuesFeld);
 		spielfeld.addUnbekanntesFeld(neuesFeld);
 	}
