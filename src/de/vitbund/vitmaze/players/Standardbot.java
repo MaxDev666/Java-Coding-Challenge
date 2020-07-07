@@ -1,7 +1,6 @@
 package de.vitbund.vitmaze.players;
 
 import java.util.List;
-import java.util.Scanner;
 
 import de.vitbund.vitmaze.main.Spiel;
 import de.vitbund.vitmaze.spielfeld.Feld;
