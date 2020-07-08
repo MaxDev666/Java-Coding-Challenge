@@ -68,28 +68,29 @@ public class Standardbot {
 		return aktuelleRoute;
 	}
 	
-	public void move() {
+	public String move() {
 		//System.err.println("unbekannte Felder: " + spielfeld.getUnbekannteFelder());
 		Feld zuFeld = new Feld( );
+		String ergebnis = new String();
 		zuFeld = this.getAktuelleRoute().get(0);
 		System.err.println("Zielfeld: " + this.getAktuelleRoute().get(this.aktuelleRoute.size()-1));
 		//System.err.println("VonFeld: " + this.getAktuellesFeld());
 		switch (this.getAktuellesFeld().getRichtung(zuFeld)){
 			case "north":
 				this.getAktuelleRoute().remove(this.getAktuellesFeld());
-				this.goNorth();
+				ergebnis = this.goNorth();
 				break;
 			case "south":
 				this.getAktuelleRoute().remove(this.getAktuellesFeld());
-				this.goSouth();
+				ergebnis = this.goSouth();
 				break;
 			case "east":
 				this.getAktuelleRoute().remove(this.getAktuellesFeld());
-				this.goEast();
+				ergebnis = this.goEast();
 				break;
 			case "west":
 				this.getAktuelleRoute().remove(this.getAktuellesFeld());
-				this.goWest();
+				ergebnis = this.goWest();
 				break;
 		}
 		//System.err.println(this.getAktuellesFeld());
@@ -100,49 +101,49 @@ public class Standardbot {
 		if (this.getAktuellesFeld() == zuFeld) {
 			this.getAktuelleRoute().remove(this.getAktuellesFeld());
 		}
-		
+		return ergebnis;
 		
 	}
 	
-	public void goWest() {
+	public String goWest() {
 		this.setAktuellesFeld(this.getAktuellesFeld().getWest());
 		if (this.getBotX()-1 < 0) {
 			this.setBotX(this.getBotX()-1 +spielfeld.getSizeX());
 		} else {
 			this.setBotX(this.getBotX()-1);
 		}
-		System.out.println("go west");	
+		return "go west";	
 	}
 	
 
-	public void goNorth() {
+	public String goNorth() {
 		this.aktuellesFeld = this.aktuellesFeld.getNorth();
 		if (this.getBotY()-1 < 0) {
 			this.setBotY(this.getBotY()-1 +spielfeld.getSizeY());
 		} else {
 			this.setBotY(this.getBotY()-1);
 		}
-		System.out.println("go north");	
+		return "go north";	
 	}
 	
-	public void goEast() {
+	public String goEast() {
 		this.aktuellesFeld = this.aktuellesFeld.getEast();
 		if (this.getBotX()+1 > spielfeld.getSizeX()) {
 			this.setBotX(this.getBotX()+1 -spielfeld.getSizeX());
 		} else {
 			this.setBotX(this.getBotX()+1);
 		}
-		System.out.println("go east");
+		return "go east";
 	}
 	
-	public void goSouth() {
+	public String goSouth() {
 		this.aktuellesFeld = this.aktuellesFeld.getSouth();
 		if (this.getBotY()+1 > spielfeld.getSizeY()) {
 			this.setBotY(this.getBotY()+1 -spielfeld.getSizeY());
 		} else {
 			this.setBotY(this.getBotY()+1);
 		}
-		System.out.println("go south");	
+		return "go south";	
 	}
 	
 	public void getUpdate() {
