@@ -8,30 +8,15 @@ public class Feld {
 	private Feld east = null;
 	private Feld south = null;
 	private Feld west = null;
-	
+	private int xKoordinate;
+	private int yKoordinate;
 	// Gibt an ob in dem Feld ein Ziel liegt
 	// 0 = kein Ziel, 1 - 3 -> Sachbearbeiter, 4 -5 -> Antrag für den jeweiligen Sachbearbeiter
 	private byte ziel = 0;
 	
 	private Feld vorgaenger; // für die wegsuche
 	private boolean istInBearbeitung;
-	
-	private int xKoordinate;
-	public int getxKoordinate() {
-		return xKoordinate;
-	}
-	public void setxKoordinate(int xKoordinate) {
-		this.xKoordinate = xKoordinate;
-	}
-	public int getyKoordinate() {
-		return yKoordinate;
-	}
-	public void setyKoordinate(int yKoordinate) {
-		this.yKoordinate = yKoordinate;
-	}
 
-	private int yKoordinate;
-	
 	
 	public Feld() {
 		
@@ -78,6 +63,18 @@ public class Feld {
 	}
 	public void setVorgaenger(Feld vorgaenger) {
 		this.vorgaenger = vorgaenger;
+	}
+	public int getxKoordinate() {
+		return xKoordinate;
+	}
+	public void setxKoordinate(int xKoordinate) {
+		this.xKoordinate = xKoordinate;
+	}
+	public int getyKoordinate() {
+		return yKoordinate;
+	}
+	public void setyKoordinate(int yKoordinate) {
+		this.yKoordinate = yKoordinate;
 	}
 	
 	public List<Feld> getNachbarn() {

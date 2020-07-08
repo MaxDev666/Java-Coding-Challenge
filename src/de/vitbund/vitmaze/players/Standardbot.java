@@ -2,35 +2,21 @@ package de.vitbund.vitmaze.players;
 
 import java.util.List;
 
-import de.vitbund.vitmaze.main.Spiel;
 import de.vitbund.vitmaze.spielfeld.Feld;
 import de.vitbund.vitmaze.spielfeld.Spielfeld;
 
 public class Standardbot {
 
-	private int playerId;
-	private int startX;
 	Spielfeld spielfeld;
-	private int startY;
+	private int playerId;
+	private int botx;
+	private int boty;
 	private Feld aktuellesFeld;
-	public void setAktuellesFeld(Feld aktuellesFeld) {
-		this.aktuellesFeld = aktuellesFeld;
-	}
-
-	public Feld getAktuellesFeld() {
-		return aktuellesFeld;
-	}
-
-
 	private List<Feld> aktuelleRoute;
-	
-		
-	public static void main (String[] args) {
-		Spiel neuesSpiel = new Spiel();
-		neuesSpiel.init();
-		while (true) {
-			neuesSpiel.getStati();
-		}
+
+
+	public Standardbot(Spielfeld spielfeld) {
+		this.spielfeld = spielfeld;
 	}
 	
 	public boolean hatRoute() {
@@ -40,18 +26,6 @@ public class Standardbot {
 			}
 		}
 		return false;
-		}
-	
-	public List<Feld> getAktuelleRoute() {
-		return aktuelleRoute;
-	}
-
-	public void setAktuelleRoute(List<Feld> aktuelleRoute) {
-		this.aktuelleRoute = aktuelleRoute;
-	}
-
-	public Standardbot(Spielfeld spielfeld) {
-		this.spielfeld = spielfeld;
 	}
 	
 	public int getPlayerId() {
@@ -62,20 +36,36 @@ public class Standardbot {
 		this.playerId = playerId;
 	}
 
-	public int getStartX() {
-		return startX;
+	public int getBotX() {
+		return botx;
 	}
 
-	public void setStartX(int startX) {
-		this.startX = startX;
+	public void setBotX(int botx) {
+		this.botx = botx;
 	}
 
-	public int getStartY() {
-		return startY;
+	public int getBotY() {
+		return boty;
 	}
 
-	public void setStartY(int startY) {
-		this.startY = startY;
+	public void setBotY(int boty) {
+		this.boty = boty;
+	}
+	
+	public void setAktuellesFeld(Feld aktuellesFeld) {
+		this.aktuellesFeld = aktuellesFeld;
+	}
+
+	public Feld getAktuellesFeld() {
+		return aktuellesFeld;
+	}
+	
+	public void setAktuelleRoute(List<Feld> aktuelleRoute) {
+		this.aktuelleRoute = aktuelleRoute;
+	}
+	
+	public List<Feld> getAktuelleRoute() {
+		return aktuelleRoute;
 	}
 	
 	public void move() {

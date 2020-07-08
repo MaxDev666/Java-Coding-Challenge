@@ -43,9 +43,9 @@ public class Spiel {
 		// Bot anlegen und Startdaten setzen
 		
 		bot.setPlayerId(Eingabe.leseZahl());// id dieses Players / Bots
-		bot.setStartX(Eingabe.leseZahl());// X-Koordinate der Startposition dieses Player
-		bot.setStartY(Eingabe.leseZahl()); // Y-Koordinate der Startposition dieses Players
 		Eingabe.leseZeile();
+		bot.setBotX(500); // X-Koordinate der Startposition dieses Player
+		bot.setBotY(500); // Y-Koordinate der Startposition dieses Players
 		
 		hatZiel=false;
 
