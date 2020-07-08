@@ -11,7 +11,7 @@ public class Spiel {
 
 	Spielfeld spielfeld;
 	Standardbot bot;
-	
+	int anzahlFormulare;
 	
 	String lastActionsResult;
 	String currentCellStatus;
@@ -51,7 +51,8 @@ public class Spiel {
 	
 
 		hatZiel=false;
-
+		anzahlFormulare=999;
+		
 	}
 	
 	public void getStati() {
@@ -88,19 +89,15 @@ public class Spiel {
 			hatZiel=true;
 			System.out.println("finish");
 		} 
-		//hier aufheben wenn aktuelles Formular ist 
 		else {
 				
-			// Umgebung anlegen wenn noch nicht vorhanden
-			//System.err.println("Ich schaue mir meine Umgebung an");
 			if ( bot.getAktuellesFeld().getNorth()==null) {
 				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0") || this.northCellStatus.equals("FORM " +bot.getPlayerId())) {
 					this.richtungFeldErstellen='n';
 					this.erstellFeld();
-					//System.err.println("Neues Feld im Norden enddeckt" + bot.getAktuellesFeld().getNorth());
 				}
-				if (this.northCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
-					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getNorth());
+				if (this.northCellStatus.startsWith("FINISH ")) {
+					anzahlFormulare =(int)(this.northCellStatus.charAt(this.northCellStatus.length()));
 				}
 					
 				if(this.northCellStatus.equals("FORM " +bot.getPlayerId())) {
@@ -111,7 +108,7 @@ public class Spiel {
 				if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					this.richtungFeldErstellen='e';
 					this.erstellFeld();
-					//System.err.println("Neues Feld im Osten enddeckt " + bot.getAktuellesFeld().getEast());
+
 				}
 				if (this.eastCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getEast());
@@ -125,7 +122,7 @@ public class Spiel {
 				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					this.richtungFeldErstellen='s';
 					this.erstellFeld();
-					//System.err.println("Neues Feld im Süden enddeckt"  + bot.getAktuellesFeld().getSouth());
+
 				}
 				if (this.southCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getSouth());
@@ -139,7 +136,6 @@ public class Spiel {
 				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					this.richtungFeldErstellen='w';
 					this.erstellFeld();
-					//System.err.println("Neues Feld im Westen enddeckt" + bot.getAktuellesFeld().getWest());
 				}
 				if (this.westCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getWest());
@@ -150,56 +146,13 @@ public class Spiel {
 				}
 			}
 			bot.getUpdate();
-		/*	StringBuilder bla = new StringBuilder();
-			bla.append("unbekannte Felder");
-			bla.append(spielfeld.getUnbekannteFelder());
-			bla.append("\n");
-			bla.append(spielfeld.getBekannteFelder());
-			System.err.println(bla.toString());
-*/
-			//bot.getUpdate();
-			
-			//System.err.println("Bot hat Route: " + bot.hatRoute());
+
 			if (bot.hatRoute()==false) {
-				//System.err.println(" FEhler?"+ spielfeld.getUnbekannteFelder().get(0));
+
 				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
-				//System.err.println("Bot hat Route: " + bot.hatRoute());
 			}
 
-			//System.err.println();
 
-
-			
-			// hier intelligente Möglichkeiten ausdenken zur Wegfindung
-			
-			//Idee von Maxi zur Umsetzung der Aktion, die man aus dem Feld bekommt
-			
-			//## Anmerkung ich würde hier aktuelleRoute verwenden und die nur einmal festlegen, dann passt das wie in der Methode oben genau rein, und der Bit läuft immer bis zum nächsten unbekannten Feld, AUSSER der Bot bemerkt auf dem Weg z.B. ein verschobenes Formular
-			// dann sparen wir uns hier die Wegfindung und in erkunden würden wir nur das nächste Feld aus unbekannteFelder in die aktuelleRoute packen und hatZiel auf true setzen
-			
-			/*
-			List<Feld> route;
-			route = spielfeld.route(aktuellesFeld, zielFeld);
-			for (int i = 0; i < route.size(); i++) {
-				switch (route.get(i).getRichtung(route.get(i+1))) {
-				case "north":
-					bot.goNorth();
-					break;
-				case "east":
-					bot.goEast();
-					break;
-				case "south":
-					bot.goSouth();
-					break;
-				case "west":
-					bot.goWest();
-					break;
-				default:
-					System.err.println("Das Feld ist kein Nachbar");
-				}
-			}
-			*/
-			
 			
 			
 		}
