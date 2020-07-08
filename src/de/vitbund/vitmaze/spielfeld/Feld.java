@@ -16,6 +16,22 @@ public class Feld {
 	private Feld vorgaenger; // für die wegsuche
 	private boolean istInBearbeitung;
 	
+	private int xKoordinate;
+	public int getxKoordinate() {
+		return xKoordinate;
+	}
+	public void setxKoordinate(int xKoordinate) {
+		this.xKoordinate = xKoordinate;
+	}
+	public int getyKoordinate() {
+		return yKoordinate;
+	}
+	public void setyKoordinate(int yKoordinate) {
+		this.yKoordinate = yKoordinate;
+	}
+
+	private int yKoordinate;
+	
 	
 	public Feld() {
 		

@@ -165,33 +165,31 @@ public class Spiel {
 		}
 	}
 
-	
 	public void erstellFeld() {
-		Feld neuesFeld = new Feld();
-		switch (richtungFeldErstellen) {
-		case 'n':
-			bot.getAktuellesFeld().setNorth(neuesFeld);
-			neuesFeld.setSouth(bot.getAktuellesFeld());
-			break;
-		case 'e':
-			bot.getAktuellesFeld().setEast(neuesFeld);
-			neuesFeld.setWest(bot.getAktuellesFeld());
-			break;
-		case 's':
-			bot.getAktuellesFeld().setSouth(neuesFeld);
-			neuesFeld.setNorth(bot.getAktuellesFeld());
-			break;
-		case 'w':
-			bot.getAktuellesFeld().setWest(neuesFeld);
-			neuesFeld.setEast(bot.getAktuellesFeld());
-			break;
-		}
-		
-		this.spielfeld.addFeld(neuesFeld);
-		if (!spielfeld.getBekannteFelder().contains(neuesFeld)) {
-			spielfeld.addUnbekanntesFeld(neuesFeld);		
-		}
-
+			Feld neuesFeld = new Feld();
+			switch (richtungFeldErstellen) {
+			case 'n':
+				bot.getAktuellesFeld().setNorth(neuesFeld);
+				neuesFeld.setSouth(bot.getAktuellesFeld());
+				break;
+			case 'e':
+				bot.getAktuellesFeld().setEast(neuesFeld);
+				neuesFeld.setWest(bot.getAktuellesFeld());
+				break;
+			case 's':
+				bot.getAktuellesFeld().setSouth(neuesFeld);
+				neuesFeld.setNorth(bot.getAktuellesFeld());
+				break;
+			case 'w':
+				bot.getAktuellesFeld().setWest(neuesFeld);
+				neuesFeld.setEast(bot.getAktuellesFeld());
+				break;
+			}
+			
+			this.spielfeld.addFeld(neuesFeld);
+			if (!spielfeld.getBekannteFelder().contains(neuesFeld)) {
+				spielfeld.addUnbekanntesFeld(neuesFeld);		
+			}
 	}
 	
 }
