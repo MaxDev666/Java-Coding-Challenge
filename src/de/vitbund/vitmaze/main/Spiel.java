@@ -38,10 +38,13 @@ public class Spiel {
 		bot.setPlayerId(Eingabe.leseZahl());// id dieses Players / Bots
 		bot.setBotX(Eingabe.leseZahl()); // X-Koordinate der Startposition dieses Player
 		bot.setBotY(Eingabe.leseZahl()); // Y-Koordinate der Startposition dieses Players
-		
+		Eingabe.leseZeile();
 
+		
+		Feld temp =new Feld(bot.getBotX(),bot.getBotY());
 		// Startfeld anlegen und zum Spielfeld hinzufügen
-		bot.setAktuellesFeld(new Feld(bot.getBotX(),bot.getBotY()));
+		bot.setAktuellesFeld(temp);
+		spielfeld.getBekannteFelder().add(temp);
 		spielfeld.addFeld(bot.getAktuellesFeld());
 		
 		// Bot anlegen und Startdaten setzen
@@ -60,18 +63,20 @@ public class Spiel {
 		this.eastCellStatus = Eingabe.leseZeile();
 		this.southCellStatus = Eingabe.leseZeile();
 		this.westCellStatus = Eingabe.leseZeile();
-		bot.getUpdate();
+		
+		//System.err.println(		this.lastActionsResult + "|"+ 		this.currentCellStatus + "|"+		this.northCellStatus +"|"+		this.eastCellStatus+"|"+		this.southCellStatus+"|"+		this.westCellStatus );
 		
 		this.erkunden();
 
-		System.err.println("Jetze soll ich mich bewegen von: " + bot.getAktuellesFeld() + " nach " + bot.getAktuelleRoute().get(0));
+		//System.err.println("Jetze soll ich mich bewegen von: " + bot.getAktuellesFeld() + " nach " + bot.getAktuelleRoute().get(0));
 		bot.move();
-
+		bot.getUpdate();
+		
 		// hier noch abfragen ob wir am Ziel sind und irgendwas aufnehmen müssen oder ob wir was auf dem Weg gefunden haben
 		
 
-		bot.getUpdate();
-		
+		//bot.getUpdate();
+		//System.err.println("x:" + bot.getBotX() + " y:" + bot.getBotY());
 		
 		
 	}
@@ -85,48 +90,53 @@ public class Spiel {
 		} else {
 				
 			// Umgebung anlegen wenn noch nicht vorhanden
-			System.err.println("Ich schaue mir meine Umgebung an");
+			//System.err.println("Ich schaue mir meine Umgebung an");
 			if ( bot.getAktuellesFeld().getNorth()==null) {
 				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					this.richtungFeldErstellen='n';
 					this.erstellFeld();
-					System.err.println("Neues Feld im Norden enddeckt" + bot.getAktuellesFeld().getNorth());
+					//System.err.println("Neues Feld im Norden enddeckt" + bot.getAktuellesFeld().getNorth());
 				}
 			}
 			if (bot.getAktuellesFeld().getEast()==null) {
 				if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					this.richtungFeldErstellen='e';
 					this.erstellFeld();
-					System.err.println("Neues Feld im Osten enddeckt " + bot.getAktuellesFeld().getEast());
+					//System.err.println("Neues Feld im Osten enddeckt " + bot.getAktuellesFeld().getEast());
 				}
 			}
 			if (bot.getAktuellesFeld().getSouth()==null) {
 				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					this.richtungFeldErstellen='s';
 					this.erstellFeld();
-					System.err.println("Neues Feld im Süden enddeckt"  + bot.getAktuellesFeld().getSouth());
+					//System.err.println("Neues Feld im Süden enddeckt"  + bot.getAktuellesFeld().getSouth());
 				}
 			}
 			if (bot.getAktuellesFeld().getWest()==null) {
 				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					this.richtungFeldErstellen='w';
 					this.erstellFeld();
-					System.err.println("Neues Feld im Westen enddeckt" + bot.getAktuellesFeld().getWest());
+					//System.err.println("Neues Feld im Westen enddeckt" + bot.getAktuellesFeld().getWest());
 				}
 			}
-			
 			bot.getUpdate();
+		/*	StringBuilder bla = new StringBuilder();
+			bla.append("unbekannte Felder");
+			bla.append(spielfeld.getUnbekannteFelder());
+			bla.append("\n");
+			bla.append(spielfeld.getBekannteFelder());
+			System.err.println(bla.toString());
+*/
+			//bot.getUpdate();
 			
-			System.err.println("Bot hat Route: " + bot.hatRoute());
+			//System.err.println("Bot hat Route: " + bot.hatRoute());
 			if (bot.hatRoute()==false) {
-				System.err.println(" MUSS NEUE ROUTE WÄHLEN ");
+				//System.err.println(" FEhler?"+ spielfeld.getUnbekannteFelder().get(0));
 				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
-				System.err.println("Bot hat Route: " + bot.hatRoute());
+				//System.err.println("Bot hat Route: " + bot.hatRoute());
 			}
-			for (Feld temp : bot.getAktuelleRoute()) {
-				System.err.printf(temp + " -> ");
-			}
-			System.err.println();
+
+			//System.err.println();
 
 
 			
@@ -199,7 +209,7 @@ public class Spiel {
 					break;
 				}
 			case 'e':
-				if (bot.getBotY()-1 <0) {
+				if (bot.getBotX()+1 > spielfeld.getSizeX()) {
 					wohinx = bot.getBotX() +1 - spielfeld.getSizeX();
 					wohiny= bot.getBotY() ;
 					break;					
@@ -209,7 +219,7 @@ public class Spiel {
 					break;
 				}
 			case 's':
-				if (bot.getBotY()-1 <0) {
+				if (bot.getBotY()+1 > spielfeld.getSizeY()) {
 					wohinx = bot.getBotX();
 					wohiny= bot.getBotY() + 1 -spielfeld.getSizeY();
 					break;					
@@ -219,7 +229,7 @@ public class Spiel {
 					break;
 				}
 			case 'w':
-				if (bot.getBotY()-1 <0) {
+				if (bot.getBotX()-1 <0) {
 					wohinx = bot.getBotX() -1 + spielfeld.getSizeX();
 					wohiny= bot.getBotY();
 					break;					
@@ -236,7 +246,7 @@ public class Spiel {
 				// prüfen ob das FEld exisitert
 			boolean feldExistiert =false;
 			Feld temp = null;
-			for (Feld feld : spielfeld.getBekannteFelder()) {
+			for (Feld feld : spielfeld.getFelder()) {
 				if (feld.getxKoordinate()== wohinx && feld.getyKoordinate() == wohiny) {
 					feldExistiert = true;
 					temp = feld;

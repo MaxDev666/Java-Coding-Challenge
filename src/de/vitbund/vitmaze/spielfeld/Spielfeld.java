@@ -59,11 +59,23 @@ public class Spielfeld {
 		interessanteFelder.add(newFeld);
 	}
 	
+	public List<Feld> getFelder() {
+		return felder;
+	}
 	public void addUnbekanntesFeld(Feld newFeld) {
 		unbekannteFelder.add(0,newFeld);
 	}
 	
-
+	public Feld gibFeld(int x, int y) {
+		for (Feld feld : this.getBekannteFelder()) {
+			if (feld.getxKoordinate()== x && feld.getyKoordinate() == y) {
+					return feld;
+			}
+		}
+		return null;
+	}
+	
+	
 	/**
 	 *  Diese Funktion berechnet den Weg eines beliebigen Feldes zum Zielfeld.
 	 *  Das Zielarray gibt den Weg von Feld zu Feld an

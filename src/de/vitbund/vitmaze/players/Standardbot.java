@@ -69,11 +69,11 @@ public class Standardbot {
 	}
 	
 	public void move() {
-		System.err.println("bin in Move Routine");
+		//System.err.println("unbekannte Felder: " + spielfeld.getUnbekannteFelder());
 		Feld zuFeld = new Feld( );
 		zuFeld = this.getAktuelleRoute().get(0);
-		System.err.println("ZuFeld: " + zuFeld);
-		System.err.println("VonFeld: " + this.getAktuellesFeld());
+		System.err.println("Zielfeld: " + this.getAktuelleRoute().get(this.aktuelleRoute.size()-1));
+		//System.err.println("VonFeld: " + this.getAktuellesFeld());
 		switch (this.getAktuellesFeld().getRichtung(zuFeld)){
 			case "north":
 				this.getAktuelleRoute().remove(this.getAktuellesFeld());
@@ -92,6 +92,7 @@ public class Standardbot {
 				this.goWest();
 				break;
 		}
+		//System.err.println(this.getAktuellesFeld());
 		if (spielfeld.getUnbekannteFelder().contains(this.getAktuellesFeld())) {
 			spielfeld.getUnbekannteFelder().remove(this.getAktuellesFeld());
 			spielfeld.getBekannteFelder().add(this.getAktuellesFeld());
@@ -105,6 +106,11 @@ public class Standardbot {
 	
 	public void goWest() {
 		this.setAktuellesFeld(this.getAktuellesFeld().getWest());
+		if (this.getBotX()-1 < 0) {
+			this.setBotX(this.getBotX()-1 +spielfeld.getSizeX());
+		} else {
+			this.setBotX(this.getBotX()-1);
+		}
 		System.out.println("go west");	
 	}
 	
@@ -112,36 +118,47 @@ public class Standardbot {
 	public void goNorth() {
 		this.aktuellesFeld = this.aktuellesFeld.getNorth();
 		if (this.getBotY()-1 < 0) {
-			
+			this.setBotY(this.getBotY()-1 +spielfeld.getSizeY());
 		} else {
+			this.setBotY(this.getBotY()-1);
 		}
-		
-		
 		System.out.println("go north");	
 	}
 	
 	public void goEast() {
 		this.aktuellesFeld = this.aktuellesFeld.getEast();
+		if (this.getBotX()+1 > spielfeld.getSizeX()) {
+			this.setBotX(this.getBotX()+1 -spielfeld.getSizeX());
+		} else {
+			this.setBotX(this.getBotX()+1);
+		}
 		System.out.println("go east");
 	}
 	
 	public void goSouth() {
 		this.aktuellesFeld = this.aktuellesFeld.getSouth();
+		if (this.getBotY()+1 > spielfeld.getSizeY()) {
+			this.setBotY(this.getBotY()+1 -spielfeld.getSizeY());
+		} else {
+			this.setBotY(this.getBotY()+1);
+		}
 		System.out.println("go south");	
 	}
 	
 	public void getUpdate() {
-		System.err.println("###################################################################");
-		System.err.println("Ich stehe am Anfang des Zuges auf dem Feld: " + this.aktuellesFeld.getxKoordinate() + "|"+ this.aktuellesFeld.getyKoordinate());
-		System.err.println("x: " + this.getBotX() + " y: " + this.getBotY());
-		System.err.println("Im Norden ist: " + this.aktuellesFeld.getNorth());
-		System.err.println("Im Osten ist: " + this.aktuellesFeld.getEast());
-		System.err.println("Im Süden ist : " + this.aktuellesFeld.getSouth());
-		System.err.println("Im Westen ist: " + this.aktuellesFeld.getWest());
+		
+		StringBuilder bla = new StringBuilder();
+		bla.append("###################################################################" + "\n");
+		bla.append("Ich stehe am Anfang des Zuges auf dem Feld: " + this.aktuellesFeld.getxKoordinate() + "|"+ this.aktuellesFeld.getyKoordinate() + "\n");
+		bla.append("x: " + this.getBotX() + " y: " + this.getBotY() + "\n");
+		bla.append("Im Norden ist: " + this.aktuellesFeld.getNorth() + "\n");
+		bla.append("Im Osten ist: " + this.aktuellesFeld.getEast() + "\n");
+		bla.append("Im Süden ist : " + this.aktuellesFeld.getSouth() + "\n");
+		bla.append("Im Westen ist: " + this.aktuellesFeld.getWest() + "\n");
 		if (this.hatRoute()) {
-		System.err.println("Ich will zum Feld: " + aktuelleRoute.get(0));
-		} else { System.err.println("Ich habe noch keine Route");}
-		System.err.println("###################################################################");
+			bla.append("Ich will zum Feld: " + aktuelleRoute.get(0) + "\n");
+		} else { bla.append("Ich habe noch keine Route" + "\n");}
+		System.err.println(bla.toString());
 		
 	}
 	
