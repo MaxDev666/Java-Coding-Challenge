@@ -35,18 +35,18 @@ public class Spiel {
 
 		// Bote erstellen
 		bot = new Standardbot(spielfeld);
+		bot.setPlayerId(Eingabe.leseZahl());// id dieses Players / Bots
+		bot.setBotX(Eingabe.leseZahl()); // X-Koordinate der Startposition dieses Player
+		bot.setBotY(Eingabe.leseZahl()); // Y-Koordinate der Startposition dieses Players
 		
+
 		// Startfeld anlegen und zum Spielfeld hinzufügen
-		bot.setAktuellesFeld(new Feld());
+		bot.setAktuellesFeld(new Feld(bot.getBotX(),bot.getBotY()));
 		spielfeld.addFeld(bot.getAktuellesFeld());
 		
 		// Bot anlegen und Startdaten setzen
-		
-		bot.setPlayerId(Eingabe.leseZahl());// id dieses Players / Bots
-		Eingabe.leseZeile();
-		bot.setBotX(500); // X-Koordinate der Startposition dieses Player
-		bot.setBotY(500); // Y-Koordinate der Startposition dieses Players
-		
+	
+
 		hatZiel=false;
 
 	}
@@ -164,32 +164,137 @@ public class Spiel {
 			
 		}
 	}
+	
+	/*		0	1	2	3
+	 * 	0				
+	 * 	1		X		
+	 * 	2					
+	 * 	3				
+	 * 	4			
+	 * 
+	 */
 
 	public void erstellFeld() {
-			Feld neuesFeld = new Feld();
+		
+			/*	feststellen wohin das Feld soll
+			 * 	-> n e s w
+			 * 	-> Koordianten ermitteln
+			 * 
+			 * 	prüfen ob dort Feld exisitiert
+			 * 
+			 * 	feld verknüpfen oder feld erstellen
+			 * 
+			 */
+			int wohinx = 0;
+			int wohiny = 0;
 			switch (richtungFeldErstellen) {
 			case 'n':
-				bot.getAktuellesFeld().setNorth(neuesFeld);
-				neuesFeld.setSouth(bot.getAktuellesFeld());
-				break;
+				if (bot.getBotY()-1 <0) {
+					wohinx = bot.getBotX();
+					wohiny= bot.getBotY() - 1 +spielfeld.getSizeY();
+					break;					
+				} else {
+					wohinx=bot.getBotX();
+					wohiny = bot.getBotY() - 1;
+					break;
+				}
 			case 'e':
-				bot.getAktuellesFeld().setEast(neuesFeld);
-				neuesFeld.setWest(bot.getAktuellesFeld());
-				break;
+				if (bot.getBotY()-1 <0) {
+					wohinx = bot.getBotX() +1 - spielfeld.getSizeX();
+					wohiny= bot.getBotY() ;
+					break;					
+				} else {
+					wohinx=bot.getBotX() +1;
+					wohiny = bot.getBotY();
+					break;
+				}
 			case 's':
-				bot.getAktuellesFeld().setSouth(neuesFeld);
-				neuesFeld.setNorth(bot.getAktuellesFeld());
-				break;
+				if (bot.getBotY()-1 <0) {
+					wohinx = bot.getBotX();
+					wohiny= bot.getBotY() + 1 -spielfeld.getSizeY();
+					break;					
+				} else {
+					wohinx=bot.getBotX();
+					wohiny = bot.getBotY() + 1;
+					break;
+				}
 			case 'w':
-				bot.getAktuellesFeld().setWest(neuesFeld);
-				neuesFeld.setEast(bot.getAktuellesFeld());
-				break;
+				if (bot.getBotY()-1 <0) {
+					wohinx = bot.getBotX() -1 + spielfeld.getSizeX();
+					wohiny= bot.getBotY();
+					break;					
+				} else {
+					wohinx=bot.getBotX()-1;
+					wohiny = bot.getBotY();
+					break;
+				}
 			}
 			
-			this.spielfeld.addFeld(neuesFeld);
-			if (!spielfeld.getBekannteFelder().contains(neuesFeld)) {
-				spielfeld.addUnbekanntesFeld(neuesFeld);		
+			System.err.println("Will Feld bei x:" + wohinx + "|" + wohiny + "anlegen");
+			
+				
+				// prüfen ob das FEld exisitert
+			boolean feldExistiert =false;
+			Feld temp = null;
+			for (Feld feld : spielfeld.getBekannteFelder()) {
+				if (feld.getxKoordinate()== wohinx && feld.getyKoordinate() == wohiny) {
+					feldExistiert = true;
+					temp = feld;
+					break;
+				}
+			}
+			System.err.println(feldExistiert);
+			if (feldExistiert == true) {
+				switch (richtungFeldErstellen) {
+				case 'n':
+					bot.getAktuellesFeld().setNorth(temp);
+					temp.setSouth(bot.getAktuellesFeld());
+					break;
+				case 'e':
+					bot.getAktuellesFeld().setEast(temp);
+					temp.setWest(bot.getAktuellesFeld());	
+					break;
+				case 's':
+					bot.getAktuellesFeld().setSouth(temp);
+					temp.setNorth(bot.getAktuellesFeld());
+					break;
+				case 'w':
+					bot.getAktuellesFeld().setWest(temp);
+					temp.setEast(bot.getAktuellesFeld());
+					break;
+				}
+			} else {
+				System.err.println("ich bin richtig");
+				Feld neuesFeld = new Feld(wohinx, wohiny);
+				switch (richtungFeldErstellen) {
+				case 'n':
+					bot.getAktuellesFeld().setNorth(neuesFeld);
+					neuesFeld.setSouth(bot.getAktuellesFeld());
+					break;
+				case 'e':
+					bot.getAktuellesFeld().setEast(neuesFeld);
+					neuesFeld.setWest(bot.getAktuellesFeld());	
+					break;
+				case 's':
+					bot.getAktuellesFeld().setSouth(neuesFeld);
+					neuesFeld.setNorth(bot.getAktuellesFeld());
+					break;
+				case 'w':
+					bot.getAktuellesFeld().setWest(neuesFeld);
+					neuesFeld.setEast(bot.getAktuellesFeld());
+					break;
+				}
+				this.spielfeld.addFeld(neuesFeld);
+				if (!spielfeld.getBekannteFelder().contains(neuesFeld)) {
+					spielfeld.addUnbekanntesFeld(neuesFeld);		
+				}
 			}
 	}
 	
 }
+			
+			
+
+	
+	
+

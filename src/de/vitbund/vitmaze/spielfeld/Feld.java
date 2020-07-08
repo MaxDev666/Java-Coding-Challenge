@@ -21,6 +21,19 @@ public class Feld {
 	public Feld() {
 		
 	}
+	
+	public Feld(int x, int y) {
+		this.xKoordinate = x;
+		this.yKoordinate = y;
+	}
+	
+	
+	public void setKoordinaten(int x, int y) {
+		this.xKoordinate = x;
+		this.yKoordinate = y;
+	}
+	
+	
 	public Feld(Feld north, Feld south, Feld west, Feld east) {
 		this.north = north;
 		this.south=south;

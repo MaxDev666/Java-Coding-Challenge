@@ -108,22 +108,15 @@ public class Standardbot {
 		System.out.println("go west");	
 	}
 	
-	public void getUpdate() {
-		System.err.println("###################################################################");
-		System.err.println("Ich stehe am Anfang des Zuges auf dem Feld: " + this.aktuellesFeld);
-		System.err.println("Im Norden ist: " + this.aktuellesFeld.getNorth());
-		System.err.println("Im Osten ist: " + this.aktuellesFeld.getEast());
-		System.err.println("Im Süden ist : " + this.aktuellesFeld.getSouth());
-		System.err.println("Im Westen ist: " + this.aktuellesFeld.getWest());
-		if (this.hatRoute()) {
-		System.err.println("Ich will zum Feld: " + aktuelleRoute.get(0));
-		} else { System.err.println("Ich habe noch keine Route");}
-		System.err.println("###################################################################");
-		
-	}
-	
+
 	public void goNorth() {
 		this.aktuellesFeld = this.aktuellesFeld.getNorth();
+		if (this.getBotY()-1 < 0) {
+			
+		} else {
+		}
+		
+		
 		System.out.println("go north");	
 	}
 	
@@ -136,4 +129,20 @@ public class Standardbot {
 		this.aktuellesFeld = this.aktuellesFeld.getSouth();
 		System.out.println("go south");	
 	}
+	
+	public void getUpdate() {
+		System.err.println("###################################################################");
+		System.err.println("Ich stehe am Anfang des Zuges auf dem Feld: " + this.aktuellesFeld.getxKoordinate() + "|"+ this.aktuellesFeld.getyKoordinate());
+		System.err.println("x: " + this.getBotX() + " y: " + this.getBotY());
+		System.err.println("Im Norden ist: " + this.aktuellesFeld.getNorth());
+		System.err.println("Im Osten ist: " + this.aktuellesFeld.getEast());
+		System.err.println("Im Süden ist : " + this.aktuellesFeld.getSouth());
+		System.err.println("Im Westen ist: " + this.aktuellesFeld.getWest());
+		if (this.hatRoute()) {
+		System.err.println("Ich will zum Feld: " + aktuelleRoute.get(0));
+		} else { System.err.println("Ich habe noch keine Route");}
+		System.err.println("###################################################################");
+		
+	}
+	
 }
