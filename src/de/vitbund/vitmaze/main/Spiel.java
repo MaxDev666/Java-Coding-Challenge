@@ -92,7 +92,7 @@ public class Spiel {
 		else {
 				
 			if ( bot.getAktuellesFeld().getNorth()==null) {
-				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0") || this.northCellStatus.equals("FORM " +bot.getPlayerId())) {
+				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.startsWith("FINISH ") || this.northCellStatus.startsWith("FORM ")) {
 					this.richtungFeldErstellen='n';
 					this.erstellFeld();
 				}
@@ -100,48 +100,48 @@ public class Spiel {
 					anzahlFormulare =(int)(this.northCellStatus.charAt(this.northCellStatus.length()));
 				}
 					
-				if(this.northCellStatus.equals("FORM " +bot.getPlayerId())) {
+				if(this.northCellStatus.startsWith("FORM ")) {
 					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getNorth());
 				}
 			}
 			if (bot.getAktuellesFeld().getEast()==null) {
-				if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+				if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.startsWith("FINISH ")|| this.northCellStatus.startsWith("FORM ")) {
 					this.richtungFeldErstellen='e';
 					this.erstellFeld();
 
 				}
-				if (this.eastCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+				if (this.eastCellStatus.startsWith("FINISH ")) {
 					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getEast());
 				}
 					
-				if(this.eastCellStatus.equals("FORM " +bot.getPlayerId())) {
+				if(this.eastCellStatus.startsWith("FORM ")) {
 					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getEast());
 				}
 			}
 			if (bot.getAktuellesFeld().getSouth()==null) {
-				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.startsWith("FINISH ")|| this.northCellStatus.startsWith("FORM ")) {
 					this.richtungFeldErstellen='s';
 					this.erstellFeld();
 
 				}
-				if (this.southCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+				if (this.southCellStatus.startsWith("FINISH ")) {
 					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getSouth());
 				}
 					
-				if(this.southCellStatus.equals("FORM " +bot.getPlayerId())) {
+				if(this.southCellStatus.startsWith("FORM ")) {
 					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getSouth());
 				}
 			}
 			if (bot.getAktuellesFeld().getWest()==null) {
-				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.startsWith("FINISH ")|| this.northCellStatus.startsWith("FORM ")) {
 					this.richtungFeldErstellen='w';
 					this.erstellFeld();
 				}
-				if (this.westCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+				if (this.westCellStatus.startsWith("FINISH ")) {
 					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getWest());
 				}
 					
-				if(this.westCellStatus.equals("FORM " +bot.getPlayerId())) {
+				if(this.westCellStatus.startsWith("FORM ")) {
 					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getWest());
 				}
 			}
