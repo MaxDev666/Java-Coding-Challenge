@@ -87,15 +87,24 @@ public class Spiel {
 		if (this.currentCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 			hatZiel=true;
 			System.out.println("finish");
-		} else {
+		} 
+		//hier aufheben wenn aktuelles Formular ist 
+		else {
 				
 			// Umgebung anlegen wenn noch nicht vorhanden
 			//System.err.println("Ich schaue mir meine Umgebung an");
 			if ( bot.getAktuellesFeld().getNorth()==null) {
-				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0") || this.northCellStatus.equals("FORM " +bot.getPlayerId())) {
 					this.richtungFeldErstellen='n';
 					this.erstellFeld();
 					//System.err.println("Neues Feld im Norden enddeckt" + bot.getAktuellesFeld().getNorth());
+				}
+				if (this.northCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getNorth());
+				}
+					
+				if(this.northCellStatus.equals("FORM " +bot.getPlayerId())) {
+					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getNorth());
 				}
 			}
 			if (bot.getAktuellesFeld().getEast()==null) {
@@ -104,6 +113,13 @@ public class Spiel {
 					this.erstellFeld();
 					//System.err.println("Neues Feld im Osten enddeckt " + bot.getAktuellesFeld().getEast());
 				}
+				if (this.eastCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getEast());
+				}
+					
+				if(this.eastCellStatus.equals("FORM " +bot.getPlayerId())) {
+					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getEast());
+				}
 			}
 			if (bot.getAktuellesFeld().getSouth()==null) {
 				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
@@ -111,12 +127,26 @@ public class Spiel {
 					this.erstellFeld();
 					//System.err.println("Neues Feld im Süden enddeckt"  + bot.getAktuellesFeld().getSouth());
 				}
+				if (this.southCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getSouth());
+				}
+					
+				if(this.southCellStatus.equals("FORM " +bot.getPlayerId())) {
+					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getSouth());
+				}
 			}
 			if (bot.getAktuellesFeld().getWest()==null) {
 				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
 					this.richtungFeldErstellen='w';
 					this.erstellFeld();
 					//System.err.println("Neues Feld im Westen enddeckt" + bot.getAktuellesFeld().getWest());
+				}
+				if (this.westCellStatus.equals("FINISH " +bot.getPlayerId()+ " 0")) {
+					spielfeld.getZielfeld().add(bot.getAktuellesFeld().getWest());
+				}
+					
+				if(this.westCellStatus.equals("FORM " +bot.getPlayerId())) {
+					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getWest());
 				}
 			}
 			bot.getUpdate();

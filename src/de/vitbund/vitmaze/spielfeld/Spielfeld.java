@@ -13,6 +13,12 @@ public class Spielfeld {
 	// interessante Felder merken
 	private List<Feld> interessanteFelder = new ArrayList<Feld>();
 	
+	// Felder mit Formularen merken
+	private List<Feld> formularFelder = new ArrayList<Feld>();
+	
+	// Felder mit Ziel merken
+	private List<Feld> Zielfeld = new ArrayList<Feld>();
+	
 	// noch zu erkundende Felder merken
 	private List<Feld> unbekannteFelder = new ArrayList<Feld>();
 
@@ -30,6 +36,18 @@ public class Spielfeld {
 	}
 	public void setUnbekannteFelder(List<Feld> unbekannteFelder) {
 		this.unbekannteFelder = unbekannteFelder;
+	}
+	public List<Feld> getFormularFelder() {
+		return formularFelder;
+	}
+	public void setFormularFelder(List<Feld> formularFelder) {
+		this.formularFelder = formularFelder;
+	}
+	public List<Feld> getZielfeld() {
+		return Zielfeld;
+	}
+	public void setZielfeld(List<Feld> zielfeld) {
+		Zielfeld = zielfeld;
 	}
 	public int getSizeX() {
 		return sizeX;
@@ -66,6 +84,7 @@ public class Spielfeld {
 		unbekannteFelder.add(0,newFeld);
 	}
 	
+<<<<<<< Updated upstream
 	public Feld gibFeld(int x, int y) {
 		for (Feld feld : this.getBekannteFelder()) {
 			if (feld.getxKoordinate()== x && feld.getyKoordinate() == y) {
@@ -76,6 +95,11 @@ public class Spielfeld {
 	}
 	
 	
+=======
+
+	
+
+>>>>>>> Stashed changes
 	/**
 	 *  Diese Funktion berechnet den Weg eines beliebigen Feldes zum Zielfeld.
 	 *  Das Zielarray gibt den Weg von Feld zu Feld an
