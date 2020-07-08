@@ -84,7 +84,7 @@ public class Spielfeld {
 		unbekannteFelder.add(0,newFeld);
 	}
 	
-<<<<<<< Updated upstream
+
 	public Feld gibFeld(int x, int y) {
 		for (Feld feld : this.getBekannteFelder()) {
 			if (feld.getxKoordinate()== x && feld.getyKoordinate() == y) {
@@ -95,11 +95,7 @@ public class Spielfeld {
 	}
 	
 	
-=======
 
-	
-
->>>>>>> Stashed changes
 	/**
 	 *  Diese Funktion berechnet den Weg eines beliebigen Feldes zum Zielfeld.
 	 *  Das Zielarray gibt den Weg von Feld zu Feld an
