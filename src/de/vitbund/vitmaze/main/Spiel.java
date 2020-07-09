@@ -25,6 +25,8 @@ public class Spiel {
 	String ausgabe;
 	Formular[] forms;
 	int formID;
+	int formcounter;
+	boolean formFound;
 	
 	
 	// Klasse Formular noch anlegen
@@ -59,7 +61,10 @@ public class Spiel {
 
 		hatZiel=false;
 		anzahlFormulare=999;
+		forms = new Formular[9];
 		formID=0;
+		formcounter = 1;
+		formFound = false;
 		
 		ausgabe = new String("position");
 		
@@ -97,87 +102,106 @@ public class Spiel {
 	 * 			nein: erkunde und finde Formulare
 	 */
 	public void erkunden() {
-			
-			if ( bot.getAktuellesFeld().getNorth()==null) {
-				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.startsWith("FINISH ") || this.northCellStatus.startsWith("FORM ")) {
-					this.erstellFeld('n');
-				}
-				if (this.northCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
-					anzahlFormulare =(int)(this.northCellStatus.charAt(this.northCellStatus.length()-1));
-					spielfeld.setZielfeld(bot.getAktuellesFeld().getNorth());
-				}
-					
-				if(this.northCellStatus.startsWith("FORM " +bot.getPlayerId())) {
-					formID = (int)(this.northCellStatus.charAt(this.northCellStatus.length()-1));
+
+		if ( bot.getAktuellesFeld().getNorth()==null) {
+			if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.startsWith("FINISH ") || this.northCellStatus.startsWith("FORM ")) {
+				this.erstellFeld('n');
+			}
+			if (this.northCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+				anzahlFormulare =(int)(this.northCellStatus.charAt(this.northCellStatus.length()-1));
+				spielfeld.setZielfeld(bot.getAktuellesFeld().getNorth());
+			}
+
+			if(this.northCellStatus.startsWith("FORM " +bot.getPlayerId())) {
+				formID = (int)(this.northCellStatus.charAt(this.northCellStatus.length()-1));
+				//Aufnehmen muss noch überarbeitet werden
+				if (formID==formcounter) {
+					formFound = true;
+					formcounter++;
+				}else {
 					Formular formular = new Formular(formID, bot.getAktuellesFeld().getNorth());
+					forms[formID] = formular; 
+				}	
+			}
+		}
+		if (bot.getAktuellesFeld().getEast()==null) {
+			if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.startsWith("FINISH ")|| this.eastCellStatus.startsWith("FORM ")) {
+				this.erstellFeld('e');
+
+			}
+			if (this.eastCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+				anzahlFormulare =(int)(this.eastCellStatus.charAt(this.eastCellStatus.length()));
+				spielfeld.setZielfeld(bot.getAktuellesFeld().getEast());
+			}
+
+			if(this.eastCellStatus.startsWith("FORM " +bot.getPlayerId())) {
+				formID = (int)(this.eastCellStatus.charAt(this.eastCellStatus.length()-1));
+				//Aufnehmen muss noch überarbeitet werden
+				if (formID==formcounter) {
+					formFound = true;
+					formcounter++;
+				}else {
+					Formular formular = new Formular(formID, bot.getAktuellesFeld().getEast());
 					forms[formID] = formular; 
 				}
 			}
-			if (bot.getAktuellesFeld().getEast()==null) {
-				if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.startsWith("FINISH ")|| this.eastCellStatus.startsWith("FORM ")) {
-					this.erstellFeld('e');
+		}
+		if (bot.getAktuellesFeld().getSouth()==null) {
+			if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.startsWith("FINISH ")|| this.southCellStatus.startsWith("FORM ")) {
+				this.erstellFeld('s');
 
-				}
-				if (this.eastCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
-					anzahlFormulare =(int)(this.eastCellStatus.charAt(this.eastCellStatus.length()));
-					spielfeld.setZielfeld(bot.getAktuellesFeld().getEast());
-				}
-					
-				if(this.eastCellStatus.startsWith("FORM " +bot.getPlayerId())) {
-					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getEast());
-				}
 			}
-			if (bot.getAktuellesFeld().getSouth()==null) {
-				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.startsWith("FINISH ")|| this.southCellStatus.startsWith("FORM ")) {
-					this.erstellFeld('s');
-
-				}
-				if (this.southCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
-					anzahlFormulare =(int)(this.southCellStatus.charAt(this.southCellStatus.length()));
-					spielfeld.setZielfeld(bot.getAktuellesFeld().getSouth());
-				}
-					
-				if(this.southCellStatus.startsWith("FORM " +bot.getPlayerId())) {
-					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getSouth());
-				}
-			}
-			if (bot.getAktuellesFeld().getWest()==null) {
-				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.startsWith("FINISH ")|| this.westCellStatus.startsWith("FORM ")) {
-					this.erstellFeld('w');
-				}
-				if (this.westCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
-					anzahlFormulare =(int)(this.westCellStatus.charAt(this.westCellStatus.length()));
-					spielfeld.setZielfeld(bot.getAktuellesFeld().getWest());
-				}
-					
-				if(this.westCellStatus.startsWith("FORM " +bot.getPlayerId())) {
-					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getWest());
-				}
-			}
-			bot.getUpdate();
-
-			if (bot.hatRoute()==false) {
-				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
-				this.ausgabe = bot.move();
-			} else {
-				this.ausgabe = bot.move();
-				
+			if (this.southCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+				anzahlFormulare =(int)(this.southCellStatus.charAt(this.southCellStatus.length()));
+				spielfeld.setZielfeld(bot.getAktuellesFeld().getSouth());
 			}
 
+			if(this.southCellStatus.startsWith("FORM " +bot.getPlayerId())) {
+				formID = (int)(this.southCellStatus.charAt(this.southCellStatus.length()-1));
+				//Aufnehmen muss noch überarbeitet werden
+				if (formID==formcounter) {
+					formFound = true;
+					formcounter++;
+				}else {
+					Formular formular = new Formular(formID, bot.getAktuellesFeld().getSouth());
+					forms[formID] = formular; 
+				}
+			}
+		}
+		if (bot.getAktuellesFeld().getWest()==null) {
+			if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.startsWith("FINISH ")|| this.westCellStatus.startsWith("FORM ")) {
+				this.erstellFeld('w');
+			}
+			if (this.westCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+				anzahlFormulare =(int)(this.westCellStatus.charAt(this.westCellStatus.length()));
+				spielfeld.setZielfeld(bot.getAktuellesFeld().getWest());
+			}
 
-			
-			
-		
+			if(this.westCellStatus.startsWith("FORM " +bot.getPlayerId())) {
+				formID = (int)(this.westCellStatus.charAt(this.westCellStatus.length()-1));
+				//Aufnehmen muss noch überarbeitet werden
+				if (formID==formcounter) {
+					formFound = true;
+					formcounter++;
+				}else {
+					Formular formular = new Formular(formID, bot.getAktuellesFeld().getWest());
+					forms[formID] = formular; 
+				}
+			}
+		}
+		bot.getUpdate();
+
+		if (bot.hatRoute()==false) {
+			bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
+			this.ausgabe = bot.move();
+		} else {
+			this.ausgabe = bot.move();
+		}
+
+		if (formFound) {
+			this.ausgabe = bot.take();
+		}
 	}
-	
-	/*		0	1	2	3
-	 * 	0				
-	 * 	1		X		
-	 * 	2					
-	 * 	3				
-	 * 	4			
-	 * 
-	 */
 
 	public void erstellFeld(char richtungFeldErstellen) {
 		

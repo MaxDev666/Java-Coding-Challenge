@@ -102,7 +102,12 @@ public class Standardbot {
 			this.getAktuelleRoute().remove(this.getAktuellesFeld());
 		}
 		return ergebnis;
-		
+	}
+	
+	
+	//aufnehmen Funktion, muss noch überarbeitet werden
+	public String take() {
+		return "take";
 	}
 	
 	public String goWest() {
