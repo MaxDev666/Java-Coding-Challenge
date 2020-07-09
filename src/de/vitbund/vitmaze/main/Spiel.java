@@ -5,6 +5,7 @@ import java.util.List;
 import de.vitbund.vitmaze.eingabe.Eingabe;
 import de.vitbund.vitmaze.players.Standardbot;
 import de.vitbund.vitmaze.spielfeld.Feld;
+import de.vitbund.vitmaze.spielfeld.Formular;
 import de.vitbund.vitmaze.spielfeld.Spielfeld;
 
 public class Spiel {
@@ -22,14 +23,14 @@ public class Spiel {
 	boolean hatZiel;
 	List<Feld> ziele;
 	String ausgabe;
+	Formular[] forms;
+	int formID;
 	
 	
 	// Klasse Formular noch anlegen
 	// int id
 	// Feld feld
 	// String aufheben
-	
-//	Array formulare  {Formular  1 , 2 , 3  }
 	
 	public void init() {
 		// Spielfeld anlegen und Startdaten setzen
@@ -58,6 +59,7 @@ public class Spiel {
 
 		hatZiel=false;
 		anzahlFormulare=999;
+		formID=0;
 		
 		ausgabe = new String("position");
 		
@@ -101,12 +103,14 @@ public class Spiel {
 					this.erstellFeld('n');
 				}
 				if (this.northCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
-					anzahlFormulare =(int)(this.northCellStatus.charAt(this.northCellStatus.length()));
+					anzahlFormulare =(int)(this.northCellStatus.charAt(this.northCellStatus.length()-1));
 					spielfeld.setZielfeld(bot.getAktuellesFeld().getNorth());
 				}
 					
 				if(this.northCellStatus.startsWith("FORM " +bot.getPlayerId())) {
-					spielfeld.getFormularFelder().add(bot.getAktuellesFeld().getNorth());
+					formID = (int)(this.northCellStatus.charAt(this.northCellStatus.length()-1));
+					Formular formular = new Formular(formID, bot.getAktuellesFeld().getNorth());
+					forms[formID] = formular; 
 				}
 			}
 			if (bot.getAktuellesFeld().getEast()==null) {

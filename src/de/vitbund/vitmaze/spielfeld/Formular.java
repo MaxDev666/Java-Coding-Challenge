@@ -5,7 +5,7 @@ public class Formular {
 	private int nummer;
 	private Feld feld= new Feld();
 	
-	Formular(int nummer, Feld feld) {
+	public Formular(int nummer, Feld feld) {
 		this.nummer = nummer;
 		this.feld = feld;
 	}
