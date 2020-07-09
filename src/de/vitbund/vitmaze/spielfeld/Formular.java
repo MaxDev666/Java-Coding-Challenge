@@ -5,6 +5,10 @@ public class Formular {
 	private int nummer;
 	private Feld feld= new Feld();
 	
+	Formular(int nummer, Feld feld) {
+		this.nummer = nummer;
+		this.feld = feld;
+	}
 	
 	public int getNummer() {
 		return nummer;
