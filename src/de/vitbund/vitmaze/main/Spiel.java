@@ -20,7 +20,6 @@ public class Spiel {
 	String southCellStatus;
 	String westCellStatus;
 	boolean hatZiel;
-	char richtungFeldErstellen;
 	List<Feld> ziele;
 	String ausgabe;
 	
@@ -99,8 +98,7 @@ public class Spiel {
 			
 			if ( bot.getAktuellesFeld().getNorth()==null) {
 				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.startsWith("FINISH ") || this.northCellStatus.startsWith("FORM ")) {
-					this.richtungFeldErstellen='n';
-					this.erstellFeld();
+					this.erstellFeld('n');
 				}
 				if (this.northCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
 					anzahlFormulare =(int)(this.northCellStatus.charAt(this.northCellStatus.length()));
@@ -113,8 +111,7 @@ public class Spiel {
 			}
 			if (bot.getAktuellesFeld().getEast()==null) {
 				if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.startsWith("FINISH ")|| this.eastCellStatus.startsWith("FORM ")) {
-					this.richtungFeldErstellen='e';
-					this.erstellFeld();
+					this.erstellFeld('e');
 
 				}
 				if (this.eastCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
@@ -128,8 +125,7 @@ public class Spiel {
 			}
 			if (bot.getAktuellesFeld().getSouth()==null) {
 				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.startsWith("FINISH ")|| this.southCellStatus.startsWith("FORM ")) {
-					this.richtungFeldErstellen='s';
-					this.erstellFeld();
+					this.erstellFeld('s');
 
 				}
 				if (this.southCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
@@ -143,8 +139,7 @@ public class Spiel {
 			}
 			if (bot.getAktuellesFeld().getWest()==null) {
 				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.startsWith("FINISH ")|| this.westCellStatus.startsWith("FORM ")) {
-					this.richtungFeldErstellen='w';
-					this.erstellFeld();
+					this.erstellFeld('w');
 				}
 				if (this.westCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
 					anzahlFormulare =(int)(this.westCellStatus.charAt(this.westCellStatus.length()));
@@ -180,7 +175,7 @@ public class Spiel {
 	 * 
 	 */
 
-	public void erstellFeld() {
+	public void erstellFeld(char richtungFeldErstellen) {
 		
 			/*	feststellen wohin das Feld soll
 			 * 	-> n e s w
