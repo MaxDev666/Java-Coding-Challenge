@@ -234,7 +234,7 @@ public class Spiel {
 			if (this.currentCellStatus.equals("FORM " + bot.getPlayerId() + " " + formcounter )) {
 				this.ausgabe = bot.take();
 				zugvorbei = true;
-				if (formcounter==howManyForms()) {
+				if (formcounter==howManyForms() && spielfeld.getZielfeld()!=null) {
 					allesGesammelt = true;
 					System.err.println("HABE ALLES GESAMMELT UND GEHE ZUM ZIEL ZU FELD " + spielfeld.getZielfeld());
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(),  spielfeld.getZielfeld()));
@@ -248,7 +248,6 @@ public class Spiel {
 				if (zugvorbei==false) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
 					this.ausgabe = bot.move();
-					zugvorbei = true;
 				}
 			} else {
 				if (zugvorbei==false) {
@@ -259,7 +258,6 @@ public class Spiel {
 					
 					
 					this.ausgabe = bot.move();
-					zugvorbei = true;
 				}
 			}
 			
