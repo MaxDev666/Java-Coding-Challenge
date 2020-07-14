@@ -251,6 +251,12 @@ public class Spiel {
 				}
 			} else {
 				if (zugvorbei==false) {
+					// hier abfragen ob ich am Ende der Route bin und ob 
+					// forms[formcounter].getFeld() == bot.getAktuellesFeld() && !this.currentCellStatus.equals("FORM " + bot.getPlayerId() + " " + formcounter )
+					// dann weiss ich ich bin richtig aber das Formular ist nicht da
+					// hier muss ich jetzt alle Nachbarfelder meines Feldes in die aktuelle Route kriegen  und am besten deren Nachbarn
+					
+					
 					this.ausgabe = bot.move();
 				}
 			}
