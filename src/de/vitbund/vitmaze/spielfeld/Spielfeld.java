@@ -17,7 +17,7 @@ public class Spielfeld {
 	private List<Feld> formularFelder = new ArrayList<Feld>();
 	
 	// Felde Ziel merken
-	private Feld Zielfeld = new Feld();
+	private Feld Zielfeld;
 	
 	// noch zu erkundende Felder merken
 	private List<Feld> unbekannteFelder = new ArrayList<Feld>();
@@ -44,11 +44,18 @@ public class Spielfeld {
 		this.formularFelder = formularFelder;
 	}
 
+	public Spielfeld() {
+		this.Zielfeld = new Feld();
+		this.Zielfeld = null;
+	}
+	
 	public Feld getZielfeld() {
 		return Zielfeld;
 	}
 	public void setZielfeld(Feld zielfeld) {
-		Zielfeld = zielfeld;
+		if (this.Zielfeld==null) {
+			Zielfeld = zielfeld;
+		}
 	}
 	public int getSizeX() {
 		return sizeX;

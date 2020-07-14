@@ -162,8 +162,9 @@ public class Standardbot {
 		bla.append("Im Süden ist : " + this.aktuellesFeld.getSouth() + "\n");
 		bla.append("Im Westen ist: " + this.aktuellesFeld.getWest() + "\n");
 		if (this.hatRoute()) {
-			bla.append("Ich will zum Feld: " + aktuelleRoute.get(0) + "\n");
-		} else { bla.append("Ich habe noch keine Route" + "\n");}
+			bla.append("Ich HABE ROUTE und will zum Feld: " + aktuelleRoute.get(0) + "\n");
+		} else { bla.append("Ich habe noch KEINE ROUTE" + "\n");}
+		bla.append(spielfeld.getZielfeld() + " ist das ZielFeld \n");
 		System.err.println(bla.toString());
 		
 	}

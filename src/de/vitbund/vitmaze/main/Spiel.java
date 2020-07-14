@@ -27,12 +27,24 @@ public class Spiel {
 	int formID;
 	int formcounter;
 	boolean formFound;
+	boolean allesGesammelt;
 	
 	
 	// Klasse Formular noch anlegen
 	// int id
 	// Feld feld
 	// String aufheben
+	
+	public int howManyForms() {
+		int i=0;
+		for (Formular f:forms) {
+			if (f != null) {
+				i++;
+			}
+		}
+		return i;
+	}
+	
 	
 	public void init() {
 		// Spielfeld anlegen und Startdaten setzen
@@ -62,10 +74,13 @@ public class Spiel {
 		hatZiel=false;
 		anzahlFormulare=999;
 		forms = new Formular[9];
+		for (Formular bla : forms) {
+			bla = null;
+		}
 		formID=0;
 		formcounter = 1;
 		formFound = false;
-		
+		allesGesammelt = false;
 		ausgabe = new String("position");
 		
 	}
@@ -102,25 +117,29 @@ public class Spiel {
 	 * 			nein: erkunde und finde Formulare
 	 */
 	public void erkunden() {
-
+		if (!allesGesammelt) {
 		if ( bot.getAktuellesFeld().getNorth()==null) {
 			if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.startsWith("FINISH ") || this.northCellStatus.startsWith("FORM ")) {
 				this.erstellFeld('n');
 			}
 			if (this.northCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
-				anzahlFormulare =(int)(this.northCellStatus.charAt(this.northCellStatus.length()-1));
+				anzahlFormulare =Integer.parseInt(String.valueOf(this.northCellStatus.charAt(this.northCellStatus.length()-1)));
 				spielfeld.setZielfeld(bot.getAktuellesFeld().getNorth());
 			}
 
 			if(this.northCellStatus.startsWith("FORM " +bot.getPlayerId())) {
-				formID = (int)(this.northCellStatus.charAt(this.northCellStatus.length()-1));
+				formID = Integer.parseInt(String.valueOf(this.northCellStatus.charAt(this.northCellStatus.length()-1)));
+				System.err.println(this.northCellStatus.charAt(this.northCellStatus.length()-1) + " " + formID);
 				//Aufnehmen muss noch überarbeitet werden
-				if (formID==formcounter) {
-					formFound = true;
-					formcounter++;
-				}else {
+				if (forms[formID]==null) {
 					Formular formular = new Formular(formID, bot.getAktuellesFeld().getNorth());
 					forms[formID] = formular; 
+				}
+				
+				if (formID==formcounter) {
+					formFound = true;
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formID].getFeld()));
+					
 				}	
 			}
 		}
@@ -130,20 +149,27 @@ public class Spiel {
 
 			}
 			if (this.eastCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
-				anzahlFormulare =(int)(this.eastCellStatus.charAt(this.eastCellStatus.length()));
+				anzahlFormulare =Integer.parseInt(String.valueOf(this.eastCellStatus.charAt(this.eastCellStatus.length()-1)));
 				spielfeld.setZielfeld(bot.getAktuellesFeld().getEast());
 			}
 
 			if(this.eastCellStatus.startsWith("FORM " +bot.getPlayerId())) {
-				formID = (int)(this.eastCellStatus.charAt(this.eastCellStatus.length()-1));
+
+				formID = Integer.parseInt(String.valueOf(this.eastCellStatus.charAt(this.eastCellStatus.length()-1)));
+				System.err.println("Im Osten ist ein Formular Nummer " + formID + " aktuell suche ich " + formcounter);
+				
 				//Aufnehmen muss noch überarbeitet werden
-				if (formID==formcounter) {
-					formFound = true;
-					formcounter++;
-				}else {
+				if (forms[formID]==null) {
 					Formular formular = new Formular(formID, bot.getAktuellesFeld().getEast());
 					forms[formID] = formular; 
 				}
+				
+				if (formID==formcounter) {
+					System.err.println("ICH LAUFE ZUM FORMULAR");
+					formFound = true;
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formID].getFeld()));
+					
+				}	
 			}
 		}
 		if (bot.getAktuellesFeld().getSouth()==null) {
@@ -152,20 +178,23 @@ public class Spiel {
 
 			}
 			if (this.southCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
-				anzahlFormulare =(int)(this.southCellStatus.charAt(this.southCellStatus.length()));
+				anzahlFormulare =Integer.parseInt(String.valueOf(this.southCellStatus.charAt(this.southCellStatus.length()-1)));
 				spielfeld.setZielfeld(bot.getAktuellesFeld().getSouth());
 			}
 
 			if(this.southCellStatus.startsWith("FORM " +bot.getPlayerId())) {
-				formID = (int)(this.southCellStatus.charAt(this.southCellStatus.length()-1));
+				formID = Integer.parseInt(String.valueOf(this.southCellStatus.charAt(this.southCellStatus.length()-1)));
 				//Aufnehmen muss noch überarbeitet werden
-				if (formID==formcounter) {
-					formFound = true;
-					formcounter++;
-				}else {
+				if (forms[formID]==null) {
 					Formular formular = new Formular(formID, bot.getAktuellesFeld().getSouth());
 					forms[formID] = formular; 
 				}
+				
+				if (formID==formcounter) {
+					formFound = true;
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formID].getFeld()));
+					
+				}	
 			}
 		}
 		if (bot.getAktuellesFeld().getWest()==null) {
@@ -173,34 +202,64 @@ public class Spiel {
 				this.erstellFeld('w');
 			}
 			if (this.westCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
-				anzahlFormulare =(int)(this.westCellStatus.charAt(this.westCellStatus.length()));
+				anzahlFormulare =Integer.parseInt(String.valueOf(this.westCellStatus.charAt(this.westCellStatus.length()-1)));
 				spielfeld.setZielfeld(bot.getAktuellesFeld().getWest());
 			}
 
 			if(this.westCellStatus.startsWith("FORM " +bot.getPlayerId())) {
-				formID = (int)(this.westCellStatus.charAt(this.westCellStatus.length()-1));
+				formID = Integer.parseInt(String.valueOf(this.westCellStatus.charAt(this.westCellStatus.length()-1)));
 				//Aufnehmen muss noch überarbeitet werden
-				if (formID==formcounter) {
-					formFound = true;
-					formcounter++;
-				}else {
+				if (forms[formID]==null) {
 					Formular formular = new Formular(formID, bot.getAktuellesFeld().getWest());
 					forms[formID] = formular; 
 				}
+				if (formID==formcounter) {
+					formFound = true;
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formID].getFeld()));
+					
+				}	
 			}
 		}
 		bot.getUpdate();
 
+		// wenn ich alle Formulare habe
+
+		if (howManyForms()==anzahlFormulare) {
+			if (allesGesammelt) {
+				if (spielfeld.getZielfeld() == bot.getAktuellesFeld()) {
+					this.ausgabe = "finish";
+				}
+			} else {
+				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formcounter].getFeld()));
+			}
+		}	
+		
 		if (bot.hatRoute()==false) {
-			bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
-			this.ausgabe = bot.move();
-		} else {
-			this.ausgabe = bot.move();
+				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
+				this.ausgabe = bot.move();
+			} else {
+				this.ausgabe = bot.move();
+		}
+		
+		if (this.currentCellStatus.equals("FORM " + bot.getPlayerId() + " " + formcounter )) {
+			this.ausgabe = bot.take();		
+			if (formcounter==howManyForms()) {
+				allesGesammelt = true;
+				System.err.println("HABE ALLES GESAMMELT UND GEHE ZUM ZIEL " + spielfeld.getZielfeld());
+				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(),  spielfeld.getZielfeld()));
+				this.ausgabe = "move";
+			} else {
+				formcounter++;
+			}
+		}} else {
+			if (spielfeld.getZielfeld() == bot.getAktuellesFeld()) {
+				this.ausgabe = "finish";
+			} else {
+				this.ausgabe = "move";
+			}
 		}
 
-		if (formFound) {
-			this.ausgabe = bot.take();
-		}
+
 	}
 
 	public void erstellFeld(char richtungFeldErstellen) {
