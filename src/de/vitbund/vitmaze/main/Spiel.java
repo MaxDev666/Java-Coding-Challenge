@@ -248,6 +248,7 @@ public class Spiel {
 				if (zugvorbei==false) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
 					this.ausgabe = bot.move();
+					zugvorbei = true;
 				}
 			} else {
 				if (zugvorbei==false) {
@@ -258,6 +259,7 @@ public class Spiel {
 					
 					
 					this.ausgabe = bot.move();
+					zugvorbei = true;
 				}
 			}
 			
