@@ -2,6 +2,8 @@ package de.vitbund.vitmaze.main;
 
 import java.util.List;
 
+import javax.sound.midi.SysexMessage;
+
 import de.vitbund.vitmaze.eingabe.Eingabe;
 import de.vitbund.vitmaze.players.Standardbot;
 import de.vitbund.vitmaze.spielfeld.Feld;
@@ -28,7 +30,7 @@ public class Spiel {
 	int formcounter;
 	boolean formFound;
 	boolean allesGesammelt;
-	
+	boolean zugvorbei;
 	
 	// Klasse Formular noch anlegen
 	// int id
@@ -101,7 +103,7 @@ public class Spiel {
 
 		bot.getUpdate();
 		
-
+		System.err.println("Ich sage: " + ausgabe);
 		System.out.println(ausgabe);
 
 		
@@ -117,6 +119,7 @@ public class Spiel {
 	 * 			nein: erkunde und finde Formulare
 	 */
 	public void erkunden() {
+		zugvorbei = false;
 		if (!allesGesammelt) {
 			if ( bot.getAktuellesFeld().getNorth()==null) {
 				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.startsWith("FINISH ") || this.northCellStatus.startsWith("FORM ")) {
@@ -226,21 +229,29 @@ public class Spiel {
 	
 
 			
-			if (bot.hatRoute()==false) {
-					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
-					this.ausgabe = bot.move();
-				} else {
-					this.ausgabe = bot.move();
-			}
+
 			
 			if (this.currentCellStatus.equals("FORM " + bot.getPlayerId() + " " + formcounter )) {
-				this.ausgabe = bot.take();		
+				this.ausgabe = bot.take();
+				zugvorbei = true;
 				if (formcounter==howManyForms()) {
 					allesGesammelt = true;
-					System.err.println("HABE ALLES GESAMMELT UND GEHE ZUM ZIEL");
+					System.err.println("HABE ALLES GESAMMELT UND GEHE ZUM ZIEL ZU FELD " + spielfeld.getZielfeld());
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(),  spielfeld.getZielfeld()));
+					bot.getUpdate();
 				} else {
 					formcounter++;
+				}
+			}
+			
+			if (bot.hatRoute()==false) {
+				if (zugvorbei==false) {
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
+					this.ausgabe = bot.move();
+				}
+			} else {
+				if (zugvorbei==false) {
+					this.ausgabe = bot.move();
 				}
 			}
 			
@@ -254,9 +265,9 @@ public class Spiel {
 			
 		} else {
 			if (spielfeld.getZielfeld() == bot.getAktuellesFeld()) {
-				this.ausgabe = "finish";
+				this.ausgabe = bot.finish();
 			} else {
-				this.ausgabe = "move";
+				this.ausgabe = bot.move();
 			}
 		}
 

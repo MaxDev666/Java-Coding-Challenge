@@ -110,6 +110,10 @@ public class Standardbot {
 		return "take";
 	}
 	
+	public String finish() {
+		return "finish";
+	}
+	
 	public String goWest() {
 		this.setAktuellesFeld(this.getAktuellesFeld().getWest());
 		if (this.getBotX()-1 < 0) {
