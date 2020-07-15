@@ -127,49 +127,64 @@ public class Spiel {
 		
 	}
 	
-	// public String getCellStatus(String richtung){
-	//
-	//
-	// }
+	public String getCellStatus(char richtung){
+		switch(richtung) {
+		case 'n':
+			return this.northCellStatus;
+			
+		case 'e':
+			return this.eastCellStatus;
+			
+		case 's':
+			return this.southCellStatus;
+			
+		case 'w':
+			return this.westCellStatus;
+			
+		default: 
+			return "kein Status";			
+		}
+		
+	}
 	
 	public void erkunden() {
 			if ( bot.getAktuellesFeld().getNorth()==null) {
-				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.startsWith("FINISH ")) {
+				if (getCellStatus('n').equals("FLOOR") || getCellStatus('n').startsWith("FINISH ")) {
 					this.erstellFeld('n');
 				}
-				if (this.northCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+				if (getCellStatus('n').startsWith("FINISH " +bot.getPlayerId())) {
 					spielfeld.setZielfeld(bot.getAktuellesFeld().getNorth());
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
 				}
 
 			}
 			if (bot.getAktuellesFeld().getEast()==null) {
-				if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.startsWith("FINISH ")) {
+				if (getCellStatus('e').equals("FLOOR") || getCellStatus('e').startsWith("FINISH ")) {
 					this.erstellFeld('e');
 	
 				}
-				if (this.eastCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+				if (getCellStatus('e').startsWith("FINISH " +bot.getPlayerId())) {
 					spielfeld.setZielfeld(bot.getAktuellesFeld().getEast());
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
 				}
 	
 			}
 			if (bot.getAktuellesFeld().getSouth()==null) {
-				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.startsWith("FINISH ")) {
+				if (getCellStatus('s').equals("FLOOR") ||  getCellStatus('s').startsWith("FINISH ")) {
 					this.erstellFeld('s');
 	
 				}
-				if (this.southCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+				if (getCellStatus('s').startsWith("FINISH " +bot.getPlayerId())) {
 					spielfeld.setZielfeld(bot.getAktuellesFeld().getSouth());
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
 				}
 	
 			}
 			if (bot.getAktuellesFeld().getWest()==null) {
-				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.startsWith("FINISH ")) {
+				if (getCellStatus('w').equals("FLOOR")||  getCellStatus('w').startsWith("FINISH ")) {
 					this.erstellFeld('w');
 				}
-				if (this.westCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+				if (getCellStatus('w').startsWith("FINISH " +bot.getPlayerId())) {
 					spielfeld.setZielfeld(bot.getAktuellesFeld().getWest());
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
 				}
