@@ -146,50 +146,33 @@ public class Spiel {
 		}
 		
 	}
+	//den Status der Felder erhalten und dementsprechend Felder erstellen
+	public void schauerichtung(char richtung) {
+		if (getCellStatus(richtung).equals("FLOOR") || getCellStatus(richtung).startsWith("FINISH ")) {
+			this.erstellFeld(richtung);
+		}
+		if (getCellStatus(richtung).startsWith("FINISH " +bot.getPlayerId())) {
+			spielfeld.setZielfeld(bot.getAktuellesFeld().getNorth());
+			bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
+		}
+	}
 	
+//ruft Methode(schauerichtung) von oben für entsprechende Richtungen auf
 	public void erkunden() {
 			if ( bot.getAktuellesFeld().getNorth()==null) {
-				if (getCellStatus('n').equals("FLOOR") || getCellStatus('n').startsWith("FINISH ")) {
-					this.erstellFeld('n');
-				}
-				if (getCellStatus('n').startsWith("FINISH " +bot.getPlayerId())) {
-					spielfeld.setZielfeld(bot.getAktuellesFeld().getNorth());
-					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
-				}
-
+				schauerichtung('n');
 			}
 			if (bot.getAktuellesFeld().getEast()==null) {
-				if (getCellStatus('e').equals("FLOOR") || getCellStatus('e').startsWith("FINISH ")) {
-					this.erstellFeld('e');
-	
-				}
-				if (getCellStatus('e').startsWith("FINISH " +bot.getPlayerId())) {
-					spielfeld.setZielfeld(bot.getAktuellesFeld().getEast());
-					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
-				}
-	
+				schauerichtung('e');
 			}
 			if (bot.getAktuellesFeld().getSouth()==null) {
-				if (getCellStatus('s').equals("FLOOR") ||  getCellStatus('s').startsWith("FINISH ")) {
-					this.erstellFeld('s');
-	
-				}
-				if (getCellStatus('s').startsWith("FINISH " +bot.getPlayerId())) {
-					spielfeld.setZielfeld(bot.getAktuellesFeld().getSouth());
-					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
-				}
-	
+				schauerichtung('s');
 			}
 			if (bot.getAktuellesFeld().getWest()==null) {
-				if (getCellStatus('w').equals("FLOOR")||  getCellStatus('w').startsWith("FINISH ")) {
-					this.erstellFeld('w');
-				}
-				if (getCellStatus('w').startsWith("FINISH " +bot.getPlayerId())) {
-					spielfeld.setZielfeld(bot.getAktuellesFeld().getWest());
-					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
-				}
+				schauerichtung('w');
 			}
-
+//wenn auf sonstigen Feldern ist bzw abbruch von Erkunden bei Ziel
+			
 			if (bot.hatRoute()==false) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
 			} 
