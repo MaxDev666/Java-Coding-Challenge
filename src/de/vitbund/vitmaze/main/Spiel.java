@@ -303,7 +303,8 @@ public class Spiel {
 					break;
 				}
 			case 'e':
-				if (bot.getBotX()+1 > spielfeld.getSizeX()) {
+				if (bot.getBotX()+1 > spielfeld.getSizeX()-1) {
+					System.err.println("Ostkoordinaten: "+bot.getBotX()+" "+spielfeld.getSizeX());
 					wohinx = bot.getBotX() +1 - spielfeld.getSizeX();
 					wohiny= bot.getBotY() ;
 					break;					
@@ -313,7 +314,7 @@ public class Spiel {
 					break;
 				}
 			case 's':
-				if (bot.getBotY()+1 > spielfeld.getSizeY()) {
+				if (bot.getBotY()+1 > spielfeld.getSizeY()-1) {
 					wohinx = bot.getBotX();
 					wohiny= bot.getBotY() + 1 -spielfeld.getSizeY();
 					break;					
@@ -324,6 +325,7 @@ public class Spiel {
 				}
 			case 'w':
 				if (bot.getBotX()-1 <0) {
+					System.err.println("Westkoordinaten: "+bot.getBotX()+" "+spielfeld.getSizeX());
 					wohinx = bot.getBotX() -1 + spielfeld.getSizeX();
 					wohiny= bot.getBotY();
 					break;					
