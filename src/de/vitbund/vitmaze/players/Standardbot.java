@@ -1,5 +1,6 @@
 package de.vitbund.vitmaze.players;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.vitbund.vitmaze.spielfeld.Feld;
@@ -13,7 +14,7 @@ public class Standardbot {
 	private int boty;
 	private Feld aktuellesFeld;
 	private List<Feld> aktuelleRoute;
-
+	private String woherKommeIch;
 
 	public Standardbot(Spielfeld spielfeld) {
 		this.spielfeld = spielfeld;
@@ -68,6 +69,37 @@ public class Standardbot {
 		return aktuelleRoute;
 	}
 	
+	public void sucheUmfeldAb() {
+		// Ring 1
+		Feld Startfeld = this.aktuellesFeld;
+		List<Feld> tempListe = new ArrayList<Feld>();
+		List<Feld> tempListe2 = new ArrayList<Feld>();
+		List<Feld> tempListe3 = new ArrayList<Feld>();
+		// Ring 1 in Array eingefügt
+		for (Feld f : this.aktuellesFeld.getNachbarn()) {
+			tempListe2.add(f);
+			tempListe.addAll(spielfeld.route(Startfeld, f));
+			Startfeld = f;
+		}
+		
+		// Ring2
+		
+		for (Feld f2 : tempListe2) {
+			tempListe3.add(f2);
+			tempListe.addAll(spielfeld.route(Startfeld, f2));
+			Startfeld = f2;
+		}
+		
+		// Ring 3
+		
+		for (Feld f3 : tempListe3) {
+			tempListe.addAll(spielfeld.route(Startfeld, f3));
+			Startfeld = f3;
+		}
+		
+		setAktuelleRoute(tempListe);
+	}
+	
 	public String move() {
 		//System.err.println("unbekannte Felder: " + spielfeld.getUnbekannteFelder());
 		Feld zuFeld = new Feld( );
@@ -110,6 +142,10 @@ public class Standardbot {
 		return "take";
 	}
 	
+	public String kick() {
+		return "kick " + woherKommeIch;
+	}
+	
 	public String finish() {
 		return "finish";
 	}
@@ -121,6 +157,7 @@ public class Standardbot {
 		} else {
 			this.setBotX(this.getBotX()-1);
 		}
+		woherKommeIch = "east";
 		return "go west";	
 	}
 	
@@ -132,6 +169,7 @@ public class Standardbot {
 		} else {
 			this.setBotY(this.getBotY()-1);
 		}
+		woherKommeIch = "south";
 		return "go north";	
 	}
 	
@@ -142,6 +180,7 @@ public class Standardbot {
 		} else {
 			this.setBotX(this.getBotX()+1);
 		}
+		woherKommeIch = "west";
 		return "go east";
 	}
 	
@@ -152,6 +191,7 @@ public class Standardbot {
 		} else {
 			this.setBotY(this.getBotY()+1);
 		}
+		woherKommeIch = "north";
 		return "go south";	
 	}
 	

@@ -104,7 +104,7 @@ public class Spiel {
 		this.westCellStatus = Eingabe.leseZeile();
 		
 		// prüfen was mit letzter Aktion war
-		System.err.println(this.lastActionsResult);
+		System.err.println(this.lastActionsResult + "\n" + this.currentCellStatus + "\n North is:" + this.northCellStatus + "\n East is:" + this.eastCellStatus + "\n South is:" + this.southCellStatus + "\n West is:" + this.westCellStatus);
 		
 		
 		switch (spielfeld.getLevel()) {
@@ -112,6 +112,15 @@ public class Spiel {
 			this.erkunden();
 			break;
 		case 2:
+			this.erkunden2();
+			break;
+		case 3:
+			this.erkunden2();
+			break;
+		case 4:
+			this.erkunden2();
+			break;
+		case 5:
 			this.erkunden2();
 			break;
 		}
@@ -168,20 +177,22 @@ public class Spiel {
 				}
 			}
 			if (getCellStatus(richtung).startsWith("FINISH " + bot.getPlayerId())) {
-				anzahlFormulareString = getCellStatus(richtung).substring(getCellStatus(richtung).length()-2);
-				/*if (anzahlFormulareString.charAt(0)==' ') {
-					anzahlFormulare=Integer.parseInt(anzahlFormulareString.charAt(1)+"");
-					System.err.println("Anzahl der Formulare ist " +anzahlFormulare);
-				}else {*/
-					anzahlFormulare=Integer.parseInt(anzahlFormulareString.trim());
+				anzahlFormulareString = getCellStatus(richtung).replace("!", "").trim().substring(getCellStatus(richtung).replace("!", "").trim().length()-2);
+				System.err.println(getCellStatus(richtung).replace("!", "").trim() + "|" + anzahlFormulareString + "|");
+				if (anzahlFormulareString.charAt(0)==' ') {
+					anzahlFormulare=Character.getNumericValue(anzahlFormulareString.charAt(1));
+				}else {
+					anzahlFormulare=Integer.parseInt(anzahlFormulareString);
 					System.err.println(getCellStatus(richtung));
 					System.err.println("Anzahl der Formulare ist " +anzahlFormulare + " " +  anzahlFormulareString);
-				//}
+				}
 				spielfeld.setZielfeld(bot.getAktuellesFeld().getFeld(richtung));
 			}
 
 			if (getCellStatus(richtung).startsWith("FORM " + bot.getPlayerId())) {
-				formIDString = getCellStatus(richtung).substring(getCellStatus(richtung).length()-2);
+				// TODO Felder mit Feinden müssen noch richtig behandelt werden hier reicht es nicht nur so einen Quatsch wie in der nächsten Zeile zu machen
+				String tempString = getCellStatus(richtung).replace("!", "").replace("!1", "").replace("!2", "").trim();
+				formIDString = tempString.substring(tempString.length()-2);
 				if (formIDString.charAt(0)==' ') {
 					formID=(Character.getNumericValue(formIDString.charAt(1)));
 				}else {
@@ -233,6 +244,18 @@ public class Spiel {
 			bot.getUpdate();
 		// wenn ich alle Formulare habe
 
+			if (this.currentCellStatus.startsWith("FORM ") && !this.currentCellStatus.startsWith("FORM " + bot.getPlayerId())) {
+				if (this.lastActionsResult.equals("NOK BLOCKED")){
+					System.err.println("Dann halt nciht, neue Route");
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
+					this.ausgabe = bot.move();
+					zugvorbei = true;
+				} else {
+					this.ausgabe = bot.kick();
+					zugvorbei = true;
+				}
+			}
+			
 			if (this.currentCellStatus.equals("FORM " + bot.getPlayerId() + " " + formcounter )) {
 				this.ausgabe = bot.take();
 				zugvorbei = true;
@@ -257,9 +280,14 @@ public class Spiel {
 					// forms[formcounter].getFeld() == bot.getAktuellesFeld() && !this.currentCellStatus.equals("FORM " + bot.getPlayerId() + " " + formcounter )
 					// dann weiss ich ich bin richtig aber das Formular ist nicht da
 					// hier muss ich jetzt alle Nachbarfelder meines Feldes in die aktuelle Route kriegen  und am besten deren Nachbarn
-					
+					/*
+					 * TODO hier muss noch angepasst werden
+					 * if (forms[formcounter].getFeld()!= null && forms[formcounter].getFeld() == bot.getAktuellesFeld() && !this.currentCellStatus.startsWith("FORM " + bot.getPlayerId() + " " + formcounter )) {
+						bot.sucheUmfeldAb();
+					}*/
 					
 					this.ausgabe = bot.move();
+					
 				}
 			}
 			if (howManyForms()==anzahlFormulare) {
