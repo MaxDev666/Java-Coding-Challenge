@@ -151,6 +151,7 @@ public class Spiel {
 	public void schauerichtung(char richtung) {
 		if (bot.getAktuellesFeld().getFeld(richtung) == null) {
 			if (getCellStatus(richtung).startsWith("FLOOR") || getCellStatus(richtung).startsWith("FINISH ")) {
+				System.err.println(richtung  + " ist ein Feld");
 				this.erstellFeld(richtung);
 			}
 			if (getCellStatus(richtung).startsWith("FINISH " + bot.getPlayerId())) {
@@ -168,11 +169,14 @@ public class Spiel {
 			}
 			if (getCellStatus(richtung).startsWith("FINISH " + bot.getPlayerId())) {
 				anzahlFormulareString = getCellStatus(richtung).substring(getCellStatus(richtung).length()-2);
-				if (anzahlFormulareString.charAt(0)==' ') {
-					anzahlFormulare=(Character.getNumericValue(anzahlFormulareString.charAt(1)));
-				}else {
-					anzahlFormulare=Integer.parseInt(anzahlFormulareString);
-				}
+				/*if (anzahlFormulareString.charAt(0)==' ') {
+					anzahlFormulare=Integer.parseInt(anzahlFormulareString.charAt(1)+"");
+					System.err.println("Anzahl der Formulare ist " +anzahlFormulare);
+				}else {*/
+					anzahlFormulare=Integer.parseInt(anzahlFormulareString.trim());
+					System.err.println(getCellStatus(richtung));
+					System.err.println("Anzahl der Formulare ist " +anzahlFormulare + " " +  anzahlFormulareString);
+				//}
 				spielfeld.setZielfeld(bot.getAktuellesFeld().getFeld(richtung));
 			}
 
@@ -204,6 +208,7 @@ public class Spiel {
 				schauerichtung('e');
 				schauerichtung('s');
 				schauerichtung('w');
+				
 //wenn auf sonstigen Feldern, bzw abbruch von Erkunden bei Ziel
 			if (bot.hatRoute()==false) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
@@ -226,7 +231,6 @@ public class Spiel {
 			schauerichtung2('s');
 			schauerichtung2('w');
 			bot.getUpdate();
-
 		// wenn ich alle Formulare habe
 
 			if (this.currentCellStatus.equals("FORM " + bot.getPlayerId() + " " + formcounter )) {
@@ -258,7 +262,6 @@ public class Spiel {
 					this.ausgabe = bot.move();
 				}
 			}
-			
 			if (howManyForms()==anzahlFormulare) {
 				if (!allesGesammelt) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formcounter].getFeld()));
@@ -293,9 +296,10 @@ public class Spiel {
 			int wohiny = 0;
 			switch (richtungFeldErstellen) {
 			case 'n':
+				System.err.println("case n");
 				if (bot.getBotY()-1 <0) {
 					wohinx = bot.getBotX();
-					wohiny= bot.getBotY() - 1 +spielfeld.getSizeY();
+					wohiny= spielfeld.getSizeY()-1;
 					break;					
 				} else {
 					wohinx=bot.getBotX();
@@ -303,9 +307,10 @@ public class Spiel {
 					break;
 				}
 			case 'e':
-				if (bot.getBotX()+1 > spielfeld.getSizeX()-1) {
+				System.err.println("case e");
+				if (bot.getBotX()+1 == spielfeld.getSizeX()) {
 					System.err.println("Ostkoordinaten: "+bot.getBotX()+" "+spielfeld.getSizeX());
-					wohinx = bot.getBotX() +1 - spielfeld.getSizeX();
+					wohinx = 0;
 					wohiny= bot.getBotY() ;
 					break;					
 				} else {
@@ -314,9 +319,11 @@ public class Spiel {
 					break;
 				}
 			case 's':
-				if (bot.getBotY()+1 > spielfeld.getSizeY()-1) {
+				System.err.println("case s");
+				System.err.println("Südkoordinaten: "+bot.getBotY()+" "+spielfeld.getSizeY());
+				if (bot.getBotY()+1 == spielfeld.getSizeY()) {
 					wohinx = bot.getBotX();
-					wohiny= bot.getBotY() + 1 -spielfeld.getSizeY();
+					wohiny= 0;
 					break;					
 				} else {
 					wohinx=bot.getBotX();
@@ -324,9 +331,10 @@ public class Spiel {
 					break;
 				}
 			case 'w':
+				System.err.println("case w");
 				if (bot.getBotX()-1 <0) {
 					System.err.println("Westkoordinaten: "+bot.getBotX()+" "+spielfeld.getSizeX());
-					wohinx = bot.getBotX() -1 + spielfeld.getSizeX();
+					wohinx = spielfeld.getSizeX()-1;
 					wohiny= bot.getBotY();
 					break;					
 				} else {

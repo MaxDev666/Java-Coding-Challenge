@@ -117,7 +117,7 @@ public class Standardbot {
 	public String goWest() {
 		this.setAktuellesFeld(this.getAktuellesFeld().getWest());
 		if (this.getBotX()-1 < 0) {
-			this.setBotX(this.getBotX()-1 +spielfeld.getSizeX());
+			this.setBotX(spielfeld.getSizeX()-1);
 		} else {
 			this.setBotX(this.getBotX()-1);
 		}
@@ -128,7 +128,7 @@ public class Standardbot {
 	public String goNorth() {
 		this.aktuellesFeld = this.aktuellesFeld.getNorth();
 		if (this.getBotY()-1 < 0) {
-			this.setBotY(this.getBotY()-1 +spielfeld.getSizeY());
+			this.setBotY( +spielfeld.getSizeY()-1);
 		} else {
 			this.setBotY(this.getBotY()-1);
 		}
@@ -137,8 +137,8 @@ public class Standardbot {
 	
 	public String goEast() {
 		this.aktuellesFeld = this.aktuellesFeld.getEast();
-		if (this.getBotX()+1 > spielfeld.getSizeX()) {
-			this.setBotX(this.getBotX()+1 -spielfeld.getSizeX());
+		if (this.getBotX()+1 == spielfeld.getSizeX()) {
+			this.setBotX(0);
 		} else {
 			this.setBotX(this.getBotX()+1);
 		}
@@ -147,8 +147,8 @@ public class Standardbot {
 	
 	public String goSouth() {
 		this.aktuellesFeld = this.aktuellesFeld.getSouth();
-		if (this.getBotY()+1 > spielfeld.getSizeY()) {
-			this.setBotY(this.getBotY()+1 -spielfeld.getSizeY());
+		if (this.getBotY()+1 == spielfeld.getSizeY()) {
+			this.setBotY(0);
 		} else {
 			this.setBotY(this.getBotY()+1);
 		}
@@ -156,21 +156,36 @@ public class Standardbot {
 	}
 	
 	public void getUpdate() {
-		
 		StringBuilder bla = new StringBuilder();
 		bla.append("###################################################################" + "\n");
 		bla.append("Ich stehe am Anfang des Zuges auf dem Feld: " + this.aktuellesFeld.getxKoordinate() + "|"+ this.aktuellesFeld.getyKoordinate() + "\n");
 		bla.append("x: " + this.getBotX() + " y: " + this.getBotY() + "\n");
-		bla.append("Im Norden ist: " + this.aktuellesFeld.getNorth() + "\n");
-		bla.append("Im Osten ist: " + this.aktuellesFeld.getEast() + "\n");
-		bla.append("Im Süden ist : " + this.aktuellesFeld.getSouth() + "\n");
-		bla.append("Im Westen ist: " + this.aktuellesFeld.getWest() + "\n");
+		bla.append("Im Norden ist: " + this.aktuellesFeld.getNorth()+ "\n");
+		if (this.aktuellesFeld.getNorth()!=null) {
+			bla.append("Im Norden ist: " + this.aktuellesFeld.getNorth().getxKoordinate() + this.aktuellesFeld.getNorth().getyKoordinate() + "\n");
+		}
+		bla.append("Im Osten ist: " + this.aktuellesFeld.getEast()+ "\n");
+		if (this.aktuellesFeld.getEast()!=null) {
+			bla.append("Im Osten ist: " + this.aktuellesFeld.getEast().getxKoordinate() + this.aktuellesFeld.getEast().getyKoordinate() + "\n");
+		}
+		bla.append("Im Süden ist : " + this.aktuellesFeld.getSouth()+ "\n");
+		if (this.aktuellesFeld.getSouth()!=null) {
+		bla.append("Im Süden ist : " + this.aktuellesFeld.getSouth().getxKoordinate() + this.aktuellesFeld.getSouth().getyKoordinate() + "\n");
+		}
+		bla.append("Im Westen ist: " + this.aktuellesFeld.getWest()+ "\n");
+		if (this.getAktuellesFeld().getWest()!=null) {
+			bla.append("Im Westen ist: " + this.aktuellesFeld.getWest().getxKoordinate() + this.aktuellesFeld.getWest().getyKoordinate() + "\n");
+		}
 		if (this.hatRoute()) {
-			bla.append("Ich HABE ROUTE und will zum Feld: " + aktuelleRoute.get(0) + "\n");
+			for (Feld f : aktuelleRoute) {
+				bla.append("x: " +f.getxKoordinate() + " y:" + f.getyKoordinate() + " | ");
+			}
+			bla.append("Ich HABE ROUTE und will zum Feld: x: " + aktuelleRoute.get(0).getxKoordinate() + " y: " + aktuelleRoute.get(0).getyKoordinate()+ "\n");
 		} else { bla.append("Ich habe noch KEINE ROUTE" + "\n");}
-		bla.append(spielfeld.getZielfeld() + " ist das ZielFeld \n");
+		if (spielfeld.getZielfeld()!=null) {
+			bla.append("x: " + spielfeld.getZielfeld().getxKoordinate() + " y: " + spielfeld.getZielfeld().getyKoordinate() + " ist das ZielFeld \n");
+		}
 		System.err.println(bla.toString());
-		
 	}
 	
 }
