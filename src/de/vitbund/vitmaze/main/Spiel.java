@@ -37,6 +37,11 @@ public class Spiel {
 	// Feld feld
 	// String aufheben
 	
+	
+	/***
+	 * Wie viele Formulare hat der Bot bereits entdeckt?
+	 * @return Anzahl entdeckter Formulare
+	 */
 	public int howManyForms() {
 		int i=0;
 		for (Formular f:forms) {
@@ -97,12 +102,24 @@ public class Spiel {
 		this.southCellStatus = Eingabe.leseZeile();
 		this.westCellStatus = Eingabe.leseZeile();
 		
-			
-		this.erkunden();
+		// prüfen was mit letzter Aktion war
+		System.err.println(this.lastActionsResult);
+		
+		
+		switch (spielfeld.getLevel()) {
+		case 1:
+			this.erkunden();
+			break;
+		case 2:
+			this.erkunden2();
+			break;
+		}
 
 
 		bot.getUpdate();
 		
+		
+		// hier Aktion ausführen
 		System.err.println("Ich sage: " + ausgabe);
 		System.out.println(ausgabe);
 
@@ -119,6 +136,61 @@ public class Spiel {
 	 * 			nein: erkunde und finde Formulare
 	 */
 	public void erkunden() {
+			if ( bot.getAktuellesFeld().getNorth()==null) {
+				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.startsWith("FINISH ")) {
+					this.erstellFeld('n');
+				}
+				if (this.northCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+					spielfeld.setZielfeld(bot.getAktuellesFeld().getNorth());
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
+				}
+
+			}
+			if (bot.getAktuellesFeld().getEast()==null) {
+				if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.startsWith("FINISH ")) {
+					this.erstellFeld('e');
+	
+				}
+				if (this.eastCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+					spielfeld.setZielfeld(bot.getAktuellesFeld().getEast());
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
+				}
+	
+			}
+			if (bot.getAktuellesFeld().getSouth()==null) {
+				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.startsWith("FINISH ")) {
+					this.erstellFeld('s');
+	
+				}
+				if (this.southCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+					spielfeld.setZielfeld(bot.getAktuellesFeld().getSouth());
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
+				}
+	
+			}
+			if (bot.getAktuellesFeld().getWest()==null) {
+				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.startsWith("FINISH ")) {
+					this.erstellFeld('w');
+				}
+				if (this.westCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
+					spielfeld.setZielfeld(bot.getAktuellesFeld().getWest());
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
+				}
+			}
+
+			if (bot.hatRoute()==false) {
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
+			} 
+			if (spielfeld.getZielfeld() == bot.getAktuellesFeld()) {
+				this.ausgabe = bot.finish();
+			} else {
+				this.ausgabe = bot.move();
+			}
+
+
+	}
+	
+	public void erkunden2() {
 		zugvorbei = false;
 		if (!allesGesammelt) {
 			if ( bot.getAktuellesFeld().getNorth()==null) {
