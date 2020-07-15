@@ -127,14 +127,11 @@ public class Spiel {
 		
 	}
 	
-	/*
-	 * 	haben wir ein Ziel?
-	 * 		haben wir alle formulare?
-	 * 			-> gehe zu Ziel
-	 * 		nein: wissen wir wo Formulare sind?
-	 * 			-> sammeln gehen
-	 * 			nein: erkunde und finde Formulare
-	 */
+	// public String getCellStatus(String richtung){
+	//
+	//
+	// }
+	
 	public void erkunden() {
 			if ( bot.getAktuellesFeld().getNorth()==null) {
 				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.startsWith("FINISH ")) {

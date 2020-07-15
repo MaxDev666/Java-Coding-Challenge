@@ -56,6 +56,10 @@ public class Feld {
 	public Feld getSouth() {
 		return south;
 	}
+	
+	// public getFeld(String richtung)
+	
+	
 	public void setSouth(Feld south) {
 		this.south = south;
 	}
