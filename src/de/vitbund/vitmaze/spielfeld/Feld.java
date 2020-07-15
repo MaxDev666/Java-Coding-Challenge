@@ -57,9 +57,6 @@ public class Feld {
 		return south;
 	}
 	
-	// public getFeld(String richtung)
-	
-	
 	public void setSouth(Feld south) {
 		this.south = south;
 	}
@@ -147,6 +144,21 @@ public class Feld {
 			return "west";
 		}else {
 			return "Feld kein Nachbar";
+		}
+	}
+	
+	public Feld getFeld(char richtung) {
+		switch (richtung) {
+		case 'n':
+			return this.getNorth();
+		case 'e':
+			return this.getEast();
+		case 's':
+			return this.getSouth();
+		case 'w':
+			return this.getWest();
+		default:
+			return this;
 		}
 	}
 }
