@@ -151,27 +151,45 @@ public class Spiel {
 		if (getCellStatus(richtung).equals("FLOOR") || getCellStatus(richtung).startsWith("FINISH ")) {
 			this.erstellFeld(richtung);
 		}
-		if (getCellStatus(richtung).startsWith("FINISH " +bot.getPlayerId())) {
-			spielfeld.setZielfeld(bot.getAktuellesFeld().getNorth());
-			bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
+	}
+	//den Status der Felder erhalten und dementsprechend Felder erstellen bei erkunden 2 (mit Formularen)
+	public void schauerichtung2(char richtung) {
+		if (getCellStatus(richtung).equals("FLOOR") || getCellStatus(richtung).startsWith("FORM ") || getCellStatus(richtung).startsWith("FINISH ")) {
+			this.erstellFeld(richtung);
 		}
 	}
 	
 //ruft Methode(schauerichtung) von oben für entsprechende Richtungen auf
 	public void erkunden() {
-			if ( bot.getAktuellesFeld().getNorth()==null) {
+			if (bot.getAktuellesFeld().getNorth()==null) {
 				schauerichtung('n');
+				if (getCellStatus('n').startsWith("FINISH " +bot.getPlayerId())) {
+					spielfeld.setZielfeld(bot.getAktuellesFeld().getNorth());
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
+				}
 			}
 			if (bot.getAktuellesFeld().getEast()==null) {
 				schauerichtung('e');
+				if (getCellStatus('e').startsWith("FINISH " +bot.getPlayerId())) {
+					spielfeld.setZielfeld(bot.getAktuellesFeld().getEast());
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
+				}
 			}
 			if (bot.getAktuellesFeld().getSouth()==null) {
 				schauerichtung('s');
+				if (getCellStatus('s').startsWith("FINISH " +bot.getPlayerId())) {
+					spielfeld.setZielfeld(bot.getAktuellesFeld().getSouth());
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
+				}
 			}
 			if (bot.getAktuellesFeld().getWest()==null) {
 				schauerichtung('w');
+				if (getCellStatus('w').startsWith("FINISH " +bot.getPlayerId())) {
+					spielfeld.setZielfeld(bot.getAktuellesFeld().getWest());
+					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
+				}
 			}
-//wenn auf sonstigen Feldern ist bzw abbruch von Erkunden bei Ziel
+//wenn auf sonstigen Feldern, bzw abbruch von Erkunden bei Ziel
 			
 			if (bot.hatRoute()==false) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
@@ -189,8 +207,7 @@ public class Spiel {
 		zugvorbei = false;
 		if (!allesGesammelt) {
 			if ( bot.getAktuellesFeld().getNorth()==null) {
-				if (this.northCellStatus.equals("FLOOR") || this.northCellStatus.startsWith("FINISH ") || this.northCellStatus.startsWith("FORM ")) {
-					this.erstellFeld('n');
+				schauerichtung2('n');
 				}
 				if (this.northCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
 					anzahlFormulare =Integer.parseInt(String.valueOf(this.northCellStatus.charAt(this.northCellStatus.length()-1)));
@@ -214,9 +231,7 @@ public class Spiel {
 				}
 			}
 			if (bot.getAktuellesFeld().getEast()==null) {
-				if (this.eastCellStatus.equals("FLOOR") || this.eastCellStatus.startsWith("FINISH ")|| this.eastCellStatus.startsWith("FORM ")) {
-					this.erstellFeld('e');
-	
+				schauerichtung2('e');
 				}
 				if (this.eastCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
 					anzahlFormulare =Integer.parseInt(String.valueOf(this.eastCellStatus.charAt(this.eastCellStatus.length()-1)));
@@ -243,9 +258,7 @@ public class Spiel {
 				}
 			}
 			if (bot.getAktuellesFeld().getSouth()==null) {
-				if (this.southCellStatus.equals("FLOOR") ||  this.southCellStatus.startsWith("FINISH ")|| this.southCellStatus.startsWith("FORM ")) {
-					this.erstellFeld('s');
-	
+				schauerichtung2('s');
 				}
 				if (this.southCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
 					anzahlFormulare =Integer.parseInt(String.valueOf(this.southCellStatus.charAt(this.southCellStatus.length()-1)));
@@ -268,8 +281,7 @@ public class Spiel {
 				}
 			}
 			if (bot.getAktuellesFeld().getWest()==null) {
-				if (this.westCellStatus.equals("FLOOR")||  this.westCellStatus.startsWith("FINISH ")|| this.westCellStatus.startsWith("FORM ")) {
-					this.erstellFeld('w');
+				schauerichtung2('w');
 				}
 				if (this.westCellStatus.startsWith("FINISH " +bot.getPlayerId())) {
 					anzahlFormulare =Integer.parseInt(String.valueOf(this.westCellStatus.charAt(this.westCellStatus.length()-1)));
