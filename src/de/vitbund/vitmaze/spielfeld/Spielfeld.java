@@ -25,6 +25,14 @@ public class Spielfeld {
 	// bekannte Felder merken
 	private List<Feld> bekannteFelder = new ArrayList<Feld>();
 	
+	private List<Feld> sheetList = new ArrayList<Feld>();
+	
+	public List<Feld> getSheetList() {
+		return sheetList;
+	}
+	public void setSheetList(List<Feld> sheetList) {
+		this.sheetList = sheetList;
+	}
 	public List<Feld> getBekannteFelder() {
 		return bekannteFelder;
 	}

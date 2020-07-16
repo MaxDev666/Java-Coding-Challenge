@@ -16,6 +16,14 @@ public class Standardbot {
 	private Feld letztesFeld;
 	private List<Feld> aktuelleRoute;
 	private String woherKommeIch;
+	private int sheetCount;
+	public int getSheetCount() {
+		return sheetCount;
+	}
+
+	public void setSheetCount(int sheetCount) {
+		this.sheetCount = sheetCount;
+	}
 
 	public Standardbot(Spielfeld spielfeld) {
 		this.spielfeld = spielfeld;
@@ -237,6 +245,11 @@ public class Standardbot {
 			bla.append("x: " + spielfeld.getZielfeld().getxKoordinate() + " y: " + spielfeld.getZielfeld().getyKoordinate() + " ist das ZielFeld \n");
 		}
 		System.err.println(bla.toString());
+	}
+
+	public String put() {
+		// TODO Automatisch generierter Methodenstub
+		return "put";
 	}
 	
 }
