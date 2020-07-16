@@ -177,8 +177,12 @@ public class Spiel {
 				}
 			}
 			if (getCellStatus(richtung).startsWith("FINISH " + bot.getPlayerId())) {
-				anzahlFormulareString = getCellStatus(richtung).replace("!", "").trim().substring(getCellStatus(richtung).replace("!", "").trim().length()-2);
-				System.err.println(getCellStatus(richtung).replace("!", "").trim() + "|" + anzahlFormulareString + "|");
+				if (getCellStatus(richtung).contains("!")) {
+					anzahlFormulareString = getCellStatus(richtung).substring(getCellStatus(richtung).indexOf("!")-3, getCellStatus(richtung).indexOf("!")-1);
+				}else {
+					anzahlFormulareString = getCellStatus(richtung).substring(getCellStatus(richtung).length()-2);
+				}
+				System.err.println("Anzahl Formulare" + anzahlFormulareString);
 				if (anzahlFormulareString.charAt(0)==' ') {
 					anzahlFormulare=Character.getNumericValue(anzahlFormulareString.charAt(1));
 				}else {
@@ -190,9 +194,12 @@ public class Spiel {
 			}
 
 			if (getCellStatus(richtung).startsWith("FORM " + bot.getPlayerId())) {
-				// TODO Felder mit Feinden müssen noch richtig behandelt werden hier reicht es nicht nur so einen Quatsch wie in der nächsten Zeile zu machen
-				String tempString = getCellStatus(richtung).replace("!", "").replace("!1", "").replace("!2", "").trim();
-				formIDString = tempString.substring(tempString.length()-2);
+				if (getCellStatus(richtung).contains("!")) {
+					formIDString = getCellStatus(richtung).substring(getCellStatus(richtung).indexOf("!")-3, getCellStatus(richtung).indexOf("!")-1);
+				}else {
+					formIDString = getCellStatus(richtung).substring(getCellStatus(richtung).length()-2);
+				}
+				System.err.println("Formular ID" + formIDString);
 				if (formIDString.charAt(0)==' ') {
 					formID=(Character.getNumericValue(formIDString.charAt(1)));
 				}else {
