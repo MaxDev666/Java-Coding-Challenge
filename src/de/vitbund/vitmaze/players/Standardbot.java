@@ -13,6 +13,7 @@ public class Standardbot {
 	private int botx;
 	private int boty;
 	private Feld aktuellesFeld;
+	private Feld letztesFeld;
 	private List<Feld> aktuelleRoute;
 	private String woherKommeIch;
 
@@ -70,6 +71,7 @@ public class Standardbot {
 	}
 	
 	public void sucheUmfeldAb() {
+		System.err.println("So ein Mist ich muss suchen");
 		// Ring 1
 		Feld Startfeld = this.aktuellesFeld;
 		List<Feld> tempListe = new ArrayList<Feld>();
@@ -100,10 +102,19 @@ public class Standardbot {
 		setAktuelleRoute(tempListe);
 	}
 	
+	public void rueckgaengig() {
+		this.getAktuelleRoute().add(0, this.aktuellesFeld);
+		this.aktuellesFeld = this.letztesFeld;
+		this.botx = this.aktuellesFeld.getxKoordinate();
+		this.boty = this.aktuellesFeld.getyKoordinate();
+		
+	}
+	
 	public String move() {
 		//System.err.println("unbekannte Felder: " + spielfeld.getUnbekannteFelder());
 		Feld zuFeld = new Feld( );
 		String ergebnis = new String();
+		this.letztesFeld = this.aktuellesFeld;
 		zuFeld = this.getAktuelleRoute().get(0);
 		System.err.println("Zielfeld: " + this.getAktuelleRoute().get(this.aktuelleRoute.size()-1));
 		//System.err.println("VonFeld: " + this.getAktuellesFeld());
