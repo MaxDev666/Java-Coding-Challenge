@@ -2,29 +2,35 @@ package de.vitbund.vitmaze.spielfeld;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Hier werden alle Arten von Feldern in Listen gepackt, sowie information zu Feldern/dem Spielfeld dokumentiert
+ * @author Arbeitstitel
+ * @version 1.0
+ */
 public class Spielfeld {
 
 	private int sizeX;
 	private int sizeY;
 	private int level;
+	// Felder merken
 	private List<Feld> felder = new ArrayList<Feld>();
 	
-	// interessante Felder merken
+	// Interessante Felder merken.
 	private List<Feld> interessanteFelder = new ArrayList<Feld>();
 	
-	// Felder mit Formularen merken
+	// Felder mit Formularen merken.
 	private List<Feld> formularFelder = new ArrayList<Feld>();
 	
-	// Felde Ziel merken
+	// Feld Ziel merken.
 	private Feld Zielfeld;
 	
-	// noch zu erkundende Felder merken
+	// Noch zu erkundende Felder merken.
 	private List<Feld> unbekannteFelder = new ArrayList<Feld>();
 
-	// bekannte Felder merken
+	// Bekannte Felder merken.
 	private List<Feld> bekannteFelder = new ArrayList<Feld>();
 	
+	// Getter und Setter 
 	public List<Feld> getBekannteFelder() {
 		return bekannteFelder;
 	}
@@ -43,7 +49,10 @@ public class Spielfeld {
 	public void setFormularFelder(List<Feld> formularFelder) {
 		this.formularFelder = formularFelder;
 	}
-
+	public List<Feld> getFelder() {
+		return felder;
+	}
+	// Zielfeld erzeugen.
 	public Spielfeld() {
 		this.Zielfeld = new Feld();
 		this.Zielfeld = null;
@@ -57,6 +66,7 @@ public class Spielfeld {
 			Zielfeld = zielfeld;
 		}
 	}
+	// Laenge der X-/Y-Achse des Spielfeldes merken.
 	public int getSizeX() {
 		return sizeX;
 	}
@@ -69,7 +79,7 @@ public class Spielfeld {
 	public void setSizeY(int sizeY) {
 		this.sizeY = sizeY;
 	}
-	
+	// Schwierigkeitsgrad des Levels merken.
 	public int getLevel() {
 		return level;
 	}
@@ -77,6 +87,7 @@ public class Spielfeld {
 		this.level = level;
 	}
 	
+	// Erzeugen neuer bekannter/unbekannter Felder.
 	public void addFeld(Feld newFeld) {
 		felder.add(newFeld);
 	}
@@ -85,13 +96,16 @@ public class Spielfeld {
 		interessanteFelder.add(newFeld);
 	}
 	
-	public List<Feld> getFelder() {
-		return felder;
-	}
 	public void addUnbekanntesFeld(Feld newFeld) {
 		unbekannteFelder.add(0,newFeld);
 	}
 	
+	/**
+	 * Diese Funktion 
+	 * @param x ist die x-Koordinate des bekannten Feldes
+	 * @param y ist die y-Koordinate des bekannten Feldes
+	 * @return gibt Feld zurück ansonsten null
+	 */
 
 	public Feld gibFeld(int x, int y) {
 		for (Feld feld : this.getBekannteFelder()) {
