@@ -132,7 +132,7 @@ public class Spiel {
 			spielfeld.getSheetList().add(bot.getAktuellesFeld().getFeld(richtung));
 		}
 			
-		if (cellStatusArray[0].equals("FINISH") && cellStatusArray[1].equals(bot.getPlayerId()+"") {
+		if (cellStatusArray[0].equals("FINISH") && cellStatusArray[1].equals(bot.getPlayerId()+"")) {
 			anzahlFormulare = Integer.parseInt(cellStatusArray[2]);
 			if (anzahlFormulare == howManyForms()) {
 				allesGesammelt = true;
@@ -166,6 +166,7 @@ public class Spiel {
 			this.ausgabe = bot.move();
 			rundeZuEnde = true;			
 		} else {
+			// überlegen ob das passt
 			if (spielfeld.getZielfeld()!=null && anzahlFormulare == formcounter) {
 				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
 				this.ausgabe = bot.move();
