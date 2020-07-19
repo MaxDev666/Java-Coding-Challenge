@@ -33,12 +33,6 @@ public class Spiel {
 	boolean zugvorbei;
 	Random wuerfel;
 	
-	// Klasse Formular noch anlegen
-	// int id
-	// Feld feld
-	// String aufheben
-	
-	
 	/***
 	 * Wie viele Formulare hat der Bot bereits entdeckt?
 	 * @return Anzahl entdeckter Formulare
