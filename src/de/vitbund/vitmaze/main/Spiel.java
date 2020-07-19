@@ -191,6 +191,7 @@ public class Spiel {
 					System.err.println(getCellStatus(richtung));
 					System.err.println("Anzahl der Formulare ist " +anzahlFormulare + " " +  anzahlFormulareString);
 				//}
+				
 				//merken wo sich das Zielfeld befindet
 				spielfeld.setZielfeld(bot.getAktuellesFeld().getFeld(richtung));
 			}
@@ -218,26 +219,34 @@ public class Spiel {
 			}
 		}
 	
-//ruft Methode(schauerichtung) von oben für entsprechende Richtungen auf
+	/**
+	 * Methode welche den Bot unbekannte Felder erkundne lässt oder wenn möglich das Spiel beendet
+	 */
+	//ruft Methode(schauerichtung) von oben für entsprechende Richtungen auf
 	public void erkunden() {
 				schauerichtung('n');
 				schauerichtung('e');
 				schauerichtung('s');
 				schauerichtung('w');
 				
-//wenn auf sonstigen Feldern, bzw abbruch von Erkunden bei Ziel
+			//sofern keine Route vorhanden, neue Route auf ein unbekanntes Feld setzen
 			if (bot.hatRoute()==false) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
 			} 
+			//Wenn alles Zielbedingungen erfüllt sind das Spiel beenden
 			if (spielfeld.getZielfeld() == bot.getAktuellesFeld()) {
 				this.ausgabe = bot.finish();
-			} else {
+			} 
+			//fortführen der Arbeit
+			else {
 				this.ausgabe = bot.move();
 			}
 
 
 	}
-	
+	/**
+	 * Methode welche nach Formularen in Blickrichtung prüft und diese wenn möglich aufnimmt
+	 */
 	public void erkunden2() {
 		
 		zugvorbei = false;
@@ -247,21 +256,23 @@ public class Spiel {
 			schauerichtung2('s');
 			schauerichtung2('w');
 			bot.getUpdate();
-		// wenn ich alle Formulare habe
-
+			//Aufnahme des passenden Formulars
 			if (this.currentCellStatus.equals("FORM " + bot.getPlayerId() + " " + formcounter )) {
 				this.ausgabe = bot.take();
 				zugvorbei = true;
+				// prüfen ob alle Formulare gesammelt wurden und entsprechend Route auf Ziel setzen
 				if (formcounter==howManyForms() && spielfeld.getZielfeld()!=null) {
 					allesGesammelt = true;
 					System.err.println("HABE ALLES GESAMMELT UND GEHE ZUM ZIEL ZU FELD " + spielfeld.getZielfeld());
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(),  spielfeld.getZielfeld()));
 					bot.getUpdate();
-				} else {
+				} 
+				//Formularcounter um 1 erhöhen
+				else {
 					formcounter++;
 				}
 			}
-			
+			//sofern keine Route vorhanden, neue Route auf ein unbekanntes Feld setzen
 			if (bot.hatRoute()==false) {
 				if (zugvorbei==false) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
@@ -278,6 +289,7 @@ public class Spiel {
 					this.ausgabe = bot.move();
 				}
 			}
+			//Route auf nächstes zu sammelndes Formular setzen oder Ziel aufsuchen
 			if (howManyForms()==anzahlFormulare) {
 				if (!allesGesammelt) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formcounter].getFeld()));
@@ -363,7 +375,7 @@ public class Spiel {
 			System.err.println("Will Feld bei x:" + wohinx + "|" + wohiny + "anlegen");
 			
 				
-				// prüfen ob das FEld exisitert
+				// prüfen ob das Feld exisitert
 			boolean feldExistiert =false;
 			Feld temp = null;
 			for (Feld feld : spielfeld.getFelder()) {
