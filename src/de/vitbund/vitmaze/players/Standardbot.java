@@ -17,6 +17,15 @@ public class Standardbot {
 	private List<Feld> aktuelleRoute;
 	private String woherKommeIch;
 	private int sheetCount;
+	private boolean redetDieRunde;
+	public boolean isRedetDieRunde() {
+		return redetDieRunde;
+	}
+
+	public void setRedetDieRunde(boolean redetDieRunde) {
+		this.redetDieRunde = redetDieRunde;
+	}
+
 	public int getSheetCount() {
 		return sheetCount;
 	}
@@ -27,6 +36,7 @@ public class Standardbot {
 
 	public Standardbot(Spielfeld spielfeld) {
 		this.spielfeld = spielfeld;
+		this.setRedetDieRunde(false);
 	}
 	
 	public boolean hatRoute() {
@@ -111,6 +121,8 @@ public class Standardbot {
 	}
 	
 	public void rueckgaengig() {
+		// Problem wenn Bot gerade take macht und anderer Bot zu uns kommt
+		
 		this.getAktuelleRoute().add(0, this.aktuellesFeld);
 		this.aktuellesFeld = this.letztesFeld;
 		this.botx = this.aktuellesFeld.getxKoordinate();
