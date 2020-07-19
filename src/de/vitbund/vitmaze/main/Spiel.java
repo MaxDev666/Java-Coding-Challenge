@@ -144,6 +144,91 @@ public class Spiel {
 		
 	}
 	
+	public void schaueRichtung(char richtung){
+		
+		ist Feld in Richtung nicht WALL
+			- Feld anlegen
+	
+	
+		ist Zelle in Richtung Formular?
+			ist Formular das aktuelle?
+				route setzen
+				Runde ende
+				
+			sonst 
+				in Liste speichern
+		
+		ist Richtung Ziel?
+			nachschauen wie viele Formulare das Ziel braucht
+			habe ihc alle Formulare?
+				hingehen
+				Runde ende
+				
+			
+	
+}
+
+	public getStati
+	RundeZuende = false;
+	Werte holen
+	
+	get Last Action auswerten
+	
+	erkunden
+	
+	ist die Runde zuende?
+		-Nein 
+			habe ich Route?
+				- laufen
+				- Runde ende
+			nein?
+				habe ich alle Formulare und kenne Ziel?
+					- Route zum ziel
+					- laufen
+					- runde ende
+				habe ich Formulare die ich sammeln kann?
+					- Route zu Formular
+						- laufen
+						- Runde ende
+				gibt es unbekannte Felder?
+					- laufe dorthin
+					- Runde ende
+				keine unbekannten Felder, keine Route, kein Ziel?
+					- bekannte Felder nochmal erkunden
+
+	
+	
+public erkunden
+
+	schaue 'n'
+	schaue 'e'
+	schaue 's'
+	schaue 'w'
+	
+	was ist aktuelles Feld?
+		- Form
+			-> eigenes und in Reihenfolge?
+				-> aufheben
+				Runde ende
+		
+			-> fremdes 
+				-> hab ich Sheets? (& Level =5)
+					-> verdecken
+				-> sonst kicken
+				Runde ende
+		- FLOOR
+			-> sollte aber Formular sein
+				-> erkunden
+		- Ziel
+			schauen wie viele Formulare nötig
+			hab ich alle Formulare?
+				- FINISH
+				Runde ende
+			
+	
+	
+	
+	
 	public String getCellStatus(char richtung){
 		switch(richtung) {
 		case 'n':
