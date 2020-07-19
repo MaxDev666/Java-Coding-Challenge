@@ -3,7 +3,7 @@ package de.vitbund.vitmaze.spielfeld;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Hier werden alle Arten von Feldern in Listen gepackt, sowie information zu Feldern/dem Spielfeld dokumentiert
+ * Hier werden alle Arten von Feldern in Listen gepackt, sowie information zu Feldern/dem Spielfeld dokumentiert.
  * @author Arbeitstitel
  * @version 1.0
  */
@@ -12,22 +12,23 @@ public class Spielfeld {
 	private int sizeX;
 	private int sizeY;
 	private int level;
+	
 	// Felder merken
 	private List<Feld> felder = new ArrayList<Feld>();
 	
-	// Interessante Felder merken.
+	// Interessante Felder merken
 	private List<Feld> interessanteFelder = new ArrayList<Feld>();
 	
-	// Felder mit Formularen merken.
+	// Felder mit Formularen merken
 	private List<Feld> formularFelder = new ArrayList<Feld>();
 	
-	// Feld Ziel merken.
+	// Feld Ziel merken
 	private Feld Zielfeld;
 	
-	// Noch zu erkundende Felder merken.
+	// Noch zu erkundende Felder merken
 	private List<Feld> unbekannteFelder = new ArrayList<Feld>();
 
-	// Bekannte Felder merken.
+	// Bekannte Felder merken
 	private List<Feld> bekannteFelder = new ArrayList<Feld>();
 	
 	// Getter und Setter 
@@ -52,7 +53,7 @@ public class Spielfeld {
 	public List<Feld> getFelder() {
 		return felder;
 	}
-	// Zielfeld erzeugen.
+	// Zielfeld erzeugen
 	public Spielfeld() {
 		this.Zielfeld = new Feld();
 		this.Zielfeld = null;
@@ -66,7 +67,7 @@ public class Spielfeld {
 			Zielfeld = zielfeld;
 		}
 	}
-	// Laenge der X-/Y-Achse des Spielfeldes merken.
+	// Laenge der X-/Y-Achse des Spielfeldes merken
 	public int getSizeX() {
 		return sizeX;
 	}
@@ -79,7 +80,7 @@ public class Spielfeld {
 	public void setSizeY(int sizeY) {
 		this.sizeY = sizeY;
 	}
-	// Schwierigkeitsgrad des Levels merken.
+	// Schwierigkeitsgrad des Levels merken
 	public int getLevel() {
 		return level;
 	}
@@ -87,7 +88,7 @@ public class Spielfeld {
 		this.level = level;
 	}
 	
-	// Erzeugen neuer bekannter/unbekannter Felder.
+	// Erzeugen neuer bekannter/unbekannter Felder
 	public void addFeld(Feld newFeld) {
 		felder.add(newFeld);
 	}
@@ -122,7 +123,7 @@ public class Spielfeld {
 	 *  Diese Funktion berechnet den Weg eines beliebigen Feldes zum Zielfeld.
 	 *  Das Zielarray gibt den Weg von Feld zu Feld an
 	 *  A1 --> A2 --> B2 --> Ziel
-	 *  Beim Laufen muss hinterher drauf geachtet werden zu schauen wo liegt das Feld A2 von A1 gesehen
+	 *  Beim Laufen muss hinterher drauf geachtet werden zu schauen wo liegt das Feld A2 von A1 gesehen.
 	 *  
 	 * @param aktuellesFeld ist das Feld auf dem die Spielfigur steht
 	 * @param zielFeld ist das Feld wo die Spielfigur hin will

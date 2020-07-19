@@ -1,15 +1,15 @@
 package de.vitbund.vitmaze.spielfeld;
 /**
- * 
+ * Klasse welche die Eigenschaften und Methoden für die im Labyrinth aufzuhebenden Formulare beschreibt.
  * @author Arbeitstitel
- * @version
+ * @version 1.0
  */
 public class Formular {
 	
 	private int nummer;
 	private Feld feld;
 	/**
-	 * Konstruktor zur Instanzierung eines Formulars
+	 * Konstruktor zur Instanzierung eines Formulars.
 	 * @param nummer beschreibt die Nummer des Formulars
 	 * @param feld beschreibt das Feld auf welchem das Formular liegt
 	 */

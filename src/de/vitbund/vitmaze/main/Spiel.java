@@ -8,6 +8,11 @@ import de.vitbund.vitmaze.spielfeld.Feld;
 import de.vitbund.vitmaze.spielfeld.Formular;
 import de.vitbund.vitmaze.spielfeld.Spielfeld;
 
+/**
+ * 
+ * 
+ */
+
 public class Spiel {
 
 	Spielfeld spielfeld;
@@ -31,13 +36,7 @@ public class Spiel {
 	boolean allesGesammelt;
 	boolean zugvorbei;
 	
-	// Klasse Formular noch anlegen
-	// int id
-	// Feld feld
-	// String aufheben
-	
-	
-	/***
+	/**
 	 * Wie viele Formulare hat der Bot bereits entdeckt?
 	 * @return Anzahl entdeckter Formulare
 	 */
@@ -50,8 +49,9 @@ public class Spiel {
 		}
 		return i;
 	}
-	
-	
+	/**
+	 * Initialisierungs-Methode um Spiel zu starten.
+	 */
 	public void init() {
 		// Spielfeld anlegen und Startdaten setzen
 		spielfeld = new Spielfeld();
@@ -75,8 +75,6 @@ public class Spiel {
 		spielfeld.addFeld(bot.getAktuellesFeld());
 		
 		// Bot anlegen und Startdaten setzen
-	
-
 		hatZiel=false;
 		anzahlFormulare=999;
 		anzahlFormulareString="";
@@ -92,10 +90,9 @@ public class Spiel {
 		ausgabe = new String("position");
 		
 	}
-	
+	//Getter für Stati der umliegenden Felder.
 	public void getStati() {
 		
-
 		this.lastActionsResult = Eingabe.leseZeile();
 		this.currentCellStatus = Eingabe.leseZeile();
 		this.northCellStatus = Eingabe.leseZeile();
@@ -103,10 +100,10 @@ public class Spiel {
 		this.southCellStatus = Eingabe.leseZeile();
 		this.westCellStatus = Eingabe.leseZeile();
 		
-		// prüfen was mit letzter Aktion war
+		// Ausgabe der letzen Aktion.
 		System.err.println(this.lastActionsResult);
 		
-		
+		// 
 		switch (spielfeld.getLevel()) {
 		case 1:
 			this.erkunden();
@@ -127,7 +124,11 @@ public class Spiel {
 		
 		
 	}
-	
+	/**
+	 * 
+	 * @param richtung beschreibt ob das Feld im Norden/Osten/Süden odeer Westen liegt
+	 * @return Gibt Status des jeweiligen Feldes zurück
+	 */
 	public String getCellStatus(char richtung){
 		switch(richtung) {
 		case 'n':
@@ -147,6 +148,10 @@ public class Spiel {
 		}
 		
 	}
+	/**
+	 * Erstellung eines Feldes in entsprechender Blickrichtung.
+	 * @param richtung Himmelsrichtung in welcher das Feld liegt
+	 */
 	//den Status der Felder erhalten und dementsprechend Felder erstellen
 	public void schauerichtung(char richtung) {
 		if (bot.getAktuellesFeld().getFeld(richtung) == null) {
@@ -154,46 +159,57 @@ public class Spiel {
 				System.err.println(richtung  + " ist ein Feld");
 				this.erstellFeld(richtung);
 			}
+			//bei Zielfeld, Route auf Ziel setzen
 			if (getCellStatus(richtung).startsWith("FINISH " + bot.getPlayerId())) {
 				spielfeld.setZielfeld(bot.getAktuellesFeld().getFeld(richtung));
 				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
 			}
 		}
 	}
-	//den Status der Felder erhalten und dementsprechend Felder erstellen bei erkunden 2 (mit Formularen)
+	/**
+	 * Erstellen eiens Feldes in entsprechender Blickrichtung (mit Formularen).
+	 * @param richtung Himmelsrichtung in welcher das Feld liegt
+	 */
+	//den Status der Felder erhalten und dementsprechend Felder erstellen
 	public void schauerichtung2(char richtung) {
 			if (bot.getAktuellesFeld().getFeld(richtung) == null) {
 				if (getCellStatus(richtung).startsWith("FLOOR") || getCellStatus(richtung).startsWith("FORM ") || getCellStatus(richtung).startsWith("FINISH ")) {
 					this.erstellFeld(richtung);
 				}
 			}
+			//prüfen ob Ziel in Blickrichtung liegt
 			if (getCellStatus(richtung).startsWith("FINISH " + bot.getPlayerId())) {
 				anzahlFormulareString = getCellStatus(richtung).substring(getCellStatus(richtung).length()-2);
+				
 				/*if (anzahlFormulareString.charAt(0)==' ') {
 					anzahlFormulare=Integer.parseInt(anzahlFormulareString.charAt(1)+"");
 					System.err.println("Anzahl der Formulare ist " +anzahlFormulare);
 				}else {*/
+				
+				//merken wieviele Formulare benötigt werden
 					anzahlFormulare=Integer.parseInt(anzahlFormulareString.trim());
 					System.err.println(getCellStatus(richtung));
 					System.err.println("Anzahl der Formulare ist " +anzahlFormulare + " " +  anzahlFormulareString);
 				//}
+				//merken wo sich das Zielfeld befindet
 				spielfeld.setZielfeld(bot.getAktuellesFeld().getFeld(richtung));
 			}
-
+			//prüfen ob Formular in Blickrichtung liegt
 			if (getCellStatus(richtung).startsWith("FORM " + bot.getPlayerId())) {
 				formIDString = getCellStatus(richtung).substring(getCellStatus(richtung).length()-2);
+				//
 				if (formIDString.charAt(0)==' ') {
 					formID=(Character.getNumericValue(formIDString.charAt(1)));
 				}else {
 					formID=Integer.parseInt(formIDString);
 				}
 				System.err.println(getCellStatus(richtung).substring(getCellStatus(richtung).length()-2) + " " + formID);
-				// Aufnehmen muss noch überarbeitet werden
+				//gefundenes Formular instanzieren und in Liste formular schreiben
 				if (forms[formID] == null) {
 					Formular formular = new Formular(formID, bot.getAktuellesFeld().getFeld(richtung));
 					forms[formID] = formular;
 				}
-
+				//Route auf aktuell aufzuhebendes Formular setzen 
 				if (formID == formcounter) {
 					formFound = true;
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formID].getFeld()));
