@@ -3,6 +3,8 @@ package de.vitbund.vitmaze.main;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.IconifyAction;
+
 import de.vitbund.vitmaze.eingabe.Eingabe;
 import de.vitbund.vitmaze.players.Standardbot;
 import de.vitbund.vitmaze.spielfeld.Feld;
@@ -146,27 +148,46 @@ public class Spiel {
 	}
 	
 	public void schaueRichtung(char richtung){
+		String[] cellStatusArray = getCellStatus(richtung).split(" ");
 		
-		ist Feld in Richtung nicht WALL
-			- Feld anlegen
-	
-	
-		ist Zelle in Richtung Formular?
-			ist Formular das aktuelle?
-				route setzen
-				Runde ende
-				
-			sonst 
-				in Liste speichern
+		if (bot.getAktuellesFeld().getFeld(richtung) == null) {
+			if (!cellStatusArray[0].equals("WALL")) {
+				this.erstellFeld(richtung);
+			}
+		}	
 		
-		ist Richtung Ziel?
-			nachschauen wie viele Formulare das Ziel braucht
-			habe ihc alle Formulare?
-				hingehen
-				Runde ende
-				
+		if (cellStatusArray[0].equals("FORM")) {
+			formID = Integer.parseInt(cellStatusArray[3]);
 			
-	
+			if (forms[formID] == null) {
+				Formular formular = new Formular(formID, bot.getAktuellesFeld().getFeld(richtung));
+				forms[formID] = formular;
+			}
+
+			if (formID == formcounter) {
+				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formID].getFeld()));
+				this.ausgabe = bot.move();
+				rundeZuEnde = true;
+			}
+		}
+		
+		if (getCellStatus(richtung).startsWith("SHEET")) {
+			spielfeld.getSheetList().add(bot.getAktuellesFeld().getFeld(richtung));
+		}
+			
+		if (cellStatusArray[0].equals("FINISH")) {
+			anzahlFormulare = Integer.parseInt(cellStatusArray[3]);
+			if (anzahlFormulare == howManyForms()) {
+				allesGesammelt = true;
+				System.err.println("HABE ALLES GESAMMELT UND GEHE ZUM ZIEL ZU FELD " + spielfeld.getZielfeld());
+				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(),  bot.getAktuellesFeld().getFeld(richtung)));
+				bot.getUpdate();
+				this.ausgabe = bot.move();
+				rundeZuEnde = true;
+			}else {
+				spielfeld.setZielfeld(bot.getAktuellesFeld().getFeld(richtung));
+			}
+		}		
 }
 
 	public void getStatiNeu() {
