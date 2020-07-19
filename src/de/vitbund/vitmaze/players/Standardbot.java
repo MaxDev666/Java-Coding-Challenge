@@ -17,15 +17,6 @@ public class Standardbot {
 	private List<Feld> aktuelleRoute;
 	private String woherKommeIch;
 	private int sheetCount;
-	private boolean sheetPlatziert;
-	public boolean isSheetPlatziert() {
-		return sheetPlatziert;
-	}
-
-	public void setSheetPlatziert(boolean sheetPlatziert) {
-		this.sheetPlatziert = sheetPlatziert;
-	}
-
 	public int getSheetCount() {
 		return sheetCount;
 	}
@@ -36,7 +27,6 @@ public class Standardbot {
 
 	public Standardbot(Spielfeld spielfeld) {
 		this.spielfeld = spielfeld;
-		sheetPlatziert = false;
 	}
 	
 	public boolean hatRoute() {
