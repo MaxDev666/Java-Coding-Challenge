@@ -126,6 +126,7 @@ public class Standardbot {
 		this.botx = this.aktuellesFeld.getxKoordinate();
 		this.boty = this.aktuellesFeld.getyKoordinate();
 		
+		
 	}
 	/**
 	 * Methode welche von der Route abruft wohin sich der Bot bewegen soll und
