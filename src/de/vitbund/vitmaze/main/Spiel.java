@@ -34,6 +34,7 @@ public class Spiel {
 	boolean allesGesammelt;
 	boolean zugvorbei;
 	Random wuerfel;
+	boolean rundeZuEnde;
 	
 	// Klasse Formular noch anlegen
 	// int id
@@ -190,7 +191,8 @@ public class Spiel {
 }
 
 	public getStati
-	RundeZuende = false;
+	istRundeZuende = false
+	runde zuende
 	Werte holen
 	
 	get Last Action auswerten
@@ -219,33 +221,68 @@ public class Spiel {
 
 	
 	
-public erkunden
-
-	schaue 'n'
-	schaue 'e'
-	schaue 's'
-	schaue 'w'
-	
-	was ist aktuelles Feld?
-		- Form
-			-> eigenes und in Reihenfolge?
-				-> aufheben
-				Runde ende
+		public void erkunden() {
 		
-			-> fremdes 
-				-> hab ich Sheets? (& Level =5)
-					-> verdecken
-				-> sonst kicken
-				Runde ende
-		- FLOOR
-			-> sollte aber Formular sein
-				-> erkunden
-		- Ziel
-			schauen wie viele Formulare nötig
-			hab ich alle Formulare?
-				- FINISH
-				Runde ende
+		schaueRichtung( 'n');
+		schaueRichtung('e'); 
+		schaueRichtung ('s');
+		schaueRichtung ('w');
+		
+		String[] aktFeld = this.currentCellStatus.split(" ");
+		
+		if (aktFeld[aktFeld.length-1].equals("!")) {
+			if (bot.isRedetDieRunde() == false) {
+				bot.setRedetDieRunde(true);
+				rundeZuEnde = true;					
+			} else {
+				bot.setRedetDieRunde(true);
+			}
+		}
+		
+		if (rundeZuEnde == false) {
+			if (aktFeld[0].equals("FORM")){
+				if (aktFeld[1].equals(bot.getPlayerId()) && aktFeld[2].equals(formcounter)) {
+					this.ausgabe = bot.take();
+					rundeZuEnde = true;
+				} else if (!aktFeld[1].equals(bot.getPlayerId())) {
+					if (bot.getSheetCount()>0) {
+						this.ausgabe = bot.put();
+						rundeZuEnde = true;
+					} else {
+						// Problem zu schauen ob kicken in Ordunung war
+						this.ausgabe = bot.kick();
+						rundeZuEnde = true;
+					}
+				}
+			}  else if (aktFeld[0].equals("FINISH")) {
+				if (aktFeld[1].equals(bot.getPlayerId())) {
+					this.ausgabe = bot.finish();	
+				}
+			} 
+		}
+		}
+
+		
+		was ist aktuelles Feld?
+			- Form
+				-> eigenes und in Reihenfolge?
+					-> aufheben
+					Runde ende
 			
+				-> fremdes 
+					-> hab ich Sheets? (& Level =5)
+						-> verdecken
+					-> sonst kicken
+					Runde ende
+			- FLOOR
+				-> sollte aber Formular sein
+					-> erkunden
+			- Ziel
+				schauen wie viele Formulare nötig
+				hab ich alle Formulare?
+					- FINISH
+					Runde ende
+	}
 	
 	
 	
