@@ -173,8 +173,17 @@ public class Standardbot {
 		return "take";
 	}
 	
-	public String kick() {
-		return "kick " + woherKommeIch;
+	public String kick(String n, String e, String s, String w) {
+		if (n.split(" ")[0].equals("FLOOR")) {
+			return "kick north";
+		} else 		if (e.split(" ")[0].equals("FLOOR")) {
+			return "kick east";
+		} else 		if (s.split(" ")[0].equals("FLOOR")) {
+			return "kick south";
+		} else 		if (w.split(" ")[0].equals("FLOOR")) {
+			return "kick west";
+		} 
+		return "fail";
 	}
 	
 	public String finish() {
