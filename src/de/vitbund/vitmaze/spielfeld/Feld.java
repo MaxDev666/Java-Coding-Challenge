@@ -10,37 +10,12 @@ public class Feld {
 	private Feld west = null;
 	private int xKoordinate;
 	private int yKoordinate;
-	// Gibt an ob in dem Feld ein Ziel liegt
-	// 0 = kein Ziel, 1 - 3 -> Sachbearbeiter, 4 -5 -> Antrag für den jeweiligen Sachbearbeiter
-	private byte ziel = 0;
 	
 	private Feld vorgaenger; // für die wegsuche
 	private boolean istInBearbeitung;
 
 	
-	public Feld() {
-		
-	}
-	
-	public Feld(int x, int y) {
-		this.xKoordinate = x;
-		this.yKoordinate = y;
-	}
-	
-	
-	public void setKoordinaten(int x, int y) {
-		this.xKoordinate = x;
-		this.yKoordinate = y;
-	}
-	
-	
-	public Feld(Feld north, Feld south, Feld west, Feld east) {
-		this.north = north;
-		this.south=south;
-		this.west = west;
-		this.east = east;
-	}
-	
+	//Getter und Setter
 	public Feld getNorth() {
 		return north;
 	}
@@ -56,7 +31,6 @@ public class Feld {
 	public Feld getSouth() {
 		return south;
 	}
-	
 	public void setSouth(Feld south) {
 		this.south = south;
 	}
@@ -65,12 +39,6 @@ public class Feld {
 	}
 	public void setWest(Feld west) {
 		this.west = west;
-	}
-	public byte isZiel() {
-		return ziel;
-	}
-	public void setZiel(byte ziel) {
-		this.ziel = ziel;
 	}
 	public Feld getVorgaenger() {
 		return vorgaenger;
@@ -90,6 +58,29 @@ public class Feld {
 	public void setyKoordinate(int yKoordinate) {
 		this.yKoordinate = yKoordinate;
 	}
+	public boolean istInBearbeitung() {
+		return istInBearbeitung;
+	}
+	public void setInBearbeitung(boolean istInBearbeitung) {
+		this.istInBearbeitung = istInBearbeitung;
+	}
+	
+	//Konstruktoren
+	public Feld() {	
+	}
+	
+	public Feld(int x, int y) {
+		this.xKoordinate = x;
+		this.yKoordinate = y;
+	}
+	
+	public Feld(Feld north, Feld south, Feld west, Feld east) {
+		this.north = north;
+		this.south=south;
+		this.west = west;
+		this.east = east;
+	}
+	
 	
 	public List<Feld> getNachbarn() {
 		List<Feld> nachbarn = new LinkedList<Feld>();
@@ -114,22 +105,6 @@ public class Feld {
 			if (this.getNorth()!=null && this.getNorth()!=feld && !this.getNorth().istInBearbeitung()) {nachbarn.add(this.getNorth());}
 		}
 		return nachbarn;
-	}
-	public boolean istInBearbeitung() {
-		return istInBearbeitung;
-	}
-	public void setInBearbeitung(boolean istInBearbeitung) {
-		this.istInBearbeitung = istInBearbeitung;
-	}
-	
-	public int tiefe() {
-		Feld feld = this;
-		int i = 0;
-		while (feld.getVorgaenger()!=feld) {
-			i+=1;
-			feld = feld.getVorgaenger();
-		}
-		return i;
 	}
 	
 	// Funktion, die die Richtung des nachbarFelds zum aktuellen Feld zurückgibt

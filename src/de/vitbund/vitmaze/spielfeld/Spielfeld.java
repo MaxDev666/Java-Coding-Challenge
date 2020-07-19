@@ -9,62 +9,15 @@ public class Spielfeld {
 	private int sizeY;
 	private int level;
 	private List<Feld> felder = new ArrayList<Feld>();
-	
-	// interessante Felder merken
-	private List<Feld> interessanteFelder = new ArrayList<Feld>();
-	
-	// Felder mit Formularen merken
-	private List<Feld> formularFelder = new ArrayList<Feld>();
-	
-	// Felde Ziel merken
+	// Zielfeld merken
 	private Feld Zielfeld;
-	
 	// noch zu erkundende Felder merken
 	private List<Feld> unbekannteFelder = new ArrayList<Feld>();
-
 	// bekannte Felder merken
 	private List<Feld> bekannteFelder = new ArrayList<Feld>();
-	
 	private List<Feld> sheetList = new ArrayList<Feld>();
 	
-	public List<Feld> getSheetList() {
-		return sheetList;
-	}
-	public void setSheetList(List<Feld> sheetList) {
-		this.sheetList = sheetList;
-	}
-	public List<Feld> getBekannteFelder() {
-		return bekannteFelder;
-	}
-	public void setBekannteFelder(List<Feld> bekannteFelder) {
-		this.bekannteFelder = bekannteFelder;
-	}
-	public List<Feld> getUnbekannteFelder() {
-		return unbekannteFelder;
-	}
-	public void setUnbekannteFelder(List<Feld> unbekannteFelder) {
-		this.unbekannteFelder = unbekannteFelder;
-	}
-	public List<Feld> getFormularFelder() {
-		return formularFelder;
-	}
-	public void setFormularFelder(List<Feld> formularFelder) {
-		this.formularFelder = formularFelder;
-	}
-
-	public Spielfeld() {
-		this.Zielfeld = new Feld();
-		this.Zielfeld = null;
-	}
-	
-	public Feld getZielfeld() {
-		return Zielfeld;
-	}
-	public void setZielfeld(Feld zielfeld) {
-		if (this.Zielfeld==null) {
-			Zielfeld = zielfeld;
-		}
-	}
+	//Getter und Setter
 	public int getSizeX() {
 		return sizeX;
 	}
@@ -77,30 +30,47 @@ public class Spielfeld {
 	public void setSizeY(int sizeY) {
 		this.sizeY = sizeY;
 	}
-	
 	public int getLevel() {
 		return level;
 	}
 	public void setLevel(int level) {
 		this.level = level;
 	}
+	public List<Feld> getFelder() {
+		return felder;
+	}
+	public Feld getZielfeld() {
+		return Zielfeld;
+	}
+	public void setZielfeld(Feld zielfeld) {
+		if (this.Zielfeld==null) {
+			Zielfeld = zielfeld;
+		}
+	}
+	public List<Feld> getUnbekannteFelder() {
+		return unbekannteFelder;
+	}
+	public List<Feld> getBekannteFelder() {
+		return bekannteFelder;
+	}
+	public List<Feld> getSheetList() {
+		return sheetList;
+	}
+	
+	//Konstruktor
+	public Spielfeld() {
+		this.Zielfeld = new Feld();
+		this.Zielfeld = null;
+	}
+	
 	
 	public void addFeld(Feld newFeld) {
 		felder.add(newFeld);
 	}
-	
-	public void addInteressantesFeld(Feld newFeld) {
-		interessanteFelder.add(newFeld);
-	}
-	
-	public List<Feld> getFelder() {
-		return felder;
-	}
+
 	public void addUnbekanntesFeld(Feld newFeld) {
 		unbekannteFelder.add(0,newFeld);
 	}
-	
-
 	public Feld gibFeld(int x, int y) {
 		for (Feld feld : this.getBekannteFelder()) {
 			if (feld.getxKoordinate()== x && feld.getyKoordinate() == y) {
@@ -109,9 +79,6 @@ public class Spielfeld {
 		}
 		return null;
 	}
-	
-	
-
 	/**
 	 *  Diese Funktion berechnet den Weg eines beliebigen Feldes zum Zielfeld.
 	 *  Das Zielarray gibt den Weg von Feld zu Feld an
