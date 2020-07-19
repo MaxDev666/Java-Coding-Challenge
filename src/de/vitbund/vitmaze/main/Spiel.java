@@ -132,7 +132,7 @@ public class Spiel {
 			spielfeld.getSheetList().add(bot.getAktuellesFeld().getFeld(richtung));
 		}
 			
-		if (cellStatusArray[0].equals("FINISH")) {
+		if (cellStatusArray[0].equals("FINISH") && cellStatusArray[1].equals(bot.getPlayerId()+"") {
 			anzahlFormulare = Integer.parseInt(cellStatusArray[2]);
 			if (anzahlFormulare == howManyForms()) {
 				allesGesammelt = true;
@@ -197,7 +197,7 @@ public class Spiel {
 	
 	}
 	
-		public void erkunden() {
+	public void erkunden() {
 		
 		schaueRichtung( 'n');
 		schaueRichtung('e'); 
@@ -238,10 +238,11 @@ public class Spiel {
 			}  else if (aktFeld[0].equals("SHEET")) {
 				String tmp = bot.kick(this.northCellStatus, this.eastCellStatus, this.southCellStatus, this.westCellStatus);
 				if (!tmp.equals("fail")) {
-				this.ausgabe = tmp;
-				rundeZuEnde = true;
+					this.ausgabe = tmp;
+					rundeZuEnde = true;
 			} else if (aktFeld[0].equals("FINISH")) {
 					if (aktFeld[1].equals(bot.getPlayerId()+"")) {
+						// Abfrage ob alle Formulare vorhanden etc.
 						this.ausgabe = bot.finish();	
 					}
 				} 
