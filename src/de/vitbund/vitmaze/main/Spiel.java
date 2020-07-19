@@ -452,8 +452,13 @@ public void erkunden4() {
 					zugvorbei = true;
 					}
 				} else {
-					this.ausgabe = bot.kick();
-					zugvorbei = true;
+					if (bot.isSheetPlatziert()==true) {
+						bot.setSheetPlatziert(false);
+						this.ausgabe = bot.move();
+					} else {
+						this.ausgabe = bot.kick();
+						zugvorbei = true;
+					}
 				}
 			}
 			
@@ -470,6 +475,7 @@ public void erkunden4() {
 					if (bot.getSheetCount()>0) {
 						this.ausgabe= bot.put();
 						bot.setSheetCount(bot.getSheetCount()-1);
+						bot.setSheetPlatziert(true);
 						zugvorbei = true;
 					} else {
 						this.ausgabe = bot.kick();
@@ -544,7 +550,10 @@ public void erkunden4() {
 			}
 			if (howManyForms()==anzahlFormulare) {
 				if (!allesGesammelt) {
-					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formcounter].getFeld()));
+					// hier Fehler
+					if (forms[formcounter].getFeld()!=null) {
+						bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formcounter].getFeld()));
+					}
 				} else {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(),  spielfeld.getZielfeld()));
 				}
