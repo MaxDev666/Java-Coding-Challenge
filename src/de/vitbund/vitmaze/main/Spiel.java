@@ -169,16 +169,29 @@ public class Spiel {
 	
 }
 
-	public getStati
-	istRundeZuende = false
-	runde zuende
-	Werte holen
+	public void getStatiNeu() {
+	rundeZuEnde = false;
+
+	this.lastActionsResult = Eingabe.leseZeile();
+	this.currentCellStatus = Eingabe.leseZeile();
+	this.northCellStatus = Eingabe.leseZeile();
+	this.eastCellStatus = Eingabe.leseZeile();
+	this.southCellStatus = Eingabe.leseZeile();
+	this.westCellStatus = Eingabe.leseZeile();
 	
-	get Last Action auswerten
+	//get Last Action auswerten
+	System.err.println(this.lastActionsResult);
+	erkunden();
 	
-	erkunden
-	
-	ist die Runde zuende?
+	if (rundeZuEnde == false) {
+		if (bot.hatRoute()) {
+			
+		} else {
+			this.ausgabe = bot.move();
+			rundeZuEnde = true;
+		}
+	}	
+	/*ist die Runde zuende?
 		-Nein 
 			habe ich Route?
 				- laufen
@@ -197,7 +210,8 @@ public class Spiel {
 					- Runde ende
 				keine unbekannten Felder, keine Route, kein Ziel?
 					- bekannte Felder nochmal erkunden
-
+	 */
+	}
 	
 	
 		public void erkunden() {
