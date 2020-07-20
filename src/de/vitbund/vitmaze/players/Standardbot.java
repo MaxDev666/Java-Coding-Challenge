@@ -1,7 +1,9 @@
 package de.vitbund.vitmaze.players;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.vitbund.vitmaze.spielfeld.Feld;
 import de.vitbund.vitmaze.spielfeld.Spielfeld;
@@ -94,8 +96,8 @@ public class Standardbot {
 		System.err.println("So ein Mist ich muss suchen");
 		// Ring 1
 		Feld Startfeld = this.aktuellesFeld;
+		Set<Feld> tempListe2 = new HashSet<Feld>();
 		List<Feld> tempListe = new ArrayList<Feld>();
-		List<Feld> tempListe2 = new ArrayList<Feld>();
 		List<Feld> tempListe3 = new ArrayList<Feld>();
 		// Ring 1 in Array eingefügt
 		for (Feld f : this.aktuellesFeld.getNachbarn()) {
