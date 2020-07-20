@@ -148,21 +148,23 @@ public class Spiel {
 					this.ausgabe = bot.take();
 					formcounter += 1;
 					rundeZuEnde = true;
-				} else if (!aktFeld[1].equals(bot.getPlayerId() + "")) {
+				} else if (!aktFeld[1].equals(bot.getPlayerId() + "") && (spielfeld.getLevel()==5) ) {
 					if (bot.getSheetCount() > 0) {
 						bot.setSheetCount(bot.getSheetCount() - 1);
 						this.ausgabe = bot.put();
 						sheetgelegt = true;
 						rundeZuEnde = true;
 					} else {
-						String kickMöglich = bot.kick(this.northCellStatus, this.eastCellStatus, this.southCellStatus, this.westCellStatus, false);
-						if (!kickMöglich.equals("fail")) {
-							this.ausgabe = kickMöglich;
-							rundeZuEnde = true;
+						if (spielfeld.getLevel()>4) {
+							String kickMöglich = bot.kick(this.northCellStatus, this.eastCellStatus, this.southCellStatus, this.westCellStatus, false);
+							if (!kickMöglich.equals("fail")) {
+								this.ausgabe = kickMöglich;
+								rundeZuEnde = true;
+							}
 						}
 					}
 				}
-			} else if (aktFeld[0].equals("SHEET") && sheetgelegt == false) {
+			} else if ((spielfeld.getLevel()==5) && aktFeld[0].equals("SHEET") && sheetgelegt == false) {
 				String kickmöglich = bot.kick(this.northCellStatus, this.eastCellStatus, this.southCellStatus,
 						this.westCellStatus, true);
 				if (!kickmöglich.equals("fail")) {
