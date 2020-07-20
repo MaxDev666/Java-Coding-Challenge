@@ -104,7 +104,7 @@ public class Spielfeld {
 	 *  
 	 * @param aktuellesFeld ist das Feld auf dem die Spielfigur steht
 	 * @param zielFeld ist das Feld wo die Spielfigur hin will
-	 * @return Array mit Feldern in der Reihenfolge vom Spieler zum Ziel
+	 * @return route Array mit Feldern in der Reihenfolge vom Spieler zum Ziel
 	 */
 	public List<Feld> route(Feld aktuellesFeld, Feld zielFeld) {
 		
