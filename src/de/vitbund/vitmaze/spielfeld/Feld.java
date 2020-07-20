@@ -93,16 +93,17 @@ public class Feld {
 	
 	public List<Feld> getNachbarnOhne(Feld feld, boolean mitbearbeitet) {
 		List<Feld> nachbarn = new LinkedList<Feld>();
-		if (mitbearbeitet) {
-			if (this.getEast()!=null && this.getEast()!=feld && this.getEast().istInBearbeitung()) {nachbarn.add(this.getEast());}
-			if (this.getSouth()!=null && this.getSouth()!= feld && this.getSouth().istInBearbeitung()) {nachbarn.add(this.getSouth());}
-			if (this.getWest()!=null && this.getWest()!= feld && this.getWest().istInBearbeitung()) {nachbarn.add(this.getWest());}
-			if (this.getNorth()!=null && this.getNorth()!=feld && this.getNorth().istInBearbeitung()) {nachbarn.add(this.getNorth());}
-		} else {
-			if (this.getEast()!=null && this.getEast()!=feld && !this.getEast().istInBearbeitung()) {nachbarn.add(this.getEast());}
-			if (this.getSouth()!=null && this.getSouth()!= feld && !this.getSouth().istInBearbeitung()) {nachbarn.add(this.getSouth());}
-			if (this.getWest()!=null && this.getWest()!= feld && !this.getWest().istInBearbeitung()) {nachbarn.add(this.getWest());}
-			if (this.getNorth()!=null && this.getNorth()!=feld && !this.getNorth().istInBearbeitung()) {nachbarn.add(this.getNorth());}
+		if (this.getEast() != null && this.getEast() != feld) {
+			nachbarn.add(this.getEast());
+		}
+		if (this.getSouth() != null && this.getSouth() != feld) {
+			nachbarn.add(this.getSouth());
+		}
+		if (this.getWest() != null && this.getWest() != feld) {
+			nachbarn.add(this.getWest());
+		}
+		if (this.getNorth() != null && this.getNorth() != feld) {
+			nachbarn.add(this.getNorth());
 		}
 		return nachbarn;
 	}
