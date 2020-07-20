@@ -101,9 +101,10 @@ public class Spiel {
 							formcounter += 1;
 							rundeZuEnde = true;
 						} else {
-							bot.sucheUmfeldAb();
+							/*bot.sucheUmfeldAb();
 							this.ausgabe = bot.move();
-							rundeZuEnde = true;
+							rundeZuEnde = true;*/
+							System.err.println("Form suchen");
 						}
 					} else {
 						bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formcounter].getFeld()));

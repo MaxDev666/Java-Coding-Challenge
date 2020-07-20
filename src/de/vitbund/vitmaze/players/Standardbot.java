@@ -96,14 +96,22 @@ public class Standardbot {
 		System.err.println("So ein Mist ich muss suchen");
 		// Ring 1
 		Feld Startfeld = this.aktuellesFeld;
-		Set<Feld> tempListe2 = new HashSet<Feld>();
 		List<Feld> tempListe = new ArrayList<Feld>();
-		List<Feld> tempListe3 = new ArrayList<Feld>();
+		List<Feld> tempListe2 = new ArrayList<Feld>();
 		// Ring 1 in Array eingefügt
-		for (Feld f : this.aktuellesFeld.getNachbarn()) {
-			tempListe2.add(f);
-			tempListe.addAll(spielfeld.route(Startfeld, f));
-			Startfeld = f;
+		for (Feld f1 : this.aktuellesFeld.getNachbarnOhne(Startfeld)) {
+			if (!tempListe.contains(f1)) {
+				tempListe.add(f1);
+				tempListe2.addAll(spielfeld.route(Startfeld, f1));
+				for (Feld f2 : f1.getNachbarnOhne(Startfeld)) {
+					if (!tempListe.contains(f2)) {
+						tempListe.add(f2);
+						tempListe2.addAll(spielfeld.route(f1, f2));
+						tempListe2.add(f1);
+					}
+				}
+				tempListe2.add(Startfeld);
+			}
 		}
 		// Ring2
 		/*
@@ -117,17 +125,8 @@ public class Standardbot {
 			tempListe.addAll(spielfeld.route(Startfeld, f3));
 			Startfeld = f3;
 		}*/ 
-		setAktuelleRoute(tempListe);
-	}
-	
-	/**
-	 * Methode welche den Bot bei fehlgeschlagenen move auf sein Ursprungsfeld zurück setzt
-	 */
-	public void rueckgaengig() {
-		this.getAktuelleRoute().add(0, this.aktuellesFeld);
-		this.aktuellesFeld = this.letztesFeld;
-		this.botx = this.aktuellesFeld.getxKoordinate();
-		this.boty = this.aktuellesFeld.getyKoordinate();
+		System.err.println("Templiste und 2. Templiste "+tempListe +" "+ tempListe2);
+		setAktuelleRoute(tempListe2);
 	}
 	
 	/**
@@ -194,7 +193,7 @@ public class Standardbot {
 	}
 	
 	/**
-	 * Methode welche Sheets sowie Formulare 
+	 * Methode welche Sheets sowie Formulare kickt
 	 * @param n Status des Feld im Norden
 	 * @param e Status des Feldes im Osten
 	 * @param s Status des Feldes im Süden

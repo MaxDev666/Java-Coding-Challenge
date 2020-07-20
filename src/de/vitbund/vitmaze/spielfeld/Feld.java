@@ -91,7 +91,7 @@ public class Feld {
 		return nachbarn;
 	}
 	
-	public List<Feld> getNachbarnOhne(Feld feld, boolean mitbearbeitet) {
+	public List<Feld> getNachbarnOhne(Feld feld) {
 		List<Feld> nachbarn = new LinkedList<Feld>();
 		if (this.getEast() != null && this.getEast() != feld) {
 			nachbarn.add(this.getEast());
