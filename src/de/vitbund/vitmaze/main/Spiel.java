@@ -162,9 +162,9 @@ public class Spiel {
 					formcounter += 1;
 					rundeZuEnde = true;
 
-				} else if (!aktFeld[1].equals(bot.getPlayerId() + "") && (spielfeld.getLevel()==5) ) {
+				} else if (!aktFeld[1].equals(bot.getPlayerId() + "") && (spielfeld.getLevel()>3) ) {
 
-					if (bot.getSheetCount() > 0) {
+					if (bot.getSheetCount() > 0 && (spielfeld.getLevel()==5)) {
 						bot.setSheetCount(bot.getSheetCount() - 1);
 						this.ausgabe = bot.put();
 						sheetgelegt = true;
