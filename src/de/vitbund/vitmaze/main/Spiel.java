@@ -101,9 +101,9 @@ public class Spiel {
 							formcounter += 1;
 							rundeZuEnde = true;
 						} else {
-							/*bot.sucheUmfeldAb();
+							bot.sucheUmfeldAb();
 							this.ausgabe = bot.move();
-							rundeZuEnde = true;*/
+							rundeZuEnde = true;
 							System.err.println("Form suchen");
 						}
 					} else {
@@ -112,7 +112,7 @@ public class Spiel {
 						rundeZuEnde = true;
 					}
 				} else if (!spielfeld.getUnbekannteFelder().isEmpty()){
-					System.err.println("Unbekanntes Feld" + spielfeld.getUnbekannteFelder().get(0).getxKoordinate() + " " + spielfeld.getUnbekannteFelder().get(0).getyKoordinate());
+					//System.err.println("Unbekanntes Feld" + spielfeld.getUnbekannteFelder().get(0).getxKoordinate() + " " + spielfeld.getUnbekannteFelder().get(0).getyKoordinate());
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
 					this.ausgabe = bot.move();
 					rundeZuEnde = true;

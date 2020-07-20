@@ -113,18 +113,6 @@ public class Standardbot {
 				tempListe2.add(Startfeld);
 			}
 		}
-		// Ring2
-		/*
-		for (Feld f2 : tempListe2) {
-			tempListe3.add(f2);
-			tempListe.addAll(spielfeld.route(Startfeld, f2));
-			Startfeld = f2;
-		}
-		// Ring 3
-		for (Feld f3 : tempListe3) {
-			tempListe.addAll(spielfeld.route(Startfeld, f3));
-			Startfeld = f3;
-		}*/ 
 		System.err.println("Templiste und 2. Templiste "+tempListe +" "+ tempListe2);
 		setAktuelleRoute(tempListe2);
 	}
