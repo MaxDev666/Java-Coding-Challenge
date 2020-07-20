@@ -192,12 +192,12 @@ public class Standardbot {
 	}
 	
 	/**
-	 * Methode welche 
-	 * @param n
-	 * @param e
-	 * @param s
-	 * @param w 
-	 * @param sheet ja/ nein
+	 * Methode welche Sheets sowie Formulare 
+	 * @param n Status des Feld im Norden
+	 * @param e Status des Feldes im Osten
+	 * @param s Status des Feldes im Süden
+	 * @param w Status des Feldes im Westen
+	 * @param sheet ja = kickt sheet, nein = kickt Formular
 	 * @return string "fail"
 	 */
 	public String kick(String n, String e, String s, String w, boolean sheet) {
