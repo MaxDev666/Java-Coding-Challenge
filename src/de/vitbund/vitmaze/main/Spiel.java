@@ -78,9 +78,9 @@ public class Spiel {
 
 		// get Last Action auswerten
 
-		getUpdate();
+		//getUpdate();
 		erkunden();
-		getUpdate();
+		//getUpdate();
 
 		if (rundeZuEnde == false) {
 			if (sheetgelegt== true) {
@@ -90,7 +90,7 @@ public class Spiel {
 				this.ausgabe = bot.move();
 				rundeZuEnde = true;
 			} else {
-				if (spielfeld.getZielfeld() != null && formcounter == howManyForms()) {
+				if (spielfeld.getZielfeld() != null && formcounter == howManyForms() && howManyForms()==anzahlFormulare) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
 					this.ausgabe = bot.move();
 					rundeZuEnde = true;
@@ -104,8 +104,10 @@ public class Spiel {
 						this.ausgabe = bot.move();
 						rundeZuEnde = true;
 					}
-				} else if (!spielfeld.getUnbekannteFelder().isEmpty()) {
+				} else if (!spielfeld.getUnbekannteFelder().isEmpty()){
+					System.err.println("Zeile 108");
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
+					System.err.println(spielfeld.getUnbekannteFelder().get(0).getxKoordinate() + " " + spielfeld.getUnbekannteFelder().get(0).getyKoordinate());
 					this.ausgabe = bot.move();
 					rundeZuEnde = true;
 				} else {
@@ -184,7 +186,7 @@ public class Spiel {
 
 		if (cellStatusArray[0].equals("FINISH") && cellStatusArray[1].equals(bot.getPlayerId() + "")) {
 			anzahlFormulare = Integer.parseInt(cellStatusArray[2]);
-			if (formcounter == howManyForms()) {
+			if (formcounter == howManyForms() && howManyForms() == anzahlFormulare) {
 				allesGesammelt = true;
 				System.err.println("HABE ALLES GESAMMELT UND GEHE ZUM ZIEL ZU FELD " + spielfeld.getZielfeld());
 				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), bot.getAktuellesFeld().getFeld(richtung)));
