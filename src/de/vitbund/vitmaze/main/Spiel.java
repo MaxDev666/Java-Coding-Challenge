@@ -7,7 +7,7 @@ import de.vitbund.vitmaze.spielfeld.Formular;
 import de.vitbund.vitmaze.spielfeld.Spielfeld;
 
 public class Spiel {
-
+	//Attribute
 	Spielfeld spielfeld;
 	Standardbot bot;
 	String lastActionsResult;
@@ -25,7 +25,9 @@ public class Spiel {
 	boolean rundeZuEnde;
 	boolean sheetgelegt;
 
-	
+	/**
+	 * Methode um das Spiel zu initialisieren
+	 */
 	public void init() {
 		// Spielfeld anlegen und Startdaten setzen
 		spielfeld = new Spielfeld();
@@ -65,7 +67,10 @@ public class Spiel {
 		ausgabe = new String("position");
 	}
 	
-	
+	/**
+	 * Methode welche Bot zum erkunden schickt, entsprechende Formulare aufnimmt oder gegebenenfalls in der Umgebung suchen lässt
+	 * sowie das Ziel bei allen Vorhandenen Formularen aufsucht 
+	 */
 	public void getStati() {
 		rundeZuEnde = false;
 
@@ -75,44 +80,45 @@ public class Spiel {
 		this.eastCellStatus = Eingabe.leseZeile();
 		this.southCellStatus = Eingabe.leseZeile();
 		this.westCellStatus = Eingabe.leseZeile();
-
-		// get Last Action auswerten
-
-		//getUpdate();
+		
 		erkunden();
-		//getUpdate();
-
+		//prüft ob Runde beendet ist
 		if (rundeZuEnde == false) {
 			if (sheetgelegt== true) {
 				sheetgelegt = false;
 			}
+			//prüft ob er bereits eine Route hat
 			if (bot.hatRoute()) {
 				this.ausgabe = bot.move();
 				rundeZuEnde = true;
 			} else {
+				//wenn Anzahl der Formulare stimmt, route auf Zielfeld setzen
 				if (spielfeld.getZielfeld() != null && (formcounter-1)==anzahlFormulare) {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getZielfeld()));
 					this.ausgabe = bot.move();
 					rundeZuEnde = true;
 				} else if (forms[formcounter] != null) {
+					//nimmt passendes Formular auf wenn es auf aktuellen Feld liegt
 					if (forms[formcounter].getFeld() == bot.getAktuellesFeld()) {
 						if (this.currentCellStatus.startsWith("FORM " + bot.getPlayerId() + " " + formcounter)) {
 							this.ausgabe = bot.take();
 							formcounter += 1;
 							rundeZuEnde = true;
 						} else {
+							//sucht Umfeld ab wenn Formular nichtmehr da liegt
 							bot.sucheUmfeldAb();
 							this.ausgabe = bot.move();
 							rundeZuEnde = true;
-							System.err.println("Form suchen");
 						}
 					} else {
+						//setzt Route auf das nächste benötigte Formular
 						bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formcounter].getFeld()));
 						this.ausgabe = bot.move();
 						rundeZuEnde = true;
 					}
 				} else if (!spielfeld.getUnbekannteFelder().isEmpty()){
-					//System.err.println("Unbekanntes Feld" + spielfeld.getUnbekannteFelder().get(0).getxKoordinate() + " " + spielfeld.getUnbekannteFelder().get(0).getyKoordinate());
+					//gibt Koordinaten von nächstem Unbekannten Feld aus und setzt seine Route dorthin
+					System.err.println("Unbekanntes Feld" + spielfeld.getUnbekannteFelder().get(0).getxKoordinate() + " " + spielfeld.getUnbekannteFelder().get(0).getyKoordinate());
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
 					this.ausgabe = bot.move();
 					rundeZuEnde = true;
@@ -124,6 +130,12 @@ public class Spiel {
 		System.out.println(this.ausgabe);
 	}
 	
+	/**
+	 * Prüft ob mit anderen Bots geredet wird
+	 * Sucht in der Umgebung nach Formularen und nimmt diese wenn möglich
+	 * Prüft ob "Gegner-Formulare" kick/verdeckbar sind, ausgabe "kickMöglich"
+	 */
+	
 	public void erkunden() {
 
 		schaueRichtung('n');
@@ -132,7 +144,7 @@ public class Spiel {
 		schaueRichtung('w');
 
 		String[] aktFeld = this.currentCellStatus.split(" ");
-
+		//prüft ob Runde durch reden mit anderen Bot beendet ist
 		if (aktFeld[aktFeld.length - 1].equals("!")) {
 			if (bot.isRedetDieRunde() == false) {
 				bot.setRedetDieRunde(true);
@@ -141,21 +153,28 @@ public class Spiel {
 				bot.setRedetDieRunde(false);
 			}
 		}
-
+		//sofern Runde noch läuft
 		if (rundeZuEnde == false) {
+			//nimmt zutreffendes Formular auf
 			if (aktFeld[0].equals("FORM")) {
 				if (aktFeld[1].equals(bot.getPlayerId() + "") && aktFeld[2].equals(formcounter + "")) {
 					this.ausgabe = bot.take();
 					formcounter += 1;
 					rundeZuEnde = true;
+
 				} else if (!aktFeld[1].equals(bot.getPlayerId() + "") && (spielfeld.getLevel()==5) ) {
+
+				} else if (!aktFeld[1].equals(bot.getPlayerId() + "")) {
+					//legt wenn möglich sheet auf "Gegner-Formular"
+
 					if (bot.getSheetCount() > 0) {
 						bot.setSheetCount(bot.getSheetCount() - 1);
 						this.ausgabe = bot.put();
 						sheetgelegt = true;
 						rundeZuEnde = true;
 					} else {
-						if (spielfeld.getLevel()>4) {
+
+						if (spielfeld.getLevel()>3) {
 							String kickMöglich = bot.kick(this.northCellStatus, this.eastCellStatus, this.southCellStatus, this.westCellStatus, false);
 							if (!kickMöglich.equals("fail")) {
 								this.ausgabe = kickMöglich;
@@ -165,12 +184,25 @@ public class Spiel {
 					}
 				}
 			} else if ((spielfeld.getLevel()==5) && aktFeld[0].equals("SHEET") && sheetgelegt == false) {
+
+						//prüft ob "Gegner-Formular" kickbar ist
+						String kickMöglich = bot.kick(this.northCellStatus, this.eastCellStatus, this.southCellStatus, this.westCellStatus, false);
+						if (!kickMöglich.equals("fail")) {
+							this.ausgabe = kickMöglich;
+							rundeZuEnde = true;
+						}
+					}
+				}
+			//prüft ob sheet kickbar ist wenn er es nicht selbst gelegt hat
+			} else if (aktFeld[0].equals("SHEET") && sheetgelegt == false) {
+
 				String kickmöglich = bot.kick(this.northCellStatus, this.eastCellStatus, this.southCellStatus,
 						this.westCellStatus, true);
 				if (!kickmöglich.equals("fail")) {
 					this.ausgabe = kickmöglich;
 					rundeZuEnde = true;
 				}
+			//ausgabe finish wenn alle Formulare gesammelt und am Ziel
 			} else if (aktFeld[0].equals("FINISH") && aktFeld[1].equals(bot.getPlayerId() + "")) {
 				if (allesGesammelt) {
 					this.ausgabe = bot.finish();
@@ -179,7 +211,11 @@ public class Spiel {
 			}
 		}
 	}
-
+	
+	/**
+	 * Prüft was sich in Blickrichtung und erstellt dementsprechend Felder
+	 * @param richtung n/e/s/w
+	 */
 	public void schaueRichtung(char richtung) {
 		String[] cellStatusArray = getCellStatus(richtung).split(" ");
 		if (bot.getAktuellesFeld().getFeld(richtung) == null) {
@@ -187,33 +223,37 @@ public class Spiel {
 				this.erstellFeld(richtung);
 			}
 		}
-
+		//Ziel liegt in Blickrichtung 
 		if (cellStatusArray[0].equals("FINISH") && cellStatusArray[1].equals(bot.getPlayerId() + "")) {
 			anzahlFormulare = Integer.parseInt(cellStatusArray[2]);
 			if ( (formcounter-1) == anzahlFormulare) {
+				//alle Formulare gefunden
 				allesGesammelt = true;
 				System.err.println("HABE ALLES GESAMMELT UND GEHE ZUM ZIEL ZU FELD " + spielfeld.getZielfeld());
 				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), bot.getAktuellesFeld().getFeld(richtung)));
 				this.ausgabe = bot.move();
 				rundeZuEnde = true;
 			} else {
+				//speichert Zielfeld 
 				spielfeld.setZielfeld(bot.getAktuellesFeld().getFeld(richtung));
 			}
 		}
-		
+		//Formular liegt in Blickrichtung 
 		if (cellStatusArray[0].equals("FORM") && cellStatusArray[1].equals(bot.getPlayerId()+ "")) {
 			formID = Integer.parseInt(cellStatusArray[2]);
 			if (forms[formID] == null) {
+				//speichert sich Feld mit Formular
 				Formular formular = new Formular(formID, bot.getAktuellesFeld().getFeld(richtung));
 				forms[formID] = formular;
 			}
+			//setzt Route auf passendes Formular in Blickrichtung
 			if (formID == formcounter) {
 				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), bot.getAktuellesFeld().getFeld(richtung)));
 				this.ausgabe = bot.move();
 				rundeZuEnde = true;
 			}
 		}
-
+		//sheet liegt in Blickrichtung
 		if (cellStatusArray[0].equals("SHEET")) {
 			spielfeld.getSheetList().add(bot.getAktuellesFeld().getFeld(richtung));
 		}
@@ -221,7 +261,7 @@ public class Spiel {
 	
 	/***
 	 * Wie viele Formulare hat der Bot bereits entdeckt?
-	 * @return Anzahl entdeckter Formulare
+	 * @return i Anzahl entdeckter Formulare
 	 */
 	public int howManyForms() {
 		int i=0;
@@ -233,6 +273,11 @@ public class Spiel {
 		return i;
 	}
 
+	/**
+	 * Gibt Stati der jeweiligen Richtungsfelder zurück
+	 * @param richtung
+	 * @return string "kein Status"
+	 */
 	public String getCellStatus(char richtung){
 		switch(richtung) {
 		case 'n':
@@ -248,13 +293,15 @@ public class Spiel {
 		}
 		
 	}
-	
+	/**
+	 * Methode welche Feld in entsprechende Richtung erstellt und X/Y koordinaten ausgibt
+	 * @param richtungFeldErstellen n/e/s/w 
+	 */
 	public void erstellFeld(char richtungFeldErstellen) {
 		int wohinx = 0;
 		int wohiny = 0;
 		switch (richtungFeldErstellen) {
 		case 'n':
-			//System.err.println("Nordkoordinaten: " + bot.getBotY() + " " + spielfeld.getSizeY());
 			if (bot.getBotY() - 1 < 0) {
 				wohinx = bot.getBotX();
 				wohiny = spielfeld.getSizeY() - 1;
@@ -265,7 +312,6 @@ public class Spiel {
 				break;
 			}
 		case 'e':
-			//System.err.println("Ostkoordinaten: " + bot.getBotX() + " " + spielfeld.getSizeX());
 			if (bot.getBotX() + 1 == spielfeld.getSizeX()) {
 				wohinx = 0;
 				wohiny = bot.getBotY();
@@ -276,7 +322,6 @@ public class Spiel {
 				break;
 			}
 		case 's':
-			//System.err.println("Suedkoordinaten: " + bot.getBotY() + " " + spielfeld.getSizeY());
 			if (bot.getBotY() + 1 == spielfeld.getSizeY()) {
 				wohinx = bot.getBotX();
 				wohiny = 0;
@@ -287,7 +332,6 @@ public class Spiel {
 				break;
 			}
 		case 'w':
-			//System.err.println("Westkoordinaten: " + bot.getBotX() + " " + spielfeld.getSizeX());
 			if (bot.getBotX() - 1 < 0) {
 				wohinx = spielfeld.getSizeX() - 1;
 				wohiny = bot.getBotY();
@@ -301,7 +345,7 @@ public class Spiel {
 
 		System.err.println("Will Feld bei " + wohinx + "|" + wohiny + " anlegen");
 
-		// prüfen ob das FEld exisitert
+		// prüfen ob das Feld exisitert
 		boolean feldExistiert = false;
 		Feld temp = null;
 		for (Feld feld : spielfeld.getFelder()) {
@@ -356,7 +400,10 @@ public class Spiel {
 			}
 		}
 	}
-	
+
+	/**
+	 * Methode welche 
+	 */
 public void getUpdate() {
 		
 		StringBuilder sb = new StringBuilder();
