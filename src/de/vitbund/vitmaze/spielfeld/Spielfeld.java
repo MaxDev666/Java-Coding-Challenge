@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Hier werden alle Arten von Feldern in Listen gepackt, sowie information zu Feldern/dem Spielfeld dokumentiert.
  * @author Arbeitstitel
- * @version 1.0
+ * @version 1.3
  */
 public class Spielfeld {
 	//Attribute
