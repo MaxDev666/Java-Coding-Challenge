@@ -8,7 +8,7 @@ import de.vitbund.vitmaze.spielfeld.Spielfeld;
 /**
  * Klasse welche den Bot über Methoden agieren lässt
  * @author Arbeitstitel
- * @verion 1.3
+ * @verion 1.4
  */
 public class Standardbot {
 	//Attribute
@@ -121,8 +121,6 @@ public class Standardbot {
 	 * Methode welche den Bot bei fehlgeschlagenen move auf sein Ursprungsfeld zurück setzt
 	 */
 	public void rueckgaengig() {
-		// Problem wenn Bot gerade take macht und anderer Bot zu uns kommt
-		
 		this.getAktuelleRoute().add(0, this.aktuellesFeld);
 		this.aktuellesFeld = this.letztesFeld;
 		this.botx = this.aktuellesFeld.getxKoordinate();
