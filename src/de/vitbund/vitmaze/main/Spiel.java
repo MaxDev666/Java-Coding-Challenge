@@ -190,16 +190,6 @@ public class Spiel {
 						}
 					}
 				
-			//prüft ob sheet kickbar ist wenn er es nicht selbst gelegt hat
-			} else if (aktFeld[0].equals("SHEET") && sheetgelegt == false) {
-
-				String kickmöglich = bot.kick(this.northCellStatus, this.eastCellStatus, this.southCellStatus,
-						this.westCellStatus, true);
-				if (!kickmöglich.equals("fail")) {
-					this.ausgabe = kickmöglich;
-					rundeZuEnde = true;
-				}
-			//ausgabe finish wenn alle Formulare gesammelt und am Ziel
 			} else if (aktFeld[0].equals("FINISH") && aktFeld[1].equals(bot.getPlayerId() + "")) {
 				if (allesGesammelt) {
 					this.ausgabe = bot.finish();
