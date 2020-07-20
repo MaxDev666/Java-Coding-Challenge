@@ -205,8 +205,7 @@ public class Spiel {
 				forms[formID] = formular;
 			}
 			if (formID == formcounter) {
-				System.err.println(forms[formID].getFeld().getxKoordinate() + " " + forms[formID].getFeld().getyKoordinate() );
-				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formID].getFeld()));
+				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), bot.getAktuellesFeld().getFeld(richtung)));
 				this.ausgabe = bot.move();
 				rundeZuEnde = true;
 			}
