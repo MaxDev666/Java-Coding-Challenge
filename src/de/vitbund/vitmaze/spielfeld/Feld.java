@@ -97,11 +97,7 @@ public class Feld {
 	//Konstruktoren
 	public Feld() {	
 	}
-	/**
-	 * bla
-	 * @param x
-	 * @param y
-	 */
+	
 	public Feld(int x, int y) {
 		this.xKoordinate = x;
 		this.yKoordinate = y;
