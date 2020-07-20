@@ -80,16 +80,16 @@ public class Feld {
 	}
 	public List<Feld> getNachbarnOhne(Feld feld, boolean mitbearbeitet) {
 		List<Feld> nachbarn = new LinkedList<Feld>();
-		if (this.getEast() != null && this.getEast() != feld) {
+		if (this.getEast() != null && this.getEast() != feld && !this.getEast().istInBearbeitung()) {
 			nachbarn.add(this.getEast());
 		}
-		if (this.getSouth() != null && this.getSouth() != feld) {
+		if (this.getSouth() != null && this.getSouth() != feld && !this.getSouth().istInBearbeitung()) {
 			nachbarn.add(this.getSouth());
 		}
-		if (this.getWest() != null && this.getWest() != feld) {
+		if (this.getWest() != null && this.getWest() != feld && !this.getWest().istInBearbeitung()) {
 			nachbarn.add(this.getWest());
 		}
-		if (this.getNorth() != null && this.getNorth() != feld) {
+		if (this.getNorth() != null && this.getNorth() != feld && !this.getNorth().istInBearbeitung()) {
 			nachbarn.add(this.getNorth());
 		}
 		return nachbarn;
