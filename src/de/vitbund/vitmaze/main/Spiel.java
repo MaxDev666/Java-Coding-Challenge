@@ -164,9 +164,6 @@ public class Spiel {
 
 				} else if (!aktFeld[1].equals(bot.getPlayerId() + "") && (spielfeld.getLevel()==5) ) {
 
-				} else if (!aktFeld[1].equals(bot.getPlayerId() + "")) {
-					//legt wenn möglich sheet auf "Gegner-Formular"
-
 					if (bot.getSheetCount() > 0) {
 						bot.setSheetCount(bot.getSheetCount() - 1);
 						this.ausgabe = bot.put();
