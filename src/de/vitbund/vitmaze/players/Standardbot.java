@@ -104,6 +104,7 @@ public class Standardbot {
 			Startfeld = f;
 		}
 		// Ring2
+		/*
 		for (Feld f2 : tempListe2) {
 			tempListe3.add(f2);
 			tempListe.addAll(spielfeld.route(Startfeld, f2));
@@ -113,7 +114,7 @@ public class Standardbot {
 		for (Feld f3 : tempListe3) {
 			tempListe.addAll(spielfeld.route(Startfeld, f3));
 			Startfeld = f3;
-		}
+		}*/ 
 		setAktuelleRoute(tempListe);
 	}
 	

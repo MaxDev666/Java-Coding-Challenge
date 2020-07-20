@@ -96,9 +96,15 @@ public class Spiel {
 					rundeZuEnde = true;
 				} else if (forms[formcounter] != null) {
 					if (forms[formcounter].getFeld() == bot.getAktuellesFeld()) {
-						this.ausgabe = bot.take();
-						formcounter += 1;
-						rundeZuEnde = true;
+						if (this.currentCellStatus.startsWith("FORM " + bot.getPlayerId() + " " + formcounter)) {
+							this.ausgabe = bot.take();
+							formcounter += 1;
+							rundeZuEnde = true;
+						} else {
+							bot.sucheUmfeldAb();
+							this.ausgabe = bot.move();
+							rundeZuEnde = true;
+						}
 					} else {
 						bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formcounter].getFeld()));
 						this.ausgabe = bot.move();
@@ -109,11 +115,7 @@ public class Spiel {
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
 					this.ausgabe = bot.move();
 					rundeZuEnde = true;
-				} else {
-					// hier muss noch die Prüfung rein wenn das Formular nicht an der Stelle zu
-					// finden ist oder
-					// eine Routine um einfach nochmal durch alle Felder gehen
-				}
+				} 
 			
 			}
 		}
@@ -203,6 +205,7 @@ public class Spiel {
 				forms[formID] = formular;
 			}
 			if (formID == formcounter) {
+				System.err.println(forms[formID].getFeld().getxKoordinate() + " " + forms[formID].getFeld().getyKoordinate() );
 				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), forms[formID].getFeld()));
 				this.ausgabe = bot.move();
 				rundeZuEnde = true;
