@@ -107,6 +107,8 @@ public class Spielfeld {
 	 * @return Array mit Feldern in der Reihenfolge vom Spieler zum Ziel
 	 */
 	public List<Feld> route(Feld aktuellesFeld, Feld zielFeld) {
+		
+		long startzeit = System.currentTimeMillis();
 		// alle Vorgänger und den Bearbeitet Status für jedes Feld auf null setzen
 		for (Feld feld : this.felder) {
 			feld.setVorgaenger(null);
@@ -135,8 +137,10 @@ public class Spielfeld {
 			
 			// Nachfolger von temp kommen in NochZuBearbeiten und temp wird als deren Vorgänger gesetzt
 			for (Feld nachfolger : temp.getNachbarnOhne(temp.getVorgaenger(),false)) {
+				if (!nochZuBearbeiten.contains(nachfolger)) {
 				nochZuBearbeiten.add(nachfolger);
 				nachfolger.setVorgaenger(temp);
+				}
 			}
 			// temp wird aus zu bearbeiten entfernt
 			nochZuBearbeiten.remove(temp);
@@ -145,7 +149,7 @@ public class Spielfeld {
 			if (temp == zielFeld) {
 				break;
 			}
-			
+			System.err.println(System.currentTimeMillis()-startzeit);
 		}
 		
 		// Ergebnis Liste erstellen
