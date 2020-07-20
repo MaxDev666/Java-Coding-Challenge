@@ -2,20 +2,29 @@ package de.vitbund.vitmaze.spielfeld;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Hier werden alle Arten von Feldern in Listen gepackt, sowie information zu Feldern/dem Spielfeld dokumentiert.
+ * @author Arbeitstitel
+ * @version 1.3
+ */
 public class Spielfeld {
-
+	//Attribute
 	private int sizeX;
 	private int sizeY;
 	private int level;
-	private List<Feld> felder = new ArrayList<Feld>();
-	// Zielfeld merken
 	private Feld Zielfeld;
-	// noch zu erkundende Felder merken
+	
+	// Listen für Felder aller Arten 
+	private List<Feld> felder = new ArrayList<Feld>();
 	private List<Feld> unbekannteFelder = new ArrayList<Feld>();
-	// bekannte Felder merken
 	private List<Feld> bekannteFelder = new ArrayList<Feld>();
 	private List<Feld> sheetList = new ArrayList<Feld>();
+	
+	//Konstruktor
+	public Spielfeld() {
+		this.Zielfeld = new Feld();
+		this.Zielfeld = null;
+	}
 	
 	//Getter und Setter
 	public int getSizeX() {
@@ -57,20 +66,28 @@ public class Spielfeld {
 		return sheetList;
 	}
 	
-	//Konstruktor
-	public Spielfeld() {
-		this.Zielfeld = new Feld();
-		this.Zielfeld = null;
-	}
+	//Methoden
 	
-	
+	/**
+	 * Methode um ein neues Feld in Liste Feld hinzuzufügen
+	 * @param newFeld Feld welches in Liste gespeichert wird
+	 */
 	public void addFeld(Feld newFeld) {
 		felder.add(newFeld);
 	}
-
+	/**
+	 * Methode um ein neues Feld in Liste mit Unbekannten Feldern hinzuzufügen
+	 * @param newFeld Feld welches in Liste gespeichert wird
+	 */
 	public void addUnbekanntesFeld(Feld newFeld) {
 		unbekannteFelder.add(0,newFeld);
 	}
+	/**
+	 * Methode welche ein Feld an X/Y Koordinate zurück gibt
+	 * @param x X-Koordinate des Feldes
+	 * @param y Y-Koordinate des Feldes
+	 * @return  Feld oder null
+	 */
 	public Feld gibFeld(int x, int y) {
 		for (Feld feld : this.getBekannteFelder()) {
 			if (feld.getxKoordinate()== x && feld.getyKoordinate() == y) {
@@ -95,42 +112,33 @@ public class Spielfeld {
 			feld.setVorgaenger(null);
 			feld.setInBearbeitung(false);
 		}
-		
 		// Array mit noch zu bearbeitenden Feldern erstellen
 		List<Feld> nochZuBearbeiten = new ArrayList<Feld>();
 		
-		// HilfsFelder setzen     ## eventuell unnötig oO
-		
+		// HilfsFelder setzen 
 		Feld temp = new Feld();
 		
 		// temp Vorgänger auf sich selbst setzen, als AbschlussKriterium in Endschleife
-		
 		aktuellesFeld.setVorgaenger(aktuellesFeld);
 		
 		// aktuellesFeld in NochBearbeiten Array einfuegen
-		
 		nochZuBearbeiten.add(aktuellesFeld);
 		
 		// NochBearbeiten Array abarbeiten
-		
 		while (!nochZuBearbeiten.isEmpty()) {
 			
 			// temp auf das erste Element der Liste setzen
 			temp = nochZuBearbeiten.get(0);
 						
 			// temp wird auf bearbeitet gesetzt
-			
 			temp.setInBearbeitung(true);
 			
 			// Nachfolger von temp kommen in NochZuBearbeiten und temp wird als deren Vorgänger gesetzt
-			
 			for (Feld nachfolger : temp.getNachbarnOhne(temp.getVorgaenger(),false)) {
 				nochZuBearbeiten.add(nachfolger);
 				nachfolger.setVorgaenger(temp);
 			}
-			
 			// temp wird aus zu bearbeiten entfernt
-			
 			nochZuBearbeiten.remove(temp);
 			
 			// wenn temp = dem Zielfeld dann kann hier abgebrochen werden
@@ -141,7 +149,6 @@ public class Spielfeld {
 		}
 		
 		// Ergebnis Liste erstellen
-		
 		List<Feld> route = new ArrayList<Feld>();
 		
 		while (temp.getVorgaenger()!=null && temp.getVorgaenger()!=temp) {
