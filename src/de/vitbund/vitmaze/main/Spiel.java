@@ -192,7 +192,7 @@ public class Spiel {
 							rundeZuEnde = true;
 						}
 					}
-				}
+				
 			//prüft ob sheet kickbar ist wenn er es nicht selbst gelegt hat
 			} else if (aktFeld[0].equals("SHEET") && sheetgelegt == false) {
 
@@ -210,7 +210,7 @@ public class Spiel {
 				}
 			}
 		}
-	}
+	
 	
 	/**
 	 * Prüft was sich in Blickrichtung und erstellt dementsprechend Felder
