@@ -136,7 +136,7 @@ public class Spielfeld {
 			temp.setInBearbeitung(true);
 			
 			// Nachfolger von temp kommen in NochZuBearbeiten und temp wird als deren Vorgänger gesetzt
-			for (Feld nachfolger : temp.getNachbarnOhne(temp.getVorgaenger(),false)) {
+			for (Feld nachfolger : temp.getNachbarnOhne(temp.getVorgaenger())) {
 				if (!nochZuBearbeiten.contains(nachfolger)) {
 				nochZuBearbeiten.add(nachfolger);
 				nachfolger.setVorgaenger(temp);

@@ -78,7 +78,7 @@ public class Feld {
 		if (this.getNorth()!=null) {nachbarn.add(this.getNorth());}
 		return nachbarn;
 	}
-	public List<Feld> getNachbarnOhne(Feld feld, boolean mitbearbeitet) {
+	public List<Feld> getNachbarnOhne(Feld feld) {
 		List<Feld> nachbarn = new LinkedList<Feld>();
 		if (this.getEast() != null && this.getEast() != feld && !this.getEast().istInBearbeitung()) {
 			nachbarn.add(this.getEast());
