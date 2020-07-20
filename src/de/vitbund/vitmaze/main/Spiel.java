@@ -188,13 +188,14 @@ public class Spiel {
 							this.ausgabe = kickMöglich;
 							rundeZuEnde = true;
 						}
-					}
+					
 				
 			} else if (aktFeld[0].equals("FINISH") && aktFeld[1].equals(bot.getPlayerId() + "")) {
 				if (allesGesammelt) {
 					this.ausgabe = bot.finish();
 					rundeZuEnde = true;
 				}
+			}
 			}
 		}
 	
