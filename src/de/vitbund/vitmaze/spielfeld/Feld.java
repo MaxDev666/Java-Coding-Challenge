@@ -2,8 +2,14 @@ package de.vitbund.vitmaze.spielfeld;
 
 import java.util.LinkedList;
 import java.util.List;
-
+/**
+ * Ermöglicht es Felder mit Koordinaten sowie deren Umgebung und Nachbarfelder anzulegen un abzufragen
+ * @author Arbeitstitel
+ * @version 1.0
+ *
+ */
 public class Feld {
+	//Attribute
 	private Feld north = null;
 	private Feld east = null;
 	private Feld south = null;
@@ -64,24 +70,6 @@ public class Feld {
 	public void setInBearbeitung(boolean istInBearbeitung) {
 		this.istInBearbeitung = istInBearbeitung;
 	}
-	
-	//Konstruktoren
-	public Feld() {	
-	}
-	
-	public Feld(int x, int y) {
-		this.xKoordinate = x;
-		this.yKoordinate = y;
-	}
-	
-	public Feld(Feld north, Feld south, Feld west, Feld east) {
-		this.north = north;
-		this.south=south;
-		this.west = west;
-		this.east = east;
-	}
-	
-	
 	public List<Feld> getNachbarn() {
 		List<Feld> nachbarn = new LinkedList<Feld>();
 		if (this.getEast()!=null) {nachbarn.add(this.getEast());}
@@ -90,7 +78,6 @@ public class Feld {
 		if (this.getNorth()!=null) {nachbarn.add(this.getNorth());}
 		return nachbarn;
 	}
-	
 	public List<Feld> getNachbarnOhne(Feld feld, boolean mitbearbeitet) {
 		List<Feld> nachbarn = new LinkedList<Feld>();
 		if (this.getEast() != null && this.getEast() != feld) {
@@ -107,8 +94,27 @@ public class Feld {
 		}
 		return nachbarn;
 	}
+	//Konstruktoren
+	public Feld() {	
+	}
 	
-	// Funktion, die die Richtung des nachbarFelds zum aktuellen Feld zurückgibt
+	public Feld(int x, int y) {
+		this.xKoordinate = x;
+		this.yKoordinate = y;
+	}
+	
+	public Feld(Feld north, Feld south, Feld west, Feld east) {
+		this.north = north;
+		this.south=south;
+		this.west = west;
+		this.east = east;
+	}
+	//Methoden
+	/**
+	 * Methode, welche die die Richtung des nachbarFelds zum aktuellen Feld zurückgibt
+	 * @param nachbarFeld Feld in der Umgebung des aktuellen Feldes
+	 * @return string entsprechende Richtung "north","east","south","west","Feld kein Nachbar"
+	 */
 	public String getRichtung(Feld nachbarFeld) {
 		if (this.getNorth()==nachbarFeld) {
 			return "north";
@@ -123,6 +129,11 @@ public class Feld {
 		}
 	}
 	
+	/**
+	 * Methode, welche sich das Nachbarfeld zum Feld in entsprechender Richtung ausgeben lässt
+	 * @param richtung n/e/s/w
+	 * @return Feld der entsprechenden Richtung
+	 */
 	public Feld getFeld(char richtung) {
 		switch (richtung) {
 		case 'n':
