@@ -20,12 +20,6 @@ public class Spielfeld {
 	private List<Feld> bekannteFelder = new ArrayList<Feld>();
 	private List<Feld> sheetList = new ArrayList<Feld>();
 	
-	//Konstruktor
-	public Spielfeld() {
-		this.Zielfeld = new Feld();
-		this.Zielfeld = null;
-	}
-	
 	//Getter und Setter
 	public int getSizeX() {
 		return sizeX;
@@ -65,6 +59,12 @@ public class Spielfeld {
 	public List<Feld> getSheetList() {
 		return sheetList;
 	}
+	
+	//Konstruktor
+		public Spielfeld() {
+			this.Zielfeld = new Feld();
+			this.Zielfeld = null;
+		}
 	
 	//Methoden
 	

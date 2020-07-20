@@ -5,9 +5,13 @@ import java.util.List;
 
 import de.vitbund.vitmaze.spielfeld.Feld;
 import de.vitbund.vitmaze.spielfeld.Spielfeld;
-
+/**
+ * Klasse welche den Bot über Methoden agieren lässt
+ * @author Arbeitstitel
+ * @verion 1.4
+ */
 public class Standardbot {
-
+	//Attribute
 	Spielfeld spielfeld;
 	private int playerId;
 	private int botx;
@@ -68,6 +72,11 @@ public class Standardbot {
 		this.setRedetDieRunde(false);
 	}
 	
+	//Methoden
+	/**
+	 * Methode welche prüft ob eine Route existiert
+	 * @return Antwort mit ja oder nein
+	 */
 	public boolean hatRoute() {
 		if (this.getAktuelleRoute() != null) {
 			if (this.getAktuelleRoute().isEmpty()==false) {
@@ -76,7 +85,11 @@ public class Standardbot {
 		}
 		return false;
 	}
-
+	
+	/**
+	 * Methode welche bei verschwundenem Formular die Umgebung absucht
+	 * Neue Route mit Ringförmigen Ablaufen der Umgebungsfelder
+	 */
 	public void sucheUmfeldAb() {
 		System.err.println("So ein Mist ich muss suchen");
 		// Ring 1
@@ -90,44 +103,47 @@ public class Standardbot {
 			tempListe.addAll(spielfeld.route(Startfeld, f));
 			Startfeld = f;
 		}
-		
 		// Ring2
-		
 		for (Feld f2 : tempListe2) {
 			tempListe3.add(f2);
 			tempListe.addAll(spielfeld.route(Startfeld, f2));
 			Startfeld = f2;
 		}
-		
 		// Ring 3
-		
 		for (Feld f3 : tempListe3) {
 			tempListe.addAll(spielfeld.route(Startfeld, f3));
 			Startfeld = f3;
 		}
-		
 		setAktuelleRoute(tempListe);
 	}
 	
+	/**
+	 * Methode welche den Bot bei fehlgeschlagenen move auf sein Ursprungsfeld zurück setzt
+	 */
 	public void rueckgaengig() {
-		// Problem wenn Bot gerade take macht und anderer Bot zu uns kommt
-		
 		this.getAktuelleRoute().add(0, this.aktuellesFeld);
 		this.aktuellesFeld = this.letztesFeld;
 		this.botx = this.aktuellesFeld.getxKoordinate();
 		this.boty = this.aktuellesFeld.getyKoordinate();
 	}
 	
+	/**
+	 * Methode welche von der Route abruft wohin sich der Bot bewegen soll und
+	 * nach bewegung das Unbekannte Feld den Bekannten hinzufügt
+	 * @return ergebnis string in welche Richtung der Bot gelaufen ist
+	 */
 	public String move() {
-		//System.err.println("unbekannte Felder: " + spielfeld.getUnbekannteFelder());
 		Feld zuFeld = new Feld( );
 		String ergebnis = new String();
+		
+		//holt sich nächstes Feld aus der Route
 		this.letztesFeld = this.aktuellesFeld;
 		zuFeld = this.getAktuelleRoute().get(0);
 		System.err.println("Zielfeld der Route: " + this.getAktuelleRoute().get(this.aktuelleRoute.size()-1));
 		System.err.println("Die Koordinaten dieses Feldes: "+this.getAktuelleRoute().get(this.aktuelleRoute.size()-1).getxKoordinate()+"|"+
 							this.getAktuelleRoute().get(this.aktuelleRoute.size()-1).getyKoordinate());
-		//System.err.println("VonFeld: " + this.getAktuellesFeld());
+		
+		//in entsprechende Richtung laufen
 		switch (this.getAktuellesFeld().getRichtung(zuFeld)){
 			case "north":
 				this.getAktuelleRoute().remove(this.getAktuellesFeld());
@@ -146,25 +162,43 @@ public class Standardbot {
 				ergebnis = this.goWest();
 				break;
 		}
-		//System.err.println(this.getAktuellesFeld());
+		//löscht das Feld aus unbekannten Feldern und fügt es den bekannten hinzu
 		if (spielfeld.getUnbekannteFelder().contains(this.getAktuellesFeld())) {
 			spielfeld.getUnbekannteFelder().remove(this.getAktuellesFeld());
 			spielfeld.getBekannteFelder().add(this.getAktuellesFeld());
 		}
+		//Feld aus Route entfernen
 		if (this.getAktuellesFeld() == zuFeld) {
 			this.getAktuelleRoute().remove(this.getAktuellesFeld());
 		}
 		return ergebnis;
 	}
 	
+	/**
+	 * Methode welche string zurück gibt
+	 * @return string "take"
+	 */
 	public String take() {
 		return "take";
 	}
 	
+	/**
+	 * Methode welche string zurück gibt
+	 * @return string "put"
+	 */
 	public String put() {
 		return "put";
 	}
 	
+	/**
+	 * Methode welche 
+	 * @param n
+	 * @param e
+	 * @param s
+	 * @param w 
+	 * @param sheet ja/ nein
+	 * @return string "fail"
+	 */
 	public String kick(String n, String e, String s, String w, boolean sheet) {
 		
 		if (sheet) {
@@ -191,12 +225,21 @@ public class Standardbot {
 		return "fail";
 	}
 	
+	/**
+	 * Methode welche string zurück gibt
+	 * @return string "finsish"
+	 */
 	public String finish() {
 		return "finish";
 	}
 	
+	/**
+	 * Methode welche den Bot sich nach Westen bewegen lässt
+	 * @return string "go west" 
+	 */
 	public String goWest() {
 		this.setAktuellesFeld(this.getAktuellesFeld().getWest());
+		//bei verlassen des Spielfeldrandes springen auf andere Spielfeldseite
 		if (this.getBotX()-1 < 0) {
 			this.setBotX(spielfeld.getSizeX()-1);
 		} else {
@@ -205,6 +248,10 @@ public class Standardbot {
 		return "go west";	
 	}
 	
+	/**
+	 * Methode welche den Bot sich nach Norden bewegen lässt
+	 * @return string "go north"
+	 */
 	public String goNorth() {
 		this.aktuellesFeld = this.aktuellesFeld.getNorth();
 		if (this.getBotY()-1 < 0) {
@@ -215,6 +262,10 @@ public class Standardbot {
 		return "go north";	
 	}
 	
+	/**
+	 * Methode welche den Bot sich nach Osten bewegen lässt
+	 * @return string "go east" 
+	 */
 	public String goEast() {
 		this.aktuellesFeld = this.aktuellesFeld.getEast();
 		if (this.getBotX()+1 == spielfeld.getSizeX()) {
@@ -225,6 +276,10 @@ public class Standardbot {
 		return "go east";
 	}
 	
+	/**
+	 * Methode welche den Bot sich nach Süden bewegen lässt
+	 * @return string "go south" 
+	 */
 	public String goSouth() {
 		this.aktuellesFeld = this.aktuellesFeld.getSouth();
 		if (this.getBotY()+1 == spielfeld.getSizeY()) {
