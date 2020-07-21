@@ -96,27 +96,45 @@ public class Standardbot {
 		System.err.println("So ein Mist ich muss suchen");
 		// Ring 1
 		Feld Startfeld = this.aktuellesFeld;
-		Set<Feld> tempListe2 = new HashSet<Feld>();
 		List<Feld> tempListe = new ArrayList<Feld>();
+		List<Feld> tempListe2 = new ArrayList<Feld>();
 		List<Feld> tempListe3 = new ArrayList<Feld>();
 		// Ring 1 in Array eingefügt
-		for (Feld f : this.aktuellesFeld.getNachbarn()) {
-			tempListe2.add(f);
-			tempListe.addAll(spielfeld.route(Startfeld, f));
-			Startfeld = f;
+		for (Feld f1 : this.aktuellesFeld.getNachbarnOhne(Startfeld)) {
+			if (!tempListe.contains(f1)) {
+				tempListe.add(f1);
+				tempListe2.addAll(spielfeld.route(Startfeld, f1));
+				for (Feld f2 : f1.getNachbarnOhne(Startfeld)) {
+					if (!tempListe.contains(f2)) {
+						tempListe.add(f2);
+						tempListe2.addAll(spielfeld.route(f1, f2));
+						for (Feld f3 : f2.getNachbarnOhne(f1)) {
+							if (!tempListe.contains(f3)) {
+								tempListe.add(f3);
+								tempListe2.addAll(spielfeld.route(f2, f3));
+								for (Feld f4 : f3.getNachbarnOhne(f2)) {
+									if (!tempListe.contains(f4)) {
+										tempListe.add(f4);
+										tempListe2.addAll(spielfeld.route(f3, f4));
+										for (Feld f5 : f4.getNachbarnOhne(f3)) {
+											if (!tempListe.contains(f5)) {
+												tempListe.add(f5);
+												tempListe2.addAll(spielfeld.route(f4, f5));
+												tempListe2.add(f4);
+											}
+										}
+										tempListe2.add(f3);
+									}
+								}
+								tempListe2.add(f2);
+							}
+						}
+						tempListe2.add(f1);
+					}
+				}
+				tempListe2.add(Startfeld);
+			}
 		}
-		// Ring2
-		/*
-		for (Feld f2 : tempListe2) {
-			tempListe3.add(f2);
-			tempListe.addAll(spielfeld.route(Startfeld, f2));
-			Startfeld = f2;
-		}
-		// Ring 3
-		for (Feld f3 : tempListe3) {
-			tempListe.addAll(spielfeld.route(Startfeld, f3));
-			Startfeld = f3;
-		}*/ 
 		setAktuelleRoute(tempListe);
 	}
 	
