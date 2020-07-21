@@ -1,8 +1,8 @@
 package de.vitbund.vitmaze.spielfeld;
 /**
- * Klasse welche die Eigenschaften und Methoden für die im Labyrinth aufzuhebenden Formulare beschreibt.
- * @author Arbeitstitel
- * @version 1.3
+ * Eine Klasse, welche die Eigenschaften und Methoden für die im Labyrinth aufzuhebenden Formulare beschreibt.
+ * @author Benjamin Bogusch, Fritz Köhler, Florian Kreibe, Maximilian Hett
+ * @version 1.5
  */
 public class Formular {
 	//Attribute

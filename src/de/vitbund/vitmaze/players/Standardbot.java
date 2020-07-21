@@ -1,16 +1,15 @@
 package de.vitbund.vitmaze.players;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import de.vitbund.vitmaze.spielfeld.Feld;
 import de.vitbund.vitmaze.spielfeld.Spielfeld;
 /**
- * Klasse welche den Bot über Methoden agieren lässt
- * @author Arbeitstitel
- * @verion 1.4
+ * Dies ist eine Klasse, die die Aktionen unsereres Bots steuert. Dazu zählt unter anderem move, kick, take und put. 
+ * Außerdem gibt es eine Methode zur Formularfindung, wenn dieses weggekickt wurde.
+ * @author Benjamin Bogusch, Fritz Köhler, Florian Kreibe, Maximilian Hett
+ * @version 1.5
  */
 public class Standardbot {
 	//Attribute
@@ -19,7 +18,6 @@ public class Standardbot {
 	private int botx;
 	private int boty;
 	private Feld aktuellesFeld;
-	private Feld letztesFeld;
 	private List<Feld> aktuelleRoute;
 	private int sheetCount;
 	private boolean redetDieRunde;
@@ -69,6 +67,10 @@ public class Standardbot {
 	}
 	
 	//Konstruktor
+	/**
+	 * Der Konstruktor setzt das Spielfeld auf das im Parameter angegebene Spielfeld und setzt die Variable zur Redeerkennung auf false.
+	 * @param unser vorher angegelegtes Spielfeld
+	 */
 	public Standardbot(Spielfeld spielfeld) {
 		this.spielfeld = spielfeld;
 		this.setRedetDieRunde(false);
@@ -76,7 +78,7 @@ public class Standardbot {
 	
 	//Methoden
 	/**
-	 * Methode welche prüft ob eine Route existiert
+	 * Dies ist eine Methode, die prüft, ob unser Bot momentan eine Route hat.
 	 * @return Antwort mit ja oder nein
 	 */
 	public boolean hatRoute() {
@@ -89,33 +91,35 @@ public class Standardbot {
 	}
 	
 	/**
-	 * Methode welche bei verschwundenem Formular die Umgebung absucht
-	 * Neue Route mit Ringförmigen Ablaufen der Umgebungsfelder
+	 * Dies ist eine Methode, die bei weg gekickten Formularen die Umgebung absucht.
+	 * Dabei wird nur bis zu einer Tiefe von 5 Feldern ausgehend vom Startpunkt gesucht, da wir nicht davon ausgehen, dass ein Formular weiter weg gekickt wird.
 	 */
 	public void sucheUmfeldAb() {
-		System.err.println("So ein Mist ich muss suchen");
-		// Ring 1
+		// Initialisierung des Startfelds und der Listen
 		Feld Startfeld = this.aktuellesFeld;
 		List<Feld> tempListe = new ArrayList<Feld>();
 		List<Feld> tempListe2 = new ArrayList<Feld>();
-		List<Feld> tempListe3 = new ArrayList<Feld>();
-		// Ring 1 in Array eingefügt
+		// direkte Nachbarn und Route dahin in die Listen einfügen
 		for (Feld f1 : this.aktuellesFeld.getNachbarnOhne(Startfeld)) {
 			if (!tempListe.contains(f1)) {
 				tempListe.add(f1);
 				tempListe2.addAll(spielfeld.route(Startfeld, f1));
+				// von dem direkten Nachbarn ausgehend jeweilige Nachbarn und Route in die Listen einfügen
 				for (Feld f2 : f1.getNachbarnOhne(Startfeld)) {
 					if (!tempListe.contains(f2)) {
 						tempListe.add(f2);
 						tempListe2.addAll(spielfeld.route(f1, f2));
+						// vom neuen Nachbarn ausgehend jeweilige Nachbarn und Route in die Listen einfügen
 						for (Feld f3 : f2.getNachbarnOhne(f1)) {
 							if (!tempListe.contains(f3)) {
 								tempListe.add(f3);
 								tempListe2.addAll(spielfeld.route(f2, f3));
+								// vom neuen Nachbarn ausgehend jeweilige Nachbarn und Route in die Listen einfügen
 								for (Feld f4 : f3.getNachbarnOhne(f2)) {
 									if (!tempListe.contains(f4)) {
 										tempListe.add(f4);
 										tempListe2.addAll(spielfeld.route(f3, f4));
+										// vom neuen Nachbarn ausgehend jeweilige Nachbarn und Route in die Listen einfügen
 										for (Feld f5 : f4.getNachbarnOhne(f3)) {
 											if (!tempListe.contains(f5)) {
 												tempListe.add(f5);
@@ -139,30 +143,16 @@ public class Standardbot {
 	}
 	
 	/**
-	 * Methode welche den Bot bei fehlgeschlagenen move auf sein Ursprungsfeld zurück setzt
-	 */
-	public void rueckgaengig() {
-		this.getAktuelleRoute().add(0, this.aktuellesFeld);
-		this.aktuellesFeld = this.letztesFeld;
-		this.botx = this.aktuellesFeld.getxKoordinate();
-		this.boty = this.aktuellesFeld.getyKoordinate();
-	}
-	
-	/**
-	 * Methode welche von der Route abruft wohin sich der Bot bewegen soll und
-	 * nach bewegung das Unbekannte Feld den Bekannten hinzufügt
-	 * @return ergebnis string in welche Richtung der Bot gelaufen ist
+	 * Dies ist eine Methode, die von der Route abruft, wohin sich der Bot bewegen soll und
+	 * nach der Bewegung das Unbekannte Feld den Bekannten hinzufügt
+	 * @return String, in welche Richtung der Bot gelaufen ist. (Dies wird in der Spiel-Klasse als Aktion gesetzt)
 	 */
 	public String move() {
 		Feld zuFeld = new Feld( );
 		String ergebnis = new String();
 		
 		//holt sich nächstes Feld aus der Route
-		this.letztesFeld = this.aktuellesFeld;
 		zuFeld = this.getAktuelleRoute().get(0);
-		System.err.println("Zielfeld der Route: " + this.getAktuelleRoute().get(this.aktuelleRoute.size()-1));
-		System.err.println("Die Koordinaten dieses Feldes: "+this.getAktuelleRoute().get(this.aktuelleRoute.size()-1).getxKoordinate()+"|"+
-							this.getAktuelleRoute().get(this.aktuelleRoute.size()-1).getyKoordinate());
 		
 		//in entsprechende Richtung laufen
 		switch (this.getAktuellesFeld().getRichtung(zuFeld)){
@@ -183,7 +173,7 @@ public class Standardbot {
 				ergebnis = this.goWest();
 				break;
 		}
-		//löscht das Feld aus unbekannten Feldern und fügt es den bekannten hinzu
+		//löscht das Feld aus unbekannten Feldern und fügt es den Bekannten hinzu
 		if (spielfeld.getUnbekannteFelder().contains(this.getAktuellesFeld())) {
 			spielfeld.getUnbekannteFelder().remove(this.getAktuellesFeld());
 			spielfeld.getBekannteFelder().add(this.getAktuellesFeld());
@@ -196,15 +186,23 @@ public class Standardbot {
 	}
 	
 	/**
-	 * Methode welche string zurück gibt
-	 * @return string "take"
+	 * Dies ist eine Methode, welche den String "finish" als Zielmarkierung zurück gibt
+	 * @return string "finish"
+	 */
+	public String finish() {
+		return "finish";
+	}
+	
+	/**
+	 * Dies ist eine Methode, welche den String "take" als Aufhebebefehl zurück gibt
+	 * @return String "take"
 	 */
 	public String take() {
 		return "take";
 	}
 	
 	/**
-	 * Methode welche string zurück gibt
+	 * Dies ist eine Methode, welche den String "put" als Legebefehl eines Sheets zurück gibt
 	 * @return string "put"
 	 */
 	public String put() {
@@ -212,13 +210,14 @@ public class Standardbot {
 	}
 	
 	/**
-	 * Methode welche Sheets sowie Formulare 
-	 * @param n Status des Feld im Norden
-	 * @param e Status des Feldes im Osten
-	 * @param s Status des Feldes im Süden
-	 * @param w Status des Feldes im Westen
-	 * @param sheet ja = kickt sheet, nein = kickt Formular
-	 * @return string "fail"
+	 * Dies ist eine Methode, welche sowohl Sheets als auch Formulare in eine Richtung kicken kann
+	 * Dieser Befehl mit der Richtung wird dann zurückgegeben
+	 * @param n gibt den Status des Feldes im Norden an
+	 * @param e gibt den Status des Feldes im Osten an
+	 * @param s gibt den Status des Feldes im Süden an
+	 * @param w gibt den Status des Feldes im Westen an
+	 * @param sheet ist ein boolean, der anzeigt, ob ein Sheet oder ein Formular gekickt werden soll. (ja = kickt sheet, nein = kickt Formular)
+	 * @return gibt den kick-Befehl mit der Richtung oder ein "fail" zurück
 	 */
 	public String kick(String n, String e, String s, String w, boolean sheet) {
 		
@@ -247,15 +246,7 @@ public class Standardbot {
 	}
 	
 	/**
-	 * Methode welche string zurück gibt
-	 * @return string "finsish"
-	 */
-	public String finish() {
-		return "finish";
-	}
-	
-	/**
-	 * Methode welche den Bot sich nach Westen bewegen lässt
+	 * Dies ist eine Methode, den Bot nach Westen bewegen lässt. Dabei prüft Sie, ob die Spielfeldränder übertreten werden.
 	 * @return string "go west" 
 	 */
 	public String goWest() {
@@ -270,7 +261,7 @@ public class Standardbot {
 	}
 	
 	/**
-	 * Methode welche den Bot sich nach Norden bewegen lässt
+	 * Dies ist eine Methode, den Bot nach Norden bewegen lässt. Dabei prüft Sie, ob die Spielfeldränder übertreten werden.
 	 * @return string "go north"
 	 */
 	public String goNorth() {
@@ -284,7 +275,7 @@ public class Standardbot {
 	}
 	
 	/**
-	 * Methode welche den Bot sich nach Osten bewegen lässt
+	 * Dies ist eine Methode, den Bot nach Osten bewegen lässt. Dabei prüft Sie, ob die Spielfeldränder übertreten werden.
 	 * @return string "go east" 
 	 */
 	public String goEast() {
@@ -298,7 +289,7 @@ public class Standardbot {
 	}
 	
 	/**
-	 * Methode welche den Bot sich nach Süden bewegen lässt
+	 * Dies ist eine Methode, den Bot nach Süden bewegen lässt. Dabei prüft Sie, ob die Spielfeldränder übertreten werden.
 	 * @return string "go south" 
 	 */
 	public String goSouth() {
@@ -310,8 +301,5 @@ public class Standardbot {
 		}
 		return "go south";	
 	}
-	
-	
-
 	
 }

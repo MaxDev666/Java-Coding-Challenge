@@ -2,9 +2,9 @@ package de.vitbund.vitmaze.eingabe;
 
 import java.util.Scanner;
 /**
- * Verarbeitet Eingabedaten der Konsole
- * @author Arbeitstitel
- * @version 1.3
+ * Diese Klasse verarbeitet Eingabedaten der Konsole bzw in diesem Fall vom Spiel
+ * @author Benjamin Bogusch, Fritz Köhler, Florian Kreibe, Maximilian Hett
+ * @version 1.5
  *
  */
 public class Eingabe {

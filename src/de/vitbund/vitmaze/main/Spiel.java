@@ -6,6 +6,11 @@ import de.vitbund.vitmaze.spielfeld.Feld;
 import de.vitbund.vitmaze.spielfeld.Formular;
 import de.vitbund.vitmaze.spielfeld.Spielfeld;
 
+/**
+* Diese Klasse kümmert sich um die Spielmechanik
+* @author Benjamin Bogusch, Fritz Köhler, Florian Kreibe, Maximilian Hett
+* @version 1.5
+*/
 public class Spiel {
 	//Attribute
 	Spielfeld spielfeld;
@@ -26,7 +31,7 @@ public class Spiel {
 	boolean sheetgelegt;
 
 	/**
-	 * Methode um das Spiel zu initialisieren
+	 * Methode um das Spielfield, den Bot, das Startfeld und die Formulardaten zu initialisieren
 	 */
 	public void init() {
 		// Spielfeld anlegen und Startdaten setzen
@@ -68,12 +73,14 @@ public class Spiel {
 	}
 	
 	/**
-	 * Methode welche Bot zum erkunden schickt, entsprechende Formulare aufnimmt oder gegebenenfalls in der Umgebung suchen lässt
-	 * sowie das Ziel bei allen Vorhandenen Formularen aufsucht 
+	 * Dies ist eine Methode, welche die Eingaben des Spiels entgegennimmt, den Bot zum erkunden schickt, entsprechende Formulare aufnimmt oder gegebenenfalls in der Umgebung suchen lässt
+	 * sowie das Ziel bei allen vorhandenen Formularen aufsucht. Diese Methode wiederholt sich jede Runde und gibt die Ausgabe aus.
+	 * * Sollte eine Aktion durchgeführt werden, wird das Attribut "rundezuEnde" auf true gesetzt, sodass keine weiteren Aktionen mehr durchgeführt werden können 
 	 */
 	public void getStati() {
 		rundeZuEnde = false;
 
+		//Eingaben entgegennehmen
 		this.lastActionsResult = Eingabe.leseZeile();
 		this.currentCellStatus = Eingabe.leseZeile();
 		this.northCellStatus = Eingabe.leseZeile();
@@ -81,7 +88,9 @@ public class Spiel {
 		this.southCellStatus = Eingabe.leseZeile();
 		this.westCellStatus = Eingabe.leseZeile();
 		
+		//Aufruf der erkunden()-Methode 
 		erkunden();
+		
 		//prüft ob Runde beendet ist
 		if (rundeZuEnde == false) {
 			if (sheetgelegt== true) {
@@ -118,22 +127,20 @@ public class Spiel {
 					}
 				} else if (!spielfeld.getUnbekannteFelder().isEmpty()){
 					//gibt Koordinaten von nächstem Unbekannten Feld aus und setzt seine Route dorthin
-					System.err.println("Unbekanntes Feld" + spielfeld.getUnbekannteFelder().get(0).getxKoordinate() + " " + spielfeld.getUnbekannteFelder().get(0).getyKoordinate());
 					bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), spielfeld.getUnbekannteFelder().get(0)));
 					this.ausgabe = bot.move();
 					rundeZuEnde = true;
 				} 
-			
 			}
 		}
-		getUpdate();
 		System.out.println(this.ausgabe);
 	}
 	
 	/**
-	 * Prüft ob mit anderen Bots geredet wird
-	 * Sucht in der Umgebung nach Formularen und nimmt diese wenn möglich
+	 * Diese Methode erkundet die benachbarten Felder, prüft ob mit anderen Bots geredet wird.
+	 * Weiterhin sucht diese Methode in der Umgebung nach Formularen und nimmt diese wenn möglich auf. 
 	 * Prüft ob "Gegner-Formulare" kick/verdeckbar sind, ausgabe "kickMöglich"
+	 * Sollte eine Aktion durchgeführt werden, wird das Attribut "rundezuEnde" auf true gesetzt, sodass keine weiteren Aktionen mehr durchgeführt werden können 
 	 */
 	
 	public void erkunden() {
@@ -162,6 +169,7 @@ public class Spiel {
 					formcounter += 1;
 					rundeZuEnde = true;
 
+					// wenn Aufnahme nicht möglich ist, wird je nach Level ein Sheet gelegt auf fremde Formulare gelegt oder diese gekickt
 				} else if (!aktFeld[1].equals(bot.getPlayerId() + "") && (spielfeld.getLevel()>3) ) {
 
 					if (bot.getSheetCount() > 0 && (spielfeld.getLevel()==5)) {
@@ -182,15 +190,15 @@ public class Spiel {
 				}
 			} else if ((spielfeld.getLevel()==5) && aktFeld[0].equals("SHEET") && sheetgelegt == false) {
 
-						//prüft ob "Gegner-Formular" kickbar ist
+						//prüft ob ein Sheet kickbar ist
 						String kickMöglich = bot.kick(this.northCellStatus, this.eastCellStatus, this.southCellStatus, this.westCellStatus, false);
 						if (!kickMöglich.equals("fail")) {
 							this.ausgabe = kickMöglich;
 							rundeZuEnde = true;
 						}
 					
-				
 			} else if (aktFeld[0].equals("FINISH") && aktFeld[1].equals(bot.getPlayerId() + "")) {
+				// es wird die Aktion "finish" ausgegeben
 				if (allesGesammelt) {
 					this.ausgabe = bot.finish();
 					rundeZuEnde = true;
@@ -201,7 +209,9 @@ public class Spiel {
 	
 	
 	/**
-	 * Prüft was sich in Blickrichtung und erstellt dementsprechend Felder
+	 * Prüft , ob sich in der Richtung keine Wand befindet, dann erstelle das Feld
+	 * Prüft ob in der Richtung das Finish ist, dann gehe zum Ziel
+	 * Prüft, ob in der Richtung ein Formular ist, dann setzt er seine Route dorthin
 	 * @param richtung n/e/s/w
 	 */
 	public void schaueRichtung(char richtung) {
@@ -217,7 +227,6 @@ public class Spiel {
 			if ( (formcounter-1) == anzahlFormulare) {
 				//alle Formulare gefunden
 				allesGesammelt = true;
-				System.err.println("HABE ALLES GESAMMELT UND GEHE ZUM ZIEL ZU FELD " + spielfeld.getZielfeld());
 				bot.setAktuelleRoute(spielfeld.route(bot.getAktuellesFeld(), bot.getAktuellesFeld().getFeld(richtung)));
 				this.ausgabe = bot.move();
 				rundeZuEnde = true;
@@ -248,7 +257,7 @@ public class Spiel {
 	}
 	
 	/***
-	 * Wie viele Formulare hat der Bot bereits entdeckt?
+	 * Diese Methode gibt an, wie viele Formulare der Bot bereits entdeckt hat?
 	 * @return i Anzahl entdeckter Formulare
 	 */
 	public int howManyForms() {
@@ -262,9 +271,9 @@ public class Spiel {
 	}
 
 	/**
-	 * Gibt Stati der jeweiligen Richtungsfelder zurück
+	 * Gibt Cellstati der jeweiligen Richtungsfelder zurück
 	 * @param richtung
-	 * @return string "kein Status"
+	 * @return gibt den Status zurück oder bei keinem passenden Status "kein Status"
 	 */
 	public String getCellStatus(char richtung){
 		switch(richtung) {
@@ -282,13 +291,14 @@ public class Spiel {
 		
 	}
 	/**
-	 * Methode welche Feld in entsprechende Richtung erstellt und X/Y koordinaten ausgibt
+	 * Dies ist eine Methode welche bei Bedarf ein Feld in entsprechender Richtung erstellt und die X/Y Koordinaten setzt
 	 * @param richtungFeldErstellen n/e/s/w 
 	 */
 	public void erstellFeld(char richtungFeldErstellen) {
 		int wohinx = 0;
 		int wohiny = 0;
 		switch (richtungFeldErstellen) {
+		//setzt die Koordinaten und beachtet dabei Spielfeldgrenzen
 		case 'n':
 			if (bot.getBotY() - 1 < 0) {
 				wohinx = bot.getBotX();
@@ -331,8 +341,6 @@ public class Spiel {
 			}
 		}
 
-		System.err.println("Will Feld bei " + wohinx + "|" + wohiny + " anlegen");
-
 		// prüfen ob das Feld exisitert
 		boolean feldExistiert = false;
 		Feld temp = null;
@@ -343,6 +351,7 @@ public class Spiel {
 				break;
 			}
 		}
+		//wenn das Feld existiert, nur das aktuelle Feld mit diesem verlinken
 		if (feldExistiert == true) {
 			switch (richtungFeldErstellen) {
 			case 'n':
@@ -363,6 +372,7 @@ public class Spiel {
 				break;
 			}
 		} else {
+			// wenn das Feld nicht existiert, wird es angelegt
 			Feld neuesFeld = new Feld(wohinx, wohiny);
 			switch (richtungFeldErstellen) {
 			case 'n':
@@ -388,52 +398,4 @@ public class Spiel {
 			}
 		}
 	}
-
-	/**
-	 * Methode welche 
-	 */
-public void getUpdate() {
-		
-		StringBuilder sb = new StringBuilder();
-		sb.append("###################################################################" + "\n");
-		sb.append("Ich stehe auf dem Feld: " + bot.getAktuellesFeld().getxKoordinate() + "|"+ bot.getAktuellesFeld().getyKoordinate() + "\n");
-		sb.append("Meine Koordinaten lauten : " + bot.getBotX() + "|" + bot.getBotY() + "\n");
-		sb.append("Mein Cellstatus: "+currentCellStatus+"\n");
-		sb.append("Ich habe noch " + bot.getSheetCount() + " Sheets\n");
-		sb.append("Redet der Bot "+bot.isRedetDieRunde()+"\n");
-		sb.append("Im Norden ist: " + bot.getAktuellesFeld().getNorth()+ "\n");
-		if (bot.getAktuellesFeld().getNorth()!=null) {
-			sb.append("Mit den Koordinaten: " + bot.getAktuellesFeld().getNorth().getxKoordinate() +"|"+ bot.getAktuellesFeld().getNorth().getyKoordinate() + "\n");
-		}
-		sb.append("Im Osten ist: " + bot.getAktuellesFeld().getEast()+ "\n");
-		if (bot.getAktuellesFeld().getEast()!=null) {
-			sb.append("Mit den Koordinaten: " + bot.getAktuellesFeld().getEast().getxKoordinate() +"|"+ bot.getAktuellesFeld().getEast().getyKoordinate() + "\n");
-		}
-		sb.append("Im Sueden ist : " + bot.getAktuellesFeld().getSouth()+ "\n");
-		if (bot.getAktuellesFeld().getSouth()!=null) {
-		sb.append("Mit den Koordinaten: " + bot.getAktuellesFeld().getSouth().getxKoordinate() +"|"+ bot.getAktuellesFeld().getSouth().getyKoordinate() + "\n");
-		}
-		sb.append("Im Westen ist: " + bot.getAktuellesFeld().getWest()+ "\n");
-		if (bot.getAktuellesFeld().getWest()!=null) {
-			sb.append("Mit den Koordinaten:: " + bot.getAktuellesFeld().getWest().getxKoordinate() +"|"+ bot.getAktuellesFeld().getWest().getyKoordinate() + "\n");
-		}
-		sb.append("Die Route sieht folgendermassen aus: \n");
-		if (bot.hatRoute()) {
-			for (Feld f : bot.getAktuelleRoute()) {
-				sb.append("Feld bei Koordinaten: " +f.getxKoordinate() + "|" + f.getyKoordinate() + " ->");
-			}
-			sb.append("\nIch habe eine Route und will zum Feld: " + bot.getAktuelleRoute().get(0).getxKoordinate() + "|" + bot.getAktuelleRoute().get(0).getyKoordinate()+ "\n");
-		} else { sb.append("Ich habe noch KEINE ROUTE" + "\n");}
-		if (spielfeld.getZielfeld()!=null) {
-			sb.append("Feld: " + spielfeld.getZielfeld().getxKoordinate() + "|" + spielfeld.getZielfeld().getyKoordinate() + " ist das Zielfeld \n");
-		}
-		if (anzahlFormulare != 999) {
-			sb.append("Ich weiss wie viele Formulare brauche, dies sind: "+anzahlFormulare+"\n");
-		}
-		sb.append("Ich habe bereits "+howManyForms()+" Formulate\n");
-		sb.append("Mein Formcounter ist "+formcounter+"\n");
-		
-		System.err.println(sb.toString());
-	}
-	
 }

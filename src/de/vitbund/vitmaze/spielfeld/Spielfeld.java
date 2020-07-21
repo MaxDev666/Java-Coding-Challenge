@@ -3,9 +3,9 @@ package de.vitbund.vitmaze.spielfeld;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Hier werden alle Arten von Feldern in Listen gepackt, sowie information zu Feldern/dem Spielfeld dokumentiert.
- * @author Arbeitstitel
- * @version 1.3
+ * Hier werden alle Arten von Feldern in Listen gepackt, sowie Informationen zu den Feldern und dem Spielfeld dokumentiert.
+ * @author Benjamin Bogusch, Fritz Köhler, Florian Kreibe, Maximilian Hettitel
+ * @version 1.5
  */
 public class Spielfeld {
 	//Attribute
@@ -60,33 +60,27 @@ public class Spielfeld {
 		return sheetList;
 	}
 	
-	//Konstruktor
-		public Spielfeld() {
-			this.Zielfeld = new Feld();
-			this.Zielfeld = null;
-		}
-	
 	//Methoden
 	
 	/**
-	 * Methode um ein neues Feld in Liste Feld hinzuzufügen
+	 * Dies ist eine Methode um ein neues Feld in Liste Feld hinzuzufügen
 	 * @param newFeld Feld welches in Liste gespeichert wird
 	 */
 	public void addFeld(Feld newFeld) {
 		felder.add(newFeld);
 	}
 	/**
-	 * Methode um ein neues Feld in Liste mit Unbekannten Feldern hinzuzufügen
+	 * Dies ist eine Methode um ein neues Feld in Liste mit unbekannten Feldern hinzuzufügen
 	 * @param newFeld Feld welches in Liste gespeichert wird
 	 */
 	public void addUnbekanntesFeld(Feld newFeld) {
 		unbekannteFelder.add(0,newFeld);
 	}
 	/**
-	 * Methode welche ein Feld an X/Y Koordinate zurück gibt
+	 * Dies ist eine Methode welche ein Feld an X/Y Koordinate zurück gibt
 	 * @param x X-Koordinate des Feldes
 	 * @param y Y-Koordinate des Feldes
-	 * @return  Feld oder null
+	 * @return Feld oder null
 	 */
 	public Feld gibFeld(int x, int y) {
 		for (Feld feld : this.getBekannteFelder()) {

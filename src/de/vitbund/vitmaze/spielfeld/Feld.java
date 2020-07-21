@@ -3,10 +3,9 @@ package de.vitbund.vitmaze.spielfeld;
 import java.util.LinkedList;
 import java.util.List;
 /**
- * Ermöglicht es Felder mit Koordinaten sowie deren Umgebung und Nachbarfelder anzulegen un abzufragen
- * @author Arbeitstitel
- * @version 1.0
- *
+ * Ermöglicht es, Felder mit Koordinaten sowie deren Umgebung und Nachbarfelder anzulegen und abzufragen
+ * @author Benjamin Bogusch, Fritz Köhler, Florian Kreibe, Maximilian Hett
+ * @version 1.5
  */
 public class Feld {
 	//Attribute
@@ -16,11 +15,9 @@ public class Feld {
 	private Feld west = null;
 	private int xKoordinate;
 	private int yKoordinate;
-	
-	private Feld vorgaenger; // für die wegsuche
+	private Feld vorgaenger;
 	private boolean istInBearbeitung;
 
-	
 	//Getter und Setter
 	public Feld getNorth() {
 		return north;
@@ -70,6 +67,40 @@ public class Feld {
 	public void setInBearbeitung(boolean istInBearbeitung) {
 		this.istInBearbeitung = istInBearbeitung;
 	}
+	
+	//Konstruktoren
+	public Feld() {	
+	}
+	
+	/**
+	 * Dieser Konstruktor setzt die X- und Y-Koordinaten
+	 * @param x-Koordinate
+	 * @param y-Koordinate
+	 */
+	public Feld(int x, int y) {
+		this.xKoordinate = x;
+		this.yKoordinate = y;
+	}
+	
+	/**
+	 * Dieser Konstruktor gibt die Nachbarfelder des anzulegenden Feldes an
+	 * @param north 
+	 * @param south
+	 * @param west
+	 * @param east
+	 */
+	public Feld(Feld north, Feld south, Feld west, Feld east) {
+		this.north = north;
+		this.south=south;
+		this.west = west;
+		this.east = east;
+	}
+	
+	//Methoden
+	/**
+	 * Diese Methode gibt die Nachbarfelder dieses Feldes als Liste zurück
+	 * @return Liste der Nachbarfelder
+	 */
 	public List<Feld> getNachbarn() {
 		List<Feld> nachbarn = new LinkedList<Feld>();
 		if (this.getEast()!=null) {nachbarn.add(this.getEast());}
@@ -78,6 +109,12 @@ public class Feld {
 		if (this.getNorth()!=null) {nachbarn.add(this.getNorth());}
 		return nachbarn;
 	}
+	
+	/**
+	 * Diese Methode gibt die Nachbarfelder dieses Feldes als Liste zurück. Dabei wird der Vorgänger nicht mit angegeben und es werden nur nicht bearbeitete Felder berücksichtigt (Wird für Routenfindung benötigt))
+	 * @param feld ist das Vorgängerfeld
+	 * @return Liste der Nachbarfelder
+	 */
 	public List<Feld> getNachbarnOhne(Feld feld) {
 		List<Feld> nachbarn = new LinkedList<Feld>();
 		if (this.getEast() != null && this.getEast() != feld && !this.getEast().istInBearbeitung()) {
@@ -94,26 +131,10 @@ public class Feld {
 		}
 		return nachbarn;
 	}
-	//Konstruktoren
-	public Feld() {	
-	}
-	
-	public Feld(int x, int y) {
-		this.xKoordinate = x;
-		this.yKoordinate = y;
-	}
-	
-	public Feld(Feld north, Feld south, Feld west, Feld east) {
-		this.north = north;
-		this.south=south;
-		this.west = west;
-		this.east = east;
-	}
-	//Methoden
 	/**
-	 * Methode, welche die die Richtung des nachbarFelds zum aktuellen Feld zurückgibt
-	 * @param nachbarFeld Feld in der Umgebung des aktuellen Feldes
-	 * @return string entsprechende Richtung "north","east","south","west","Feld kein Nachbar"
+	 * Dies ist eine Methode, die die Richtung des nachbarFelds zum aktuellen Feld zurückgibt
+	 * @param nachbarFeld Feld ist der Nachbar des aktuellen Feldes
+	 * @return gibt als String die Richtung oder "Feld ist kein Nachbar" zurück
 	 */
 	public String getRichtung(Feld nachbarFeld) {
 		if (this.getNorth()==nachbarFeld) {
@@ -125,12 +146,12 @@ public class Feld {
 		}else if (this.getWest()==nachbarFeld) {
 			return "west";
 		}else {
-			return "Feld kein Nachbar";
+			return "Feld ist kein Nachbar";
 		}
 	}
 	
 	/**
-	 * Methode, welche sich das Nachbarfeld zum Feld in entsprechender Richtung ausgeben lässt
+	 * Dies ist eine Methode, die das Nachbarfeld des aktuellen Feldes in der angegebenen Richtung ausgibt
 	 * @param richtung n/e/s/w
 	 * @return Feld der entsprechenden Richtung
 	 */

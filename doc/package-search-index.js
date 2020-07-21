@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"de.vitbund.vitmaze.eingabe"},{"l":"de.vitbund.vitmaze.main"},{"l":"de.vitbund.vitmaze.players"},{"l":"de.vitbund.vitmaze.spielfeld"}]
